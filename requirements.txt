@@ -1,0 +1,9 @@
+# Dependencies cho module captcha decoder
+pytesseract>=0.3.10
+Pillow>=9.0.0
+requests>=2.28.0
+
+# Tesseract OCR engine cần được cài đặt riêng:
+# Windows: https://github.com/UB-Mannheim/tesseract/wiki
+# Ubuntu/Debian: sudo apt-get install tesseract-ocr
+# macOS: brew install tesseract
