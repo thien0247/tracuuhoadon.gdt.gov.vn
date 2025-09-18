@@ -1,0 +1,20 @@
+{
+  "province_code": "18",
+  "province_name": "Cần Thơ",
+  "tin_min": "1801802060",
+  "tin_max": "1801804910",
+  "total_batches": 558,
+  "total_companies_added": 48223,
+  "no_new_batch_count": 10,
+  "final_tin": "1801245060",
+  "start_time": "2025-09-16 20:23:15",
+  "end_time": "2025-09-17 09:40:06",
+  "duration_minutes": 796.8439162731171,
+  "batch_processor_stats": {
+    "total_processed": 50730,
+    "total_success": 48223,
+    "total_failed": 2507,
+    "total_skipped": 1,
+    "success_rate": 95.05815099546619
+  }
+}

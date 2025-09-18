@@ -8,6 +8,7 @@ import time
 import os
 from typing import Optional, Dict, Any
 from captcha_decoder import decode_captcha
+from gemini_captcha_decoder import GeminiCaptchaDecoder
 from PIL import Image
 import logging
 
@@ -25,6 +26,9 @@ class TaxQuery:
         self.base_url = "https://tracuuhoadon.gdt.gov.vn"
         self.captcha_url = f"{self.base_url}/Captcha.jpg"
         self.query_url = f"{self.base_url}/gettin.html"
+        
+        # Khởi tạo Gemini decoder
+        self.gemini_decoder = GeminiCaptchaDecoder()
         
         # Headers để giả lập browser
         self.session.headers.update({
@@ -85,6 +89,58 @@ class TaxQuery:
             logger.error(f"Lỗi giải mã captcha: {e}")
             return None
     
+    def solve_captcha_with_gemini(self, captcha_path: str) -> Optional[str]:
+        """
+        Giải mã captcha sử dụng Gemini decoder
+        
+        Args:
+            captcha_path: Đường dẫn file captcha
+            
+        Returns:
+            Chuỗi captcha đã giải mã hoặc None nếu lỗi
+        """
+        try:
+            logger.info("Đang giải mã captcha với Gemini...")
+            result = self.gemini_decoder.decode_captcha(captcha_path)
+            
+            if result:
+                logger.info(f"Giải mã captcha với Gemini thành công: {result}")
+                return result
+            else:
+                logger.warning("Không thể giải mã captcha với Gemini")
+                return None
+                
+        except Exception as e:
+            logger.error(f"Lỗi giải mã captcha với Gemini: {e}")
+            return None
+    
+    def is_captcha_success(self, result: Dict[str, Any]) -> bool:
+        """
+        Kiểm tra xem captcha có được giải thành công không
+        Dựa trên trường 'tinModel' khác null
+        
+        Args:
+            result: Kết quả từ API
+            
+        Returns:
+            True nếu captcha thành công, False nếu không
+        """
+        try:
+            if isinstance(result, dict):
+                # Kiểm tra trường tinModel
+                if 'tinModel' in result and result['tinModel'] is not None:
+                    logger.info("✅ Captcha giải thành công (tinModel khác null)")
+                    return True
+                else:
+                    logger.warning("❌ Captcha giải thất bại (tinModel null hoặc không tồn tại)")
+                    return False
+            else:
+                logger.warning("❌ Kết quả không phải dict")
+                return False
+        except Exception as e:
+            logger.error(f"Lỗi kiểm tra kết quả captcha: {e}")
+            return False
+    
     def query_tax_info(self, tax_code: str, captcha_code: str) -> Optional[Dict[str, Any]]:
         """
         Truy vấn thông tin mã số thuế
@@ -105,6 +161,10 @@ class TaxQuery:
             
             logger.info(f"Đang truy vấn thông tin mã số thuế: {tax_code}")
             logger.info(f"URL: {self.query_url}?tin={tax_code}&captchaCode={captcha_code}")
+            
+            # Thêm delay trước khi gửi request
+            logger.info("⏳ Đợi 2 giây trước khi gửi request...")
+            time.sleep(2)
             
             # Gửi request
             response = self.session.get(self.query_url, params=params, timeout=10)
@@ -160,19 +220,26 @@ class TaxQuery:
             logger.error(f"Lỗi lưu file: {e}")
             return ""
     
-    def query_with_retry(self, tax_code: str, max_retries: int = 3) -> Optional[Dict[str, Any]]:
+    def query_with_retry(self, tax_code: str, max_tesseract_retries: int = 3, max_gemini_retries: int = 3) -> Optional[Dict[str, Any]]:
         """
-        Truy vấn thông tin với retry mechanism
+        Truy vấn thông tin với retry mechanism theo yêu cầu:
+        - Ưu tiên sử dụng captcha_decoder (Tesseract) với tối đa 3 lần thử
+        - Nếu thất bại, chuyển sang gemini_captcha_decoder với tối đa 3 lần thử
+        - Session được duy trì trong suốt 6 lần thử (3 Tesseract + 3 Gemini)
         
         Args:
             tax_code: Mã số thuế
-            max_retries: Số lần thử lại tối đa
+            max_tesseract_retries: Số lần thử tối đa với Tesseract
+            max_gemini_retries: Số lần thử tối đa với Gemini
             
         Returns:
             Thông tin JSON hoặc None nếu thất bại
         """
-        for attempt in range(max_retries):
-            logger.info(f"Lần thử {attempt + 1}/{max_retries}")
+        # Phase 1: Thử với Tesseract (captcha_decoder)
+        logger.info(f"🔄 Phase 1: Thử với Tesseract (tối đa {max_tesseract_retries} lần)")
+        
+        for attempt in range(max_tesseract_retries):
+            logger.info(f"Tesseract - Lần thử {attempt + 1}/{max_tesseract_retries}")
             
             try:
                 # Bước 1: Tải captcha
@@ -181,10 +248,10 @@ class TaxQuery:
                     logger.warning("Không thể tải captcha")
                     continue
                 
-                # Bước 2: Giải mã captcha
+                # Bước 2: Giải mã captcha với Tesseract
                 captcha_code = self.solve_captcha(captcha_path)
                 if not captcha_code:
-                    logger.warning("Không thể giải mã captcha")
+                    logger.warning("Không thể giải mã captcha với Tesseract")
                     # Xóa file captcha tạm
                     if os.path.exists(captcha_path):
                         os.remove(captcha_path)
@@ -197,23 +264,123 @@ class TaxQuery:
                 if os.path.exists(captcha_path):
                     os.remove(captcha_path)
                 
-                if result:
-                    logger.info("Truy vấn thành công!")
+                if result and self.is_captcha_success(result):
+                    logger.info("✅ Tesseract: Truy vấn thành công!")
+                    # Thêm captcha_code vào result để sử dụng sau này
+                    result['captcha_code'] = captcha_code
                     return result
                 else:
-                    logger.warning("Truy vấn thất bại")
+                    logger.warning("❌ Tesseract: Captcha không đúng hoặc truy vấn thất bại")
                     
             except Exception as e:
-                logger.error(f"Lỗi trong lần thử {attempt + 1}: {e}")
+                logger.error(f"Lỗi trong lần thử Tesseract {attempt + 1}: {e}")
             
             # Nghỉ giữa các lần thử
-            if attempt < max_retries - 1:
+            if attempt < max_tesseract_retries - 1:
                 logger.info("Nghỉ 2 giây trước khi thử lại...")
                 time.sleep(2)
         
-        logger.error(f"Thất bại sau {max_retries} lần thử")
+        logger.warning(f"❌ Tesseract thất bại sau {max_tesseract_retries} lần thử")
+        
+        # Phase 2: Thử với Gemini
+        logger.info(f"🔄 Phase 2: Chuyển sang Gemini (tối đa {max_gemini_retries} lần)")
+        
+        for attempt in range(max_gemini_retries):
+            logger.info(f"Gemini - Lần thử {attempt + 1}/{max_gemini_retries}")
+            
+            try:
+                # Bước 1: Tải captcha
+                captcha_path = self.download_captcha()
+                if not captcha_path:
+                    logger.warning("Không thể tải captcha")
+                    continue
+                
+                # Bước 2: Giải mã captcha với Gemini
+                captcha_code = self.solve_captcha_with_gemini(captcha_path)
+                if not captcha_code:
+                    logger.warning("Không thể giải mã captcha với Gemini")
+                    # Xóa file captcha tạm
+                    if os.path.exists(captcha_path):
+                        os.remove(captcha_path)
+                    continue
+                
+                # Bước 3: Truy vấn thông tin
+                result = self.query_tax_info(tax_code, captcha_code)
+                
+                # Xóa file captcha tạm
+                if os.path.exists(captcha_path):
+                    os.remove(captcha_path)
+                
+                if result and self.is_captcha_success(result):
+                    logger.info("✅ Gemini: Truy vấn thành công!")
+                    # Thêm captcha_code vào result để sử dụng sau này
+                    result['captcha_code'] = captcha_code
+                    return result
+                else:
+                    logger.warning("❌ Gemini: Captcha không đúng hoặc truy vấn thất bại")
+                    
+            except Exception as e:
+                logger.error(f"Lỗi trong lần thử Gemini {attempt + 1}: {e}")
+            
+            # Nghỉ giữa các lần thử
+            if attempt < max_gemini_retries - 1:
+                logger.info("Nghỉ 2 giây trước khi thử lại...")
+                time.sleep(2)
+        
+        logger.error(f"❌ Cả Tesseract và Gemini đều thất bại!")
+        logger.error("🛑 Dừng chương trình - không thể giải captcha")
         return None
     
+    def query_with_existing_captcha(self, tax_code: str, captcha_code: str) -> Optional[Dict[str, Any]]:
+        """
+        Truy vấn thông tin mã số thuế với captcha đã có sẵn (không cần giải captcha mới)
+        
+        Args:
+            tax_code: Mã số thuế
+            captcha_code: Mã captcha đã giải thành công
+            
+        Returns:
+            Thông tin JSON hoặc None nếu thất bại
+        """
+        logger.info(f"Truy vấn với captcha có sẵn: {tax_code} - {captcha_code}")
+        
+        # Debug: Kiểm tra session cookies
+        logger.info(f"Session cookies: {dict(self.session.cookies)}")
+        logger.info(f"Session headers: {dict(self.session.headers)}")
+        
+        try:
+            # Thêm delay để đợi server trả về đủ
+            logger.info("⏳ Đợi 3 giây để server xử lý...")
+            time.sleep(3)
+            
+            result = self.query_tax_info(tax_code, captcha_code)
+            
+            if result:
+                # Thêm thông tin metadata
+                result['metadata'] = {
+                    'tax_code': tax_code,
+                    'captcha_code': captcha_code,
+                    'timestamp': time.strftime("%Y-%m-%d %H:%M:%S"),
+                    'query_url': f"{self.query_url}?tin={tax_code}&captchaCode={captcha_code}",
+                    'method': 'existing_captcha',
+                    'session_cookies': dict(self.session.cookies)
+                }
+                
+                # Luôn lưu kết quả để kiểm chứng
+                filename = self.save_result(result)
+                if filename:
+                    logger.info(f"Đã lưu kết quả để kiểm chứng: {filename}")
+                
+                logger.info("Truy vấn với captcha có sẵn thành công!")
+                return result
+            else:
+                logger.error("Truy vấn với captcha có sẵn thất bại")
+                return None
+                
+        except Exception as e:
+            logger.error(f"Lỗi truy vấn với captcha có sẵn: {e}")
+            return None
+
     def process_tax_query(self, tax_code: str, save_file: bool = True) -> Optional[Dict[str, Any]]:
         """
         Xử lý truy vấn thông tin mã số thuế hoàn chỉnh

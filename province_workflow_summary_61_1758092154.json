@@ -1,0 +1,20 @@
+{
+  "province_code": "61",
+  "province_name": "Kon Tum",
+  "tin_min": "6101308433",
+  "tin_max": "6101309010",
+  "total_batches": 318,
+  "total_companies_added": 15682,
+  "no_new_batch_count": 10,
+  "final_tin": "6100991433",
+  "start_time": "2025-09-16 18:32:15",
+  "end_time": "2025-09-17 13:55:54",
+  "duration_minutes": 1163.6502278963724,
+  "batch_processor_stats": {
+    "total_processed": 28908,
+    "total_success": 15682,
+    "total_failed": 13226,
+    "total_skipped": 1,
+    "success_rate": 54.247959042479586
+  }
+}

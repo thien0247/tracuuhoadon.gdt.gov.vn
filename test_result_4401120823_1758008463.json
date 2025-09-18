@@ -1,0 +1,50 @@
+{
+  "tax_code": "4401120823",
+  "captcha_code": "cqjdra",
+  "status": "test_success",
+  "timestamp": "2025-09-16 14:41:03",
+  "url": "https://tracuuhoadon.gdt.gov.vn/gettin.html?tin=4401120823&captchaCode=cqjdra",
+  "status_code": 200,
+  "content_type": "application/json;charset=UTF-8",
+  "session_cookies": {
+    "JSESSIONID": "0000GggA_LKVjTkUKt-P728yuff:1bdqh121m",
+    "BIGipServer~TCHD~Pool_TCHD": "1195589642.20480.0000",
+    "f5avrbbbbbbbbbbbbbbbb": "DKJJAAHNLIFIFILFMJANPNAHCBOKKEGBOHKPMNOLPHLBAEBKAIEHOKKMHJEPMPBPNHPDGGBBKGKDOFJNEPNGOOOBMMCAACLBDEFALOKICOBCCDJIDBFPBFKFOKCKKDEM",
+    "Merry-Christmas": "4198645770.20480.0000",
+    "f5avraaaaaaaaaaaaaaaa_session_": "GFNKMNFBGGJPLKMGHICBNNDJGNCIIBIBGHGHOGAMMBPABGANKGFIONFHDPFJMMBHKCFDFJLLDECCFCINDNFALNNBDBGFLCJKOHMMNMIJNHKOOKLLJKEIHJALIGEECFBD",
+    "TS015da205": "01dc12c85e7af78aaa2737843b0dba13cfecd32a37fc203a76c38fefac6201c7d27d66e2467ebebc4b017ed5e8b0864398f1457bed4a9025f53dc14b2bc368f7afba6a0847633c1ffe3963b52f1902fd7a9c65462c389ddf256e9e1baf4618dd8e07f24e564a4aebc0da5e57827da06129b42e10f6080ddb69c443d76943c57f00f216e1049f3c95de90abd5d009a19f1450240ce7"
+  },
+  "data": {
+    "captchaCode": "cqjdra",
+    "dvsd": null,
+    "kind": null,
+    "ltd": null,
+    "ngayDen": null,
+    "ngayTu": null,
+    "strMess": null,
+    "tin": "4401120823",
+    "tinModel": {
+      "chan_date": "2025-07-18T00:00:00",
+      "den_ngay": null,
+      "dvsd": null,
+      "econ_name": "Nhà nước",
+      "economy": "01",
+      "link": null,
+      "norm_name": "ỦY BAN NHÂN DÂN XÃ TUY AN TÂY",
+      "pare_tin": null,
+      "pay_taxo_id": "50907",
+      "pay_taxo_name": "Huyện Tuy An - Chi cục Thuế khu vực Tuy An - Đồng XuânFChi cục Thuế huyện Tuy AnF2019F08F04",
+      "pay_taxo_name_blhd": "Huyện Tuy An - Chi cục Thuế khu vực Tuy An - Đồng Xuân",
+      "regi_date": "2025-07-07T00:00:00",
+      "search": false,
+      "status": "00",
+      "statusName": "NNT đang hoạt động (đã được cấp GCN ĐKT)",
+      "tin": "4401120823",
+      "tran_addr": "thôn Trung Lương 1, Xã Tuy An Tây",
+      "tran_dist": "50907",
+      "tran_fax": null,
+      "tran_tel": null,
+      "tu_ngay": "2025-07-18T00:00:00"
+    }
+  }
+}

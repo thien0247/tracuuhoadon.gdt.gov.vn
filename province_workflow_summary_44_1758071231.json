@@ -1,0 +1,20 @@
+{
+  "province_code": "44",
+  "province_name": "Phú Yên",
+  "tin_min": "4400100006",
+  "tin_max": "4401125885",
+  "total_batches": 11,
+  "total_companies_added": 2,
+  "no_new_batch_count": 10,
+  "final_tin": "4401115885",
+  "start_time": "2025-09-17 08:05:07",
+  "end_time": "2025-09-17 08:07:11",
+  "duration_minutes": 2.0692975878715516,
+  "batch_processor_stats": {
+    "total_processed": 14,
+    "total_success": 2,
+    "total_failed": 12,
+    "total_skipped": 985,
+    "success_rate": 14.285714285714285
+  }
+}

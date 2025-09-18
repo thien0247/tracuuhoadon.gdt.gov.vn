@@ -1,0 +1,19 @@
+{
+  "tax_code": "0319151229",
+  "captcha_code": "y2bo1c",
+  "status": "failed",
+  "timestamp": "2025-09-16 14:57:19",
+  "url": "https://tracuuhoadon.gdt.gov.vn/gettin.html?tin=0319151229&captchaCode=y2bo1c",
+  "status_code": 200,
+  "content_type": "text/html;charset=UTF-8",
+  "session_cookies": {
+    "JSESSIONID": "0000aByQ5AuNkjgA4KPdnSuhQa2:1bdqh199n",
+    "BIGipServer~TCHD~Pool_TCHD": "1195589642.20480.0000",
+    "f5avrbbbbbbbbbbbbbbbb": "AADFPJIHLONIKBNIEOFIMJBLKJLJKPIDJOHDNGCBAKJKNNDEGDNKLOOIGJHEBDBFKMIDDAIOKFFDHEBAHMEKHGFBMBAAAEOHPHKIIPLHALJNIMOKPBNCOOAJJDEKHFBH",
+    "Merry-Christmas": "4198645770.20480.0000",
+    "f5avraaaaaaaaaaaaaaaa_session_": "KGPFOPEBJMBKENBPBMEEMNKIJCPLBLGFPHHGOCJEHFLMNGOGJINNIAOOIOPCNEILMDODFNCOPHBFHAEIHDNABIPKPBKKNNOCBEHPHADOFOLCEJPEFABNAAMIOLLMAEFG",
+    "TS015da205": "01dc12c85e0baf4533c2d80450e598b5b1b54a9bc14b5931c2d43a9639c37837433441c0bde4b47068419b91d8ee979a547104734f843b8b214dd08d01bcfc67aef88bed379e3ce300c49e8bd19a8cdd85abc4bc59b49d90cb7f1273ac9befd7530d6f7ab465d1f9ae8abf0d044a19a142fcb3278515b3a166f73928b3c63fac13ee6b6e97333a6d78bbb4ee96276c91e26d5ffef28ff1633620a6ca6f612e41b72edbcd2a015b1fb86da5eb2408daa702ecbc8feb",
+    "f5_cspm": "1234"
+  },
+  "data": null
+}

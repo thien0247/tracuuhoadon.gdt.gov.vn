@@ -1,0 +1,20 @@
+{
+  "province_code": "19",
+  "province_name": "Bạc Liêu",
+  "tin_min": "1900703913",
+  "tin_max": "1900704610",
+  "total_batches": 342,
+  "total_companies_added": 19780,
+  "no_new_batch_count": 10,
+  "final_tin": "1900362913",
+  "start_time": "2025-09-16 20:15:43",
+  "end_time": "2025-09-17 13:55:42",
+  "duration_minutes": 1059.9828662196794,
+  "batch_processor_stats": {
+    "total_processed": 31092,
+    "total_success": 19780,
+    "total_failed": 11312,
+    "total_skipped": 1,
+    "success_rate": 63.61765084266049
+  }
+}

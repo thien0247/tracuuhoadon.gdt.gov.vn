@@ -1,0 +1,20 @@
+{
+  "province_code": "52",
+  "province_name": "Yên Bái",
+  "tin_min": "5200958409",
+  "tin_max": "5200958938",
+  "total_batches": 336,
+  "total_companies_added": 17585,
+  "no_new_batch_count": 10,
+  "final_tin": "5200623409",
+  "start_time": "2025-09-16 18:30:43",
+  "end_time": "2025-09-17 13:56:00",
+  "duration_minutes": 1165.2820017178854,
+  "batch_processor_stats": {
+    "total_processed": 30544,
+    "total_success": 17585,
+    "total_failed": 12959,
+    "total_skipped": 1,
+    "success_rate": 57.57268203247774
+  }
+}

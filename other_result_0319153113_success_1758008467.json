@@ -1,0 +1,51 @@
+{
+  "tax_code": "0319153113",
+  "captcha_code": "cqjdra",
+  "status": "success",
+  "timestamp": "2025-09-16 14:41:07",
+  "url": "https://tracuuhoadon.gdt.gov.vn/gettin.html?tin=0319153113&captchaCode=cqjdra",
+  "status_code": 200,
+  "content_type": "application/json;charset=UTF-8",
+  "session_cookies": {
+    "JSESSIONID": "0000GggA_LKVjTkUKt-P728yuff:1bdqh121m",
+    "BIGipServer~TCHD~Pool_TCHD": "1195589642.20480.0000",
+    "f5avrbbbbbbbbbbbbbbbb": "DKJJAAHNLIFIFILFMJANPNAHCBOKKEGBOHKPMNOLPHLBAEBKAIEHOKKMHJEPMPBPNHPDGGBBKGKDOFJNEPNGOOOBMMCAACLBDEFALOKICOBCCDJIDBFPBFKFOKCKKDEM",
+    "Merry-Christmas": "4198645770.20480.0000",
+    "f5avraaaaaaaaaaaaaaaa_session_": "GFNKMNFBGGJPLKMGHICBNNDJGNCIIBIBGHGHOGAMMBPABGANKGFIONFHDPFJMMBHKCFDFJLLDECCFCINDNFALNNBDBGFLCJKOHMMNMIJNHKOOKLLJKEIHJALIGEECFBD",
+    "TS015da205": "01dc12c85ea4b5433ac703a1cdc1fd9ff7656f89b2fc203a76c38fefac6201c7d27d66e2467ebebc4b017ed5e8b0864398f1457bed89a3297246170d5cb23ce8fd4f96445e07857f07644e29a6514cae5c243c33c9a201c69aae5a339b4f836884deab8f2f7a90ed24f5f30381330db557b19b566148f7615193b0ec039547d5a55d15aef74fe6293dd6e70df07b3fb6190be7c943dcaadb94b8e469a45faa2484cff09894398db69bffde346970dd9dfb6a54ae73",
+    "f5_cspm": "1234"
+  },
+  "data": {
+    "captchaCode": "cqjdra",
+    "dvsd": null,
+    "kind": null,
+    "ltd": null,
+    "ngayDen": null,
+    "ngayTu": null,
+    "strMess": null,
+    "tin": "0319153113",
+    "tinModel": {
+      "chan_date": "2025-09-12T00:00:00",
+      "den_ngay": null,
+      "dvsd": null,
+      "econ_name": "Trách nhiệm hữu hạn",
+      "economy": "03",
+      "link": null,
+      "norm_name": "CÔNG TY TNHH PULSECORE",
+      "pare_tin": null,
+      "pay_taxo_id": "70101",
+      "pay_taxo_name": "Chi cục Thuế Quận 1",
+      "pay_taxo_name_blhd": "Chi cục Thuế Quận 1",
+      "regi_date": "2025-09-11T00:00:00",
+      "search": false,
+      "status": "00",
+      "statusName": "NNT đang hoạt động (đã được cấp GCN ĐKT)",
+      "tin": "0319153113",
+      "tran_addr": "Số 68 Nguyễn Huệ, Phường Sài Gòn",
+      "tran_dist": "70101",
+      "tran_fax": null,
+      "tran_tel": "0819398606",
+      "tu_ngay": "2025-09-12T00:00:00"
+    }
+  }
+}
