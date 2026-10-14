@@ -6,16 +6,16 @@
  */
 import { useState, useEffect, useCallback } from 'react';
 
-export type ThemeMode = 'light' | 'dark' | 'win98';
+export type ThemeMode = 'antd' | 'light' | 'dark';
 
-let currentTheme: ThemeMode = 'light';
+let currentTheme: ThemeMode = 'antd';
 const listeners = new Set<() => void>();
 const notify = () => listeners.forEach((fn) => fn());
 
 function normalizeTheme(raw: string | null): ThemeMode {
-  if (raw === 'win98' || raw === 'win95') return 'win98';
   if (raw === 'dark') return 'dark';
-  return 'light';
+  if (raw === 'light') return 'light';
+  return 'antd';
 }
 
 function applyThemeGlobal(val: ThemeMode): void {
@@ -61,7 +61,7 @@ export function useTheme() {
 
   const toggleTheme = useCallback(() => {
     const next: ThemeMode =
-      currentTheme === 'light' ? 'dark' : currentTheme === 'dark' ? 'win98' : 'light';
+      currentTheme === 'antd' ? 'dark' : currentTheme === 'dark' ? 'light' : 'antd';
     applyThemeGlobal(next);
   }, []);
 
