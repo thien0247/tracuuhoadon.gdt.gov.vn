@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import List
 
 from fastapi import APIRouter, HTTPException
-from crawler_dak_lak import CrawlerEngine
+from crawler_core.engine import CrawlerEngine
 from server_app.core.config import STAGGER_DELAY_SECONDS
 
 from server_app.core.database import PROVINCES_CACHE, get_max_tin_by_prefix, fetch_all_province_stats

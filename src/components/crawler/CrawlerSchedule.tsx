@@ -15,8 +15,9 @@ const fmtCd = (sec: number) => {
 export default function CrawlerSchedule() {
   const [status, setStatus] = useState({
     is_executing: false,
-    newest: { enabled: false, interval_hours: 6, last_run: '', countdown_sec: 0 },
-    gap_fill_500: { enabled: true, interval_hours: 12, last_run: '', countdown_sec: 0, reset_on_existing: true }
+    newest: { enabled: true, interval_hours: 6, last_run: '', countdown_sec: 0 },
+    gap_fill_500: { enabled: true, interval_hours: 12, last_run: '', countdown_sec: 0, reset_on_existing: true },
+    bocao: { enabled: true, running: false, interval_hours: 2, max_pages: 5, auto_reconcile: true, last_run: '', countdown_sec: 0 }
   });
   const [actionNotice, setActionNotice] = useState('');
   const [isTriggering, setIsTriggering] = useState(false);
@@ -29,7 +30,9 @@ export default function CrawlerSchedule() {
   const fetchStatus = useCallback(async () => {
     try {
       const res = await ApiClient.getScheduleStatus();
-      if (res && res.newest && res.gap_fill_500) setStatus(res);
+      if (res && res.newest && res.gap_fill_500) {
+        setStatus((prev) => ({ ...prev, ...res, bocao: res.bocao || prev.bocao }));
+      }
     } catch { /* ignore */ }
   }, []);
 
@@ -39,21 +42,17 @@ export default function CrawlerSchedule() {
       setStatus((prev) => ({
         ...prev,
         newest: { ...prev.newest, countdown_sec: Math.max(0, prev.newest.countdown_sec - 1) },
-        gap_fill_500: { ...prev.gap_fill_500, countdown_sec: Math.max(0, prev.gap_fill_500.countdown_sec - 1) }
+        gap_fill_500: { ...prev.gap_fill_500, countdown_sec: Math.max(0, prev.gap_fill_500.countdown_sec - 1) },
+        bocao: { ...prev.bocao, countdown_sec: Math.max(0, (prev.bocao?.countdown_sec || 0) - 1) }
       }));
     }, 1000);
-    return () => clearInterval(timer);
+    const syncTimer = setInterval(() => { void fetchStatus(); }, 15000);
+    return () => { clearInterval(timer); clearInterval(syncTimer); };
   }, [fetchStatus]);
 
-  const toggleNewest = async () => {
-    await ApiClient.toggleScheduleNewest(!status.newest.enabled);
-    await fetchStatus();
-  };
-
-  const toggleGapFill = async () => {
-    await ApiClient.toggleScheduleGapFill(!status.gap_fill_500.enabled);
-    await fetchStatus();
-  };
+  const toggleNewest = async () => { await ApiClient.toggleScheduleNewest(!status.newest.enabled); await fetchStatus(); };
+  const toggleGapFill = async () => { await ApiClient.toggleScheduleGapFill(!status.gap_fill_500.enabled); await fetchStatus(); };
+  const toggleBocao = async () => { await ApiClient.configureScheduleBocao({ enabled: !status.bocao.enabled }); await fetchStatus(); };
 
   const triggerNewest = async () => {
     setIsTriggering(true);
@@ -61,9 +60,8 @@ export default function CrawlerSchedule() {
       await ApiClient.triggerScheduleNewest();
       showNotice('⚡ Đã kích hoạt đợt quét Đỉnh mới nhất cho 62 tỉnh!');
       await fetchStatus();
-    } catch (e: unknown) {
-      showNotice('❌ Lỗi kích hoạt: ' + String(e));
-    } finally { setIsTriggering(false); }
+    } catch (e: unknown) { showNotice('❌ Lỗi kích hoạt: ' + String(e)); }
+    finally { setIsTriggering(false); }
   };
 
   const triggerGapFill = async () => {
@@ -72,9 +70,18 @@ export default function CrawlerSchedule() {
       await ApiClient.triggerScheduleGapFill();
       showNotice('⚡ Đã kích hoạt quét 500 lỗ hổng cho 62 tỉnh thành!');
       await fetchStatus();
-    } catch (e: unknown) {
-      showNotice('❌ Lỗi kích hoạt: ' + String(e));
-    } finally { setIsTriggering(false); }
+    } catch (e: unknown) { showNotice('❌ Lỗi kích hoạt: ' + String(e)); }
+    finally { setIsTriggering(false); }
+  };
+
+  const triggerBocao = async () => {
+    setIsTriggering(true);
+    try {
+      await ApiClient.triggerScheduleBocao();
+      showNotice('⚡ Đã kích hoạt chu trình Cào Bố Cáo ĐKKD & Đồng Bộ Thuế!');
+      await fetchStatus();
+    } catch (e: unknown) { showNotice('❌ Lỗi kích hoạt: ' + String(e)); }
+    finally { setIsTriggering(false); }
   };
 
   const setGapFillMode = async (resetOnExisting: boolean) => {
@@ -82,9 +89,7 @@ export default function CrawlerSchedule() {
       await ApiClient.setScheduleGapFillMode(resetOnExisting);
       showNotice(resetOnExisting ? '⚙️ Option 1: Reset khi gặp mã trong DB (Vét cạn sâu)' : '⚙️ Option 2: Chỉ reset khi có mã mới nạp DB (Nghiêm ngặt)');
       await fetchStatus();
-    } catch (e: unknown) {
-      showNotice('❌ Lỗi đổi chế độ: ' + String(e));
-    }
+    } catch (e: unknown) { showNotice('❌ Lỗi đổi chế độ: ' + String(e)); }
   };
 
   return (
@@ -96,7 +101,7 @@ export default function CrawlerSchedule() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
         <div className="bg-white dark:bg-slate-800 rounded-xl px-3 py-2.5 shadow-sm border border-indigo-100 dark:border-indigo-900/60 flex flex-col justify-between gap-2">
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-start gap-2 min-w-0">
@@ -105,7 +110,7 @@ export default function CrawlerSchedule() {
                 <div className="flex flex-wrap items-center gap-1.5">
                   <h2 className="text-[11px] font-extrabold text-slate-800 dark:text-slate-100 uppercase tracking-wide">Auto Quét Đỉnh Mới Nhất</h2>
                   <span className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${status.newest.enabled ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 animate-pulse' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
-                    {status.newest.enabled ? '● Mỗi 6h' : '○ Đã tắt'}
+                    {status.newest.enabled ? `● Mỗi ${status.newest.interval_hours}h` : '○ Đã tắt'}
                   </span>
                 </div>
                 <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-0.5 truncate">
@@ -130,9 +135,9 @@ export default function CrawlerSchedule() {
               <span className="text-lg shrink-0 leading-none mt-0.5">🕳️</span>
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <h2 className="text-[11px] font-extrabold text-amber-900 dark:text-amber-200 uppercase tracking-wide">Auto Fill Lỗ Hổng 500 MST</h2>
+                  <h2 className="text-[11px] font-extrabold text-amber-900 dark:text-amber-200 uppercase tracking-wide">Auto Fill Lỗ Hổng 500</h2>
                   <span className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${status.gap_fill_500.enabled ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 animate-pulse' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
-                    {status.gap_fill_500.enabled ? '● Mỗi 12h' : '○ Đã tắt'}
+                    {status.gap_fill_500.enabled ? `● Mỗi ${status.gap_fill_500.interval_hours}h` : '○ Đã tắt'}
                   </span>
                 </div>
                 <p className="text-[10px] text-slate-600 dark:text-slate-300 font-mono mt-0.5 truncate">
@@ -149,7 +154,6 @@ export default function CrawlerSchedule() {
               </button>
             </div>
           </div>
-
           <div className="flex flex-wrap items-center gap-1 pt-0.5 border-t border-amber-200/50 dark:border-amber-800/40">
             <span className="text-[9px] font-bold text-amber-950 dark:text-amber-300 uppercase">Dừng 500:</span>
             <button onClick={() => void setGapFillMode(true)} type="button" className={`px-1.5 py-0.2 rounded text-[9px] font-bold transition border ${status.gap_fill_500.reset_on_existing !== false ? 'bg-amber-600 text-white border-amber-700' : 'bg-white/80 dark:bg-slate-800 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-700'}`}>
@@ -158,6 +162,33 @@ export default function CrawlerSchedule() {
             <button onClick={() => void setGapFillMode(false)} type="button" className={`px-1.5 py-0.2 rounded text-[9px] font-bold transition border ${status.gap_fill_500.reset_on_existing === false ? 'bg-purple-600 text-white border-purple-700' : 'bg-white/80 dark:bg-slate-800 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-700'}`}>
               Opt 2: Chỉ reset khi mã mới
             </button>
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-slate-800 rounded-xl px-3 py-2.5 shadow-sm border border-emerald-100 dark:border-emerald-900/60 flex flex-col justify-between gap-2">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex items-start gap-2 min-w-0">
+              <span className="text-lg shrink-0 leading-none mt-0.5">📰</span>
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <h2 className="text-[11px] font-extrabold text-slate-800 dark:text-slate-100 uppercase tracking-wide">Auto Bố Cáo & Nạp Thuế</h2>
+                  <span className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${status.bocao?.enabled ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 animate-pulse' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
+                    {status.bocao?.running ? '⏳ Đang chạy' : (status.bocao?.enabled ? `● Mỗi ${status.bocao.interval_hours}h` : '○ Đã tắt')}
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-0.5 truncate">
+                  Đếm ngược: <b className="text-emerald-600 dark:text-emerald-400">{fmtCd(status.bocao?.countdown_sec || 0)}</b> • Cuối: {status.bocao?.last_run || 'Chưa chạy'}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button onClick={() => void toggleBocao()} className={`px-2 py-1 text-[11px] font-bold rounded-lg transition shadow-sm ${status.bocao?.enabled ? 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200' : 'bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100'}`}>
+                {status.bocao?.enabled ? `⏹ Tắt ${status.bocao.interval_hours}h` : `▶ Bật ${status.bocao?.interval_hours || 2}h`}
+              </button>
+              <button onClick={() => void triggerBocao()} disabled={status.bocao?.running || isTriggering} className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold rounded-lg shadow-sm transition disabled:opacity-50">
+                {status.bocao?.running ? '⏳...' : '⚡ Cào Bù'}
+              </button>
+            </div>
           </div>
         </div>
       </div>

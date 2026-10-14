@@ -78,11 +78,10 @@ export async function updateProvinceTargets(id: number, dto: UpdateTargetsDto): 
 export async function fetchProvinceStats(): Promise<ProvinceStatsMap> {
   const start = Date.now();
   const sql = `
-    SELECT SUBSTRING(tin, 1, 2) AS prefix,
-           COUNT(*) AS total
-    FROM tax_records
-    WHERE LENGTH(tin) = 10
-    GROUP BY SUBSTRING(tin, 1, 2)
+    SELECT province_prefix AS prefix,
+           SUM(total_records)::text AS total
+    FROM regi_stats_daily
+    GROUP BY province_prefix
   `;
   const res = await query<{ prefix: string; total: string }>(sql);
 
@@ -107,8 +106,14 @@ export async function detectProvinceMaxTin(provKey: string): Promise<ProvinceMax
   const prefix = cfg.prefix;
 
   const [taxRes, bocaoRes, progRes] = await Promise.all([
-    query<{ max_tin: string }>('SELECT MAX(tin) AS max_tin FROM tax_records WHERE tin LIKE $1 AND LENGTH(tin) = 10 AND tin < $2', [`${prefix}%`, `${prefix}90000000`]),
-    query<{ max_tin: string }>('SELECT MAX(tin) AS max_tin FROM bocao_records WHERE tin LIKE $1 AND LENGTH(tin) = 10', [`${prefix}%`]),
+    query<{ max_tin: string }>(
+      'SELECT tin AS max_tin FROM tax_records WHERE tin >= $1 AND tin < $2 AND LENGTH(tin) = 10 ORDER BY tin DESC LIMIT 1',
+      [`${prefix}00000000`, `${prefix}90000000`]
+    ),
+    query<{ max_tin: string }>(
+      'SELECT tin AS max_tin FROM bocao_records WHERE tin >= $1 AND tin <= $2 AND LENGTH(tin) = 10 ORDER BY tin DESC LIMIT 1',
+      [`${prefix}00000000`, `${prefix}99999999`]
+    ),
     query<{ last_tin: string }>('SELECT last_tin FROM scan_progress WHERE prefix = $1', [prefix])
   ]);
 

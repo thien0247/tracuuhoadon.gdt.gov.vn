@@ -31,7 +31,7 @@ export const ApiClient = {
   },
   async stopAllCrawlers() { return (await fetch('/api/crawler/stop_all', { method: 'POST' })).json(); },
 
-  // ─── Lịch Quét Tự Động (Schedule) ───
+  // ─── Lịch Quét Tự Động (Schedule 24/7 Server-side) ───
   async getScheduleStatus() { return (await fetch('/api/crawler/schedule/status')).json(); },
   async toggleScheduleNewest(enable: boolean) {
     return (await fetch('/api/crawler/schedule/toggle_newest', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enable }) })).json();
@@ -44,6 +44,10 @@ export const ApiClient = {
   async setScheduleGapFillMode(resetOnExisting: boolean) {
     return (await fetch('/api/crawler/schedule/gap_fill_mode', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reset_on_existing: resetOnExisting }) })).json();
   },
+  async configureScheduleBocao(payload: Record<string, unknown>) {
+    return (await fetch('/api/crawler/schedule/configure_bocao', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })).json();
+  },
+  async triggerScheduleBocao() { return (await fetch('/api/crawler/schedule/trigger_bocao', { method: 'POST' })).json(); },
 
   // ─── Báo cáo Sức khỏe & Thống kê ───
   async getCrawlerHealthReport(days = 3): Promise<HealthReport> { return (await fetch(`/api/reports/crawler-health?days=${days}`)).json(); },

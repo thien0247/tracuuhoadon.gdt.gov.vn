@@ -2,9 +2,10 @@
 // @related 01M4V0FH069WB44ZWJCRPYR4FA, 01M4V0FGZN8KJG6YHQM6560EK1
 /**
  * src/modules/crawler/crawler.service.ts
- * IPC Client giao tiếp với Python Crawler Worker (Port 8124) và quản lý logs.
+ * IPC Client giao tiếp với Python Crawler Worker (Port 8124), tích hợp Watchdog tự phục hồi.
  */
 
+import { spawn } from 'node:child_process';
 import { env } from '../../config/index.js';
 import type {
   StartCrawlerDto,
@@ -13,6 +14,10 @@ import type {
 } from './crawler.types.js';
 
 const localLogs: string[] = [];
+let lastStatusCache: WorkerBridgeStatusResponse | null = null;
+let lastStatusFetchTime = 0;
+let lastErrorLogTime = 0;
+let lastRespawnAttempt = 0;
 
 function getWorkerBaseUrl(): string {
   return `http://127.0.0.1:${env.workerPort}`;
@@ -30,9 +35,23 @@ export function getRecentLogs(): string[] {
   return localLogs.slice(-50);
 }
 
-let lastStatusCache: WorkerBridgeStatusResponse | null = null;
-let lastStatusFetchTime = 0;
-let lastErrorLogTime = 0;
+function tryWatchdogRespawnWorker(): void {
+  const now = Date.now();
+  if (now - lastRespawnAttempt < 25000) return;
+  lastRespawnAttempt = now;
+  try {
+    appendLocalLog(`[Watchdog] Phát hiện Worker ${env.workerPort} mất kết nối -> Tự động khởi chạy lại worker_bridge.py...`);
+    const child = spawn('python', ['worker_bridge.py'], {
+      cwd: process.cwd(),
+      detached: true,
+      stdio: 'ignore',
+      windowsHide: true,
+    });
+    child.unref();
+  } catch (err) {
+    appendLocalLog(`[Watchdog] Không thể tự khởi động worker_bridge.py: ${(err as Error).message}`);
+  }
+}
 
 export async function sendWorkerCommand<T = Record<string, unknown>>(
   endpoint: string,
@@ -46,7 +65,7 @@ export async function sendWorkerCommand<T = Record<string, unknown>>(
       method,
       headers: { 'Content-Type': 'application/json' },
       body: body ? JSON.stringify(body) : undefined,
-      signal: AbortSignal.timeout(3000)
+      signal: AbortSignal.timeout(4000)
     });
     if (!res.ok) {
       const errText = await res.text();
@@ -55,6 +74,7 @@ export async function sendWorkerCommand<T = Record<string, unknown>>(
     return (await res.json()) as T;
   } catch (err) {
     const errorMsg = (err as Error).message;
+    tryWatchdogRespawnWorker();
     if (!silent) {
       appendLocalLog(`[Worker Bridge] Lỗi kết nối Python worker (${url}): ${errorMsg}`);
     } else {
@@ -100,9 +120,7 @@ export async function stopAllCrawlers(): Promise<Record<string, unknown>> {
 
 export async function getWorkerStatus(): Promise<WorkerBridgeStatusResponse | null> {
   const now = Date.now();
-  if (lastStatusCache && now - lastStatusFetchTime < 1000) {
-    return lastStatusCache;
-  }
+  if (lastStatusCache && now - lastStatusFetchTime < 1000) return lastStatusCache;
   try {
     const res = await sendWorkerCommand<WorkerBridgeStatusResponse>('/worker/status', 'GET', undefined, true);
     lastStatusCache = res;
@@ -147,3 +165,11 @@ export async function setScheduleGapFillMode(resetOnExisting: boolean): Promise<
   return sendWorkerCommand('/worker/schedule/gap_fill_mode', 'POST', { reset_on_existing: resetOnExisting });
 }
 
+export async function configureScheduleBocao(payload: Record<string, unknown>): Promise<Record<string, unknown>> {
+  return sendWorkerCommand('/worker/schedule/configure_bocao', 'POST', payload);
+}
+
+export async function triggerScheduleBocao(): Promise<Record<string, unknown>> {
+  appendLocalLog('Kích hoạt chu trình Cào Bố Cáo + Đồng Bộ Thuế...');
+  return sendWorkerCommand('/worker/schedule/trigger_bocao', 'POST');
+}

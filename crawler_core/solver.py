@@ -22,27 +22,38 @@ IMG_HEIGHT = 50
 
 
 class CaptchaSolver:
-    """Tải trọng số mạng CRNN và dự đoán chuỗi ký tự từ ảnh CAPTCHA."""
+    """Tải trọng số mạng CRNN (Singleton) và dự đoán chuỗi ký tự từ ảnh CAPTCHA."""
+
+    _model = None
+    _num_to_char = None
+    _max_length = 0
+    _lock = __import__("threading").Lock()
 
     def __init__(self):
-        self.model = None
-        self.num_to_char = None
-        self.max_length = 0
-        self._load()
+        self._ensure_loaded()
+        self.model = CaptchaSolver._model
+        self.num_to_char = CaptchaSolver._num_to_char
+        self.max_length = CaptchaSolver._max_length
 
-    def _load(self):
-        if not os.path.exists(MODEL_PATH) or not os.path.exists(VOCAB_PATH):
-            raise FileNotFoundError("Không tìm thấy captcha_model.h5 hoặc vocab.pkl!")
-        with open(VOCAB_PATH, "rb") as f:
-            data = pickle.load(f)
-        vocab = data["vocab"]
-        self.max_length = data["max_length"]
-        char_to_num = layers.StringLookup(vocabulary=vocab, mask_token=None)
-        self.num_to_char = layers.StringLookup(
-            vocabulary=char_to_num.get_vocabulary(), mask_token=None, invert=True
-        )
-        self.model = keras.models.load_model(MODEL_PATH)
-        logger.info("Captcha AI model loaded successfully.")
+    @classmethod
+    def _ensure_loaded(cls):
+        if cls._model is not None:
+            return
+        with cls._lock:
+            if cls._model is not None:
+                return
+            if not os.path.exists(MODEL_PATH) or not os.path.exists(VOCAB_PATH):
+                raise FileNotFoundError("Không tìm thấy captcha_model.h5 hoặc vocab.pkl!")
+            with open(VOCAB_PATH, "rb") as f:
+                data = pickle.load(f)
+            vocab = data["vocab"]
+            cls._max_length = data["max_length"]
+            char_to_num = layers.StringLookup(vocabulary=vocab, mask_token=None)
+            cls._num_to_char = layers.StringLookup(
+                vocabulary=char_to_num.get_vocabulary(), mask_token=None, invert=True
+            )
+            cls._model = keras.models.load_model(MODEL_PATH, compile=False)
+            logger.info("Captcha AI model loaded successfully (Singleton).")
 
     def solve(self, img_bytes: bytes) -> str:
         img = tf.io.decode_image(img_bytes, channels=1, expand_animations=False)
@@ -51,10 +62,12 @@ class CaptchaSolver:
         img = tf.transpose(img, perm=[1, 0, 2])
         img = tf.expand_dims(img, axis=0)
 
-        preds = self.model.predict(img, verbose=0)
+        with CaptchaSolver._lock:
+            preds = self.model(img, training=False).numpy()
         input_len = np.ones(preds.shape[0]) * preds.shape[1]
         results = keras.backend.ctc_decode(
             preds, input_length=input_len, greedy=True
         )[0][0][:, :self.max_length]
         text = tf.strings.reduce_join(self.num_to_char(results[0])).numpy().decode("utf-8")
         return text.replace("[UNK]", "").strip()
+

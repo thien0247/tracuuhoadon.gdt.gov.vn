@@ -2,7 +2,7 @@
 // @related 01M4V0FH069WB44ZWJCRPYR4FA, 01M4V0FGZN8KJG6YHQM6560EK1
 /**
  * src/modules/crawler/crawler.routes.ts
- * Next.js Native Route Handler điều khiển tiến trình crawler đa tỉnh.
+ * Next.js Native Route Handler điều khiển tiến trình crawler đa tỉnh & bộ lập lịch 24/7.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -20,6 +20,8 @@ import {
   triggerScheduleNewest,
   triggerScheduleGapFill,
   setScheduleGapFillMode,
+  configureScheduleBocao,
+  triggerScheduleBocao,
 } from './crawler.service.js';
 import type { StartCrawlerDto, StartAllNewestDto, ProvinceControlDto } from './crawler.types.js';
 
@@ -79,6 +81,12 @@ export async function handleCrawlerRoutes(
     }
     if (pathname === '/api/crawler/schedule/gap_fill_mode') {
       return NextResponse.json(await setScheduleGapFillMode((body as { reset_on_existing?: boolean })?.reset_on_existing ?? true));
+    }
+    if (pathname === '/api/crawler/schedule/configure_bocao') {
+      return NextResponse.json(await configureScheduleBocao(body as Record<string, unknown>));
+    }
+    if (pathname === '/api/crawler/schedule/trigger_bocao') {
+      return NextResponse.json(await triggerScheduleBocao());
     }
   } catch (err) {
     return NextResponse.json({ error: (err as Error).message }, { status: 500 });

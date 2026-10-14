@@ -18,13 +18,16 @@ def detect_province_max_tin(prov_key: str) -> Dict[str, Any]:
         raise ValueError(f"Không tìm thấy tỉnh {prov_key}")
     prefix = cfg["prefix"]
 
+    lo, hi_tax, hi_bc = f"{prefix}00000000", f"{prefix}90000000", f"{prefix}99999999"
     with get_db_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("SELECT MAX(tin) FROM tax_records WHERE tin LIKE %s AND LENGTH(tin) = 10", (f"{prefix}%",))
-            db_tax_max = cur.fetchone()[0]
+            cur.execute("SELECT tin FROM tax_records WHERE tin >= %s AND tin < %s AND LENGTH(tin) = 10 ORDER BY tin DESC LIMIT 1", (lo, hi_tax))
+            r_tax = cur.fetchone()
+            db_tax_max = r_tax[0] if r_tax else None
 
-            cur.execute("SELECT MAX(tin) FROM bocao_records WHERE tin LIKE %s AND LENGTH(tin) = 10", (f"{prefix}%",))
-            db_bocao_max = cur.fetchone()[0]
+            cur.execute("SELECT tin FROM bocao_records WHERE tin >= %s AND tin <= %s AND LENGTH(tin) = 10 ORDER BY tin DESC LIMIT 1", (lo, hi_bc))
+            r_bc = cur.fetchone()
+            db_bocao_max = r_bc[0] if r_bc else None
 
             cur.execute("SELECT last_tin FROM scan_progress WHERE prefix = %s", (prefix,))
             r = cur.fetchone()

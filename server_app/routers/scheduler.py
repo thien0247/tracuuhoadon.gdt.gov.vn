@@ -2,7 +2,10 @@
 # @related 01M4V0HMPAXTQC0ACKNND9DMFE, 01M4V0FGZN8KJG6YHQM6560EK1, 01M4V0FGZT243T45VNH4E9RQCG
 """
 server_app.routers.scheduler
-APIs điều khiển bộ lập lịch tự động: Quét đỉnh mới nhất (6h) & Quét fill lỗ hổng 500 MST (12h).
+APIs điều khiển bộ lập lịch tự động 24/7:
+- Quét đỉnh mới nhất (6h)
+- Quét fill lỗ hổng 500 MST (12h)
+- Tự động cào Bố Cáo ĐKKD + Đồng bộ sang Thuế (2h)
 """
 
 from fastapi import APIRouter
@@ -13,7 +16,7 @@ router = APIRouter(tags=["scheduler"])
 
 @router.get("/api/crawler/schedule/status")
 def get_schedule_status():
-    """Lấy trạng thái vận hành của 2 lịch trình Newest (6h) và Gap-Fill 500 (12h)."""
+    """Lấy trạng thái vận hành của 3 lịch trình: Newest (6h), Gap-Fill 500 (12h) và Bố Cáo (2h)."""
     return crawler_scheduler.get_status()
 
 
@@ -51,3 +54,16 @@ def set_gap_fill_mode(payload: dict = None):
     """Thiết lập chế độ Gap-Fill: Option 1 (reset khi gặp trong DB) vs Option 2 (chỉ reset khi có mã mới)."""
     reset = (payload or {}).get("reset_on_existing", True)
     return {"reset_on_existing": crawler_scheduler.set_gap_fill_mode(reset)}
+
+
+@router.post("/api/crawler/schedule/configure_bocao")
+def configure_bocao(payload: dict = None):
+    """Cấu hình & Bật/Tắt lịch tự động cào Bố Cáo ĐKKD + Đồng bộ Thuế trên Server."""
+    return crawler_scheduler.configure_bocao(payload or {})
+
+
+@router.post("/api/crawler/schedule/trigger_bocao")
+def trigger_bocao():
+    """Kích hoạt chạy ngay lập tức chu trình cào Bố Cáo + Đồng bộ sang Thuế."""
+    crawler_scheduler.trigger_bocao()
+    return {"status": "triggered_bocao"}

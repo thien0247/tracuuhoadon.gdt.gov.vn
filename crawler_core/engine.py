@@ -36,7 +36,7 @@ class CrawlerEngine:
         prog = self.db.load_progress()
         self.initial_queried, self.initial_found = prog.get("total_queried", 0), prog.get("total_found", 0)
         self.total_queried, self.total_found = 0, 0
-        if self.scan_mode != "newest": self.db.init_tin_cache()
+        if self.scan_mode not in ("newest", "gap_fill", "gap_fill_500"): self.db.init_tin_cache()
         self._counter_lock, self._thread = threading.RLock(), None
 
 
@@ -65,7 +65,7 @@ class CrawlerEngine:
     def _query_one(self, tin: str, session_mgr: SessionManager, label: str = "") -> bool:
         self._pause_evt.wait()
         if self._stop_evt.is_set(): return False
-        if self.scan_mode != "newest" and self.db.has_tin(tin):
+        if self.scan_mode not in ("newest", "gap_fill", "gap_fill_500") and self.db.has_tin(tin):
             self._log(f"[{label}] SKIP {tin} → Đã có trong DB"); self._save_progress(tin); return True
 
         model = session_mgr.query(tin)

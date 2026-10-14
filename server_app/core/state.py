@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from crawler_dak_lak import CrawlerEngine
+    from crawler_core.engine import CrawlerEngine
 
 LOGS_DIR = "logs"
 os.makedirs(LOGS_DIR, exist_ok=True)

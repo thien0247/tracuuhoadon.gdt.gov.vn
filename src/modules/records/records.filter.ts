@@ -71,9 +71,9 @@ async function buildFilterConditions(dto: FilterRequestDto) {
     idx++;
   }
 
-  // 2. Lọc theo Khoảng ngày ĐKKD
-  if (dto.from_date?.trim()) { conds.push(`t.regi_date::date >= $${idx}::date`); params.push(dto.from_date.trim()); idx++; }
-  if (dto.to_date?.trim()) { conds.push(`t.regi_date::date <= $${idx}::date`); params.push(dto.to_date.trim()); idx++; }
+  // 2. Lọc theo Khoảng ngày ĐKKD (B-tree index idx_tax_records_regi_date)
+  if (dto.from_date?.trim()) { conds.push(`t.regi_date >= $${idx}::timestamp`); params.push(dto.from_date.trim()); idx++; }
+  if (dto.to_date?.trim()) { conds.push(`t.regi_date < ($${idx}::date + INTERVAL '1 day')`); params.push(dto.to_date.trim()); idx++; }
 
   // 3. Lọc theo Mô hình 3 Cấp (V3)
   if (dto.v3_district_codes?.length) {
@@ -138,11 +138,12 @@ async function buildFilterConditions(dto: FilterRequestDto) {
     idx += 2;
   }
 
-  return { whereSql: conds.length ? `WHERE ${conds.join(' AND ')}` : '', params };
+  const prefixesOnly = conds.length === 1 && prefixes.length > 0 ? prefixes : null;
+  return { whereSql: conds.length ? `WHERE ${conds.join(' AND ')}` : '', params, prefixesOnly };
 }
 
 export async function filterRecords(dto: FilterRequestDto): Promise<FilterResponse> {
-  const { whereSql, params } = await buildFilterConditions(dto);
+  const { whereSql, params, prefixesOnly } = await buildFilterConditions(dto);
   const rowLimit = Math.min(Math.max(Number(dto.limit || dto.page_size) || 500, 1), 1000);
 
   const selectSql = `
@@ -162,10 +163,13 @@ export async function filterRecords(dto: FilterRequestDto): Promise<FilterRespon
     ${whereSql} ORDER BY t.regi_date DESC NULLS LAST LIMIT ${rowLimit}
   `;
 
-  const [resData, resCount] = await Promise.all([
-    query(selectSql, params),
-    query<{ total: string }>(`SELECT COUNT(*) AS total FROM tax_records t ${whereSql}`, params)
-  ]);
+  const countQuery = !whereSql
+    ? query<{ total: string }>('SELECT COALESCE(SUM(total_records), 0)::text AS total FROM regi_stats_daily')
+    : prefixesOnly
+      ? query<{ total: string }>('SELECT COALESCE(SUM(total_records), 0)::text AS total FROM regi_stats_daily WHERE province_prefix = ANY($1::text[])', [prefixesOnly])
+      : query<{ total: string }>(`SELECT COUNT(*) AS total FROM tax_records t ${whereSql}`, params);
+
+  const [resData, resCount] = await Promise.all([query(selectSql, params), countQuery]);
 
   const rows = resData.rows.map((r) => [
     r.tin, r.norm_name, r.regi_date, r.status_name, r.tran_addr, r.pay_taxo_name,

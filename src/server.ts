@@ -9,13 +9,12 @@ import http from 'node:http';
 import next from 'next';
 import { env } from './config/index.js';
 import { loadProvinces } from './modules/provinces/index.js';
-import { startDbStatsWorker, stopDbStatsWorker } from './modules/stream/index.js';
+import { stopDbStatsWorker } from './modules/stream/index.js';
 import { closePool } from './db/index.js';
 
 async function start(): Promise<void> {
   try {
     await loadProvinces();
-    startDbStatsWorker();
     console.log('[Next.js Server] Đã nạp danh mục 62 tỉnh thành từ PostgreSQL.');
 
     const nextApp = next({

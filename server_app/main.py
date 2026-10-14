@@ -2,7 +2,7 @@
 # @related 01M4V0HMP4K06YVK8GXXJP84SP, 01M4V0HMP67E26K49WVAQF0ERW, 01M4V0HMPBBMNYWQ237H5VNCDC, 01M4V0HMPAXTQC0ACKNND9DMFE, 01M4V0FGZN8KJG6YHQM6560EK1
 """
 server_app.main
-Khởi tạo và cấu hình ứng dụng FastAPI, gắn kết router và thư mục tĩnh.
+Khởi tạo và cấu hình ứng dụng FastAPI, gắn kết router và thư mục Graphify.
 """
 
 import os
@@ -11,7 +11,6 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from server_app.core.config import STATIC_DIR, TEMPLATES_DIR
 from server_app.core.database import load_provinces, fetch_all_province_stats
 from server_app.core.state import state
 from server_app.core.scheduler import crawler_scheduler
@@ -44,17 +43,10 @@ def create_app() -> FastAPI:
     """Factory hàm tạo và cấu hình instance FastAPI."""
     app = FastAPI(
         title="MST Crawler Multi-Province Web App",
-        version="3.0.0",
+        version="4.1.0",
         lifespan=lifespan
     )
 
-    # Đảm bảo các thư mục giao diện tồn tại
-    os.makedirs(STATIC_DIR, exist_ok=True)
-    os.makedirs(TEMPLATES_DIR, exist_ok=True)
-    app.mount(f"/{STATIC_DIR}", StaticFiles(directory=STATIC_DIR), name="static")
-    dist_assets = os.path.join("frontend", "dist", "assets")
-    if os.path.exists(dist_assets):
-        app.mount("/assets", StaticFiles(directory=dist_assets), name="assets")
     if os.path.exists("graphify-out"):
         app.mount("/graphify-out", StaticFiles(directory="graphify-out"), name="graphify_out")
 
@@ -70,5 +62,4 @@ def create_app() -> FastAPI:
     return app
 
 
-# Instance mặc định phục vụ uvicorn và import trực tiếp
 app = create_app()

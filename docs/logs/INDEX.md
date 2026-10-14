@@ -129,6 +129,7 @@ Lưu trữ toàn bộ các phiên lập kế hoạch và báo cáo nghiệm thu 
 | **119** | 2026-10-14 18:53:00 | `walkthrough` | Nghiệm Thu Chuyển Đổi Toàn Bộ Từ Vue Sang Next.js 14 App Router (Full-Stack Unified Với Thư Mục SRC & ULID) | ✅ Đã nghiệm thu | [119_20261014_185300_walkthrough.md](119_20261014_185300_walkthrough.md) |
 | **120** | 2026-10-14 19:57:00 | `implementation_plan` | Kế Hoạch Loại Bỏ Hoàn Toàn Fastify — Thuần 100% Next.js 14 App Router (Native Web Fetch & ULID Graph) | ✅ Đã phê duyệt & thực thi | [120_20261014_195700_implementation_plan.md](120_20261014_195700_implementation_plan.md) |
 | **121** | 2026-10-14 20:10:00 | `walkthrough` | Nghiệm Thu Loại Bỏ Hoàn Toàn Fastify — Thuần 100% Next.js 14 App Router (Native Web Fetch & ULID Graph) | ✅ Đã nghiệm thu | [121_20261014_201000_walkthrough.md](121_20261014_201000_walkthrough.md) |
+| **122** | 2026-10-15 06:23:00 | `walkthrough` | Nghiệm Thu Refactor Hệ Thống Tự Động Crawl 24/7 (Persistent Scheduler, Closed-Loop Bocao Pipeline & Worker Watchdog) | ✅ Đã nghiệm thu | [122_20261015_062300_walkthrough.md](122_20261015_062300_walkthrough.md) |
 
 
 

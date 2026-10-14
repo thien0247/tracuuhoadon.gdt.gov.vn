@@ -2,7 +2,7 @@
 # @related 01M4V0HMP4K06YVK8GXXJP84SP, 01M4V0FGZN8KJG6YHQM6560EK1, 01M4V0FGZT243T45VNH4E9RQCG
 """
 server_app.routers.views
-Phục vụ giao diện người dùng Web Dashboard và tích hợp Graphify Codebase Visualizer.
+Phục vụ điểm kiểm tra sức khỏe giao diện và tích hợp Graphify Codebase Visualizer.
 """
 
 import os
@@ -11,20 +11,19 @@ import json
 import asyncio
 import subprocess
 from fastapi import APIRouter
-from fastapi.responses import HTMLResponse, FileResponse, JSONResponse, PlainTextResponse
-from server_app.core.config import TEMPLATES_DIR
+from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse
 
 router = APIRouter(tags=["views"])
 
 
 @router.get("/", response_class=HTMLResponse)
 async def read_index():
-    """Trả về giao diện Web Dashboard chính của hệ thống (ưu tiên dist Vite)."""
-    dist_file = os.path.join("frontend", "dist", "index.html")
-    if os.path.exists(dist_file):
-        return FileResponse(dist_file)
-    index_file = os.path.join(TEMPLATES_DIR, "index.html")
-    return FileResponse(index_file)
+    """Trả về trang xác thực trạng thái dịch vụ (giao diện chính chạy trên Next.js 14 Port 8123)."""
+    return HTMLResponse(
+        content="<!DOCTYPE html><html><head><meta charset='utf-8'><title>GDT Tax Crawler Unified Engine</title></head>"
+        "<body><h1>GDT Tax Crawler Unified Engine (Next.js 14 + Python Worker)</h1></body></html>",
+        status_code=200,
+    )
 
 
 @router.get("/api/graphify/stats")

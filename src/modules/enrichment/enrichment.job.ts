@@ -50,11 +50,11 @@ export class EnrichmentJobManager {
 
     (async () => {
       try {
-        const countRes = await query<{ cnt: number }>(
-          'SELECT COUNT(*)::int AS cnt FROM tax_records WHERE tin LIKE $1 AND enriched_at IS NULL',
-          [`${prefix}%`]
-        );
-        job.totalToProcess = Number(countRes.rows[0]?.cnt || 0);
+        const [totRes, enrRes] = await Promise.all([
+          query<{ cnt: number }>('SELECT COALESCE(SUM(total_records), 0)::int AS cnt FROM regi_stats_daily WHERE province_prefix = $1', [prefix]),
+          query<{ cnt: number }>('SELECT COUNT(*)::int AS cnt FROM tax_records WHERE SUBSTRING(tin FROM 1 FOR 2) = $1 AND org_type IS NOT NULL', [prefix])
+        ]);
+        job.totalToProcess = Math.max(0, Number(totRes.rows[0]?.cnt || 0) - Number(enrRes.rows[0]?.cnt || 0));
 
         if (job.totalToProcess === 0) {
           job.status = 'completed';
@@ -63,12 +63,15 @@ export class EnrichmentJobManager {
           return;
         }
 
+        let cursorTin = `${prefix}00000000`;
+        const maxTinBound = `${prefix}99999999`;
         while (!job.stopRequested) {
           const fetchRes = await query<{ tin: string }>(
-            'SELECT tin FROM tax_records WHERE tin LIKE $1 AND enriched_at IS NULL LIMIT 20',
-            [`${prefix}%`]
+            'SELECT tin FROM tax_records WHERE tin >= $1 AND tin <= $2 AND enriched_at IS NULL ORDER BY tin ASC LIMIT 20',
+            [cursorTin, maxTinBound]
           );
           if (!fetchRes.rows.length) break;
+          cursorTin = fetchRes.rows[fetchRes.rows.length - 1].tin;
 
           for (const row of fetchRes.rows) {
             if (job.stopRequested) break;

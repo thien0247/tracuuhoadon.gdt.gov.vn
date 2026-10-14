@@ -24,16 +24,22 @@ export async function searchRecords(dto: SearchRequestDto): Promise<SearchRespon
   const conditions: string[] = [];
   const params: unknown[] = [];
   let paramIdx = 1;
-  if (tin) { conditions.push(`tin LIKE $${paramIdx}`); params.push(tin.length < 10 ? tin + '%' : tin); paramIdx++; }
+  if (tin && tin !== prefixFilter) { conditions.push(`tin LIKE $${paramIdx}`); params.push(tin.length < 10 ? tin + '%' : tin); paramIdx++; }
   if (name) { conditions.push(`norm_name ILIKE $${paramIdx}`); params.push('%' + name + '%'); paramIdx++; }
   if (prefixFilter) { conditions.push(`tin LIKE $${paramIdx}`); params.push(prefixFilter + '%'); paramIdx++; }
 
   const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
   const rowLimit = Math.min(Math.max(Number(dto.limit || dto.page_size) || 200, 1), 1000);
+  const isPrefixOnly = conditions.length === 1 && Boolean(prefixFilter) && !name && (!tin || tin === prefixFilter);
+  const countQuery = !where
+    ? query<{ total: string }>('SELECT COALESCE(SUM(total_records), 0)::text AS total FROM regi_stats_daily')
+    : isPrefixOnly
+      ? query<{ total: string }>('SELECT COALESCE(SUM(total_records), 0)::text AS total FROM regi_stats_daily WHERE province_prefix = $1', [prefixFilter])
+      : query<{ total: string }>(`SELECT COUNT(*) AS total FROM tax_records ${where}`, params);
   const [resData, resCount] = await Promise.all([
     query(`SELECT tin, norm_name, regi_date::text, status_name, tran_addr, pay_taxo_name
            FROM tax_records ${where} ORDER BY regi_date DESC NULLS LAST LIMIT ${rowLimit}`, params),
-    query<{ total: string }>(`SELECT COUNT(*) AS total FROM tax_records ${where}`, params)
+    countQuery
   ]);
 
   const rows = resData.rows.map((r) => [r.tin, r.norm_name, r.regi_date, r.status_name, r.tran_addr, r.pay_taxo_name]);

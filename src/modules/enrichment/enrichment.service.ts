@@ -69,25 +69,29 @@ export class EnrichmentService {
   }
 
   public static async getNationalSummary(): Promise<NationalEnrichmentSummaryResponse> {
-    const sql = `
-      SELECT SUBSTRING(tin FROM 1 FOR 2) AS prefix, COUNT(*)::int AS total,
-             COUNT(*) FILTER (WHERE org_type IS NOT NULL)::int AS enriched
-      FROM tax_records GROUP BY SUBSTRING(tin FROM 1 FOR 2) ORDER BY prefix ASC
-    `;
-    const res = await query<{ prefix: string; total: number; enriched: number }>(sql);
+    const [totRes, enrRes] = await Promise.all([
+      query<{ prefix: string; total: number }>(
+        'SELECT province_prefix AS prefix, SUM(total_records)::int AS total FROM regi_stats_daily GROUP BY province_prefix ORDER BY prefix ASC'
+      ),
+      query<{ prefix: string; enriched: number }>(
+        'SELECT SUBSTRING(tin FROM 1 FOR 2) AS prefix, COUNT(*)::int AS enriched FROM tax_records WHERE org_type IS NOT NULL GROUP BY SUBSTRING(tin FROM 1 FOR 2)'
+      )
+    ]);
+    const enrMap = new Map(enrRes.rows.map((r) => [r.prefix, r.enriched]));
     const cache = getProvincesCache();
     const prefixToName = new Map<string, string>();
     for (const name in cache) prefixToName.set(cache[name].prefix, name);
 
     let sumTotal = 0, sumEnriched = 0;
-    const provinces: ProvinceEnrichmentSummaryDto[] = res.rows.map((r) => {
-      sumTotal += r.total; sumEnriched += r.enriched;
-      const rate = r.total > 0 ? Math.round((r.enriched / r.total) * 1000) / 10 : 0;
+    const provinces: ProvinceEnrichmentSummaryDto[] = totRes.rows.map((r) => {
+      const enriched = enrMap.get(r.prefix) || 0;
+      sumTotal += r.total; sumEnriched += enriched;
+      const rate = r.total > 0 ? Math.round((enriched / r.total) * 1000) / 10 : 0;
       const job = EnrichmentJobManager.getJobProgress(r.prefix);
       return {
         provinceName: prefixToName.get(r.prefix) || `Tỉnh (${r.prefix})`, prefix: r.prefix,
-        totalRecords: r.total, enrichedCount: r.enriched,
-        pendingCount: Math.max(0, r.total - r.enriched),
+        totalRecords: r.total, enrichedCount: enriched,
+        pendingCount: Math.max(0, r.total - enriched),
         completionRate: rate, isRunning: !!(job && job.isRunning)
       };
     });
@@ -103,10 +107,9 @@ export class EnrichmentService {
   }
 
   public static async getProvinceStatus(prefix: string, provinceKey: string): Promise<ProvinceEnrichmentStatus> {
-    const pat = `${prefix}%`;
     const [tot, enr] = await Promise.all([
-      query('SELECT COUNT(*)::int AS count FROM tax_records WHERE tin LIKE $1', [pat]),
-      query('SELECT COUNT(*)::int AS count FROM tax_records WHERE tin LIKE $1 AND org_type IS NOT NULL', [pat])
+      query('SELECT COALESCE(SUM(total_records), 0)::int AS count FROM regi_stats_daily WHERE province_prefix = $1', [prefix]),
+      query('SELECT COUNT(*)::int AS count FROM tax_records WHERE SUBSTRING(tin FROM 1 FOR 2) = $1 AND org_type IS NOT NULL', [prefix])
     ]);
     const total = Number(tot.rows[0]?.count) || 0, enriched = Number(enr.rows[0]?.count) || 0;
     const job = EnrichmentJobManager.getJobProgress(prefix);

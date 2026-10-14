@@ -30,17 +30,20 @@ async def filter_records(req: FilterRequest):
                     SELECT tin, norm_name, regi_date, status_name, tran_addr, pay_taxo_name, COALESCE(tran_tel, '')
                     FROM tax_records
                     WHERE tin LIKE %s
-                      AND (%s IS NULL OR regi_date::date >= %s::date)
-                      AND (%s IS NULL OR regi_date::date <= %s::date)
-                    ORDER BY regi_date DESC LIMIT 500
+                      AND (%s IS NULL OR regi_date >= %s::timestamp)
+                      AND (%s IS NULL OR regi_date < (%s::date + INTERVAL '1 day'))
+                    ORDER BY regi_date DESC NULLS LAST LIMIT 500
                 """, (prov_cfg["prefix"] + '%', from_d, from_d, to_d, to_d))
                 rows = cur.fetchall()
-                cur.execute("""
-                    SELECT COUNT(*) FROM tax_records
-                    WHERE tin LIKE %s
-                      AND (%s IS NULL OR regi_date::date >= %s::date)
-                      AND (%s IS NULL OR regi_date::date <= %s::date)
-                """, (prov_cfg["prefix"] + '%', from_d, from_d, to_d, to_d))
+                if not from_d and not to_d:
+                    cur.execute("SELECT COALESCE(SUM(total_records), 0)::int FROM regi_stats_daily WHERE province_prefix = %s", (prov_cfg["prefix"],))
+                else:
+                    cur.execute("""
+                        SELECT COUNT(*) FROM tax_records
+                        WHERE tin LIKE %s
+                          AND (%s IS NULL OR regi_date >= %s::timestamp)
+                          AND (%s IS NULL OR regi_date < (%s::date + INTERVAL '1 day'))
+                    """, (prov_cfg["prefix"] + '%', from_d, from_d, to_d, to_d))
                 total = cur.fetchone()[0]
 
         headers = ["Mã Số Thuế", "Tên Doanh Nghiệp", "Ngày Đăng Ký", "Trạng Thái", "Địa Chỉ", "Cơ Quan Thuế", "Số Điện Thoại"]
@@ -58,7 +61,7 @@ async def search_records(req: SearchRequest):
         p_filter = PROVINCES_CACHE[prov_key]["prefix"] if prov_key in PROVINCES_CACHE else None
         conds, params = [], []
 
-        if tin:
+        if tin and tin != p_filter:
             conds.append("tin LIKE %s")
             params.append(tin + '%' if len(tin) < 10 else tin)
         if name:
@@ -74,7 +77,12 @@ async def search_records(req: SearchRequest):
             with conn.cursor() as cur:
                 cur.execute(f"SELECT tin, norm_name, regi_date, status_name, tran_addr, pay_taxo_name FROM tax_records {where} ORDER BY regi_date DESC NULLS LAST LIMIT 200", params)
                 rows = cur.fetchall()
-                cur.execute(f"SELECT COUNT(*) FROM tax_records {where}", params)
+                if not where:
+                    cur.execute("SELECT COALESCE(SUM(total_records), 0)::int FROM regi_stats_daily")
+                elif len(conds) == 1 and p_filter and not name and (not tin or tin == p_filter):
+                    cur.execute("SELECT COALESCE(SUM(total_records), 0)::int FROM regi_stats_daily WHERE province_prefix = %s", (p_filter,))
+                else:
+                    cur.execute(f"SELECT COUNT(*) FROM tax_records {where}", params)
                 total = cur.fetchone()[0]
         return {"rows": rows, "count": total}
     except Exception as e:

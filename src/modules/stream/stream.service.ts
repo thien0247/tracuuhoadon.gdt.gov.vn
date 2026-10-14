@@ -22,47 +22,53 @@ let dbStatsInterval: NodeJS.Timeout | null = null;
 
 let isRefreshing = false;
 
+const SQL_PROVINCE_MIN_MAX = `
+  SELECT p.prefix AS pref, t_min.tin AS min_tin, t_max.tin AS max_tin
+  FROM provinces p
+  LEFT JOIN LATERAL (
+    SELECT tin FROM tax_records
+    WHERE tin >= p.prefix || '00000000' AND tin <= p.prefix || '99999999'
+    ORDER BY tin ASC LIMIT 1
+  ) t_min ON true
+  LEFT JOIN LATERAL (
+    SELECT tin FROM tax_records
+    WHERE tin >= p.prefix || '00000000' AND tin < p.prefix || '90000000'
+    ORDER BY tin DESC LIMIT 1
+  ) t_max ON true
+`;
+
 export async function refreshDbStats(): Promise<void> {
   if (pool.ended || isRefreshing) return;
   isRefreshing = true;
   try {
-    const sql = `
-      SELECT SUBSTRING(tin, 1, 2) AS pref,
-             COUNT(*) AS cnt,
-             MIN(tin) AS min_tin,
-             MAX(tin) AS max_tin
-      FROM tax_records
-      WHERE LENGTH(tin) = 10
-      GROUP BY SUBSTRING(tin, 1, 2)
-    `;
-    const [res, progRes] = await Promise.all([
-      query<{ pref: string; cnt: string; min_tin: string; max_tin: string }>(sql),
+    const [minMaxRes, countRes, progRes] = await Promise.all([
+      query<{ pref: string; min_tin: string | null; max_tin: string | null }>(SQL_PROVINCE_MIN_MAX),
+      query<{ pref: string; cnt: string }>(
+        'SELECT province_prefix AS pref, SUM(total_records)::text AS cnt FROM regi_stats_daily GROUP BY province_prefix'
+      ),
       query<{ prefix: string; last_tin: string; updated_at: string }>(
         'SELECT prefix, last_tin, updated_at FROM scan_progress WHERE last_tin IS NOT NULL'
       )
     ]);
 
-    const progMap = new Map<string, { last_tin: string; updated_at: string }>();
-    for (const r of progRes.rows) {
-      progMap.set(r.prefix, { last_tin: r.last_tin, updated_at: r.updated_at });
-    }
+    const countMap = new Map(countRes.rows.map((r) => [r.pref, parseInt(r.cnt, 10) || 0]));
+    const minMaxMap = new Map(minMaxRes.rows.map((r) => [r.pref, { min_tin: r.min_tin || '', max_tin: r.max_tin || '' }]));
+    const progMap = new Map(progRes.rows.map((r) => [r.prefix, { last_tin: r.last_tin, updated_at: r.updated_at }]));
 
     const cache = getProvincesCache();
     for (const [provName, provCfg] of Object.entries(cache)) {
-      const row = res.rows.find((r) => r.pref === provCfg.prefix);
+      const mm = minMaxMap.get(provCfg.prefix);
       const prog = progMap.get(provCfg.prefix);
       dbStatsCache[provName] = {
-        db_count: row ? (parseInt(row.cnt, 10) || 0) : 0,
-        tin_min: row?.min_tin || '',
-        tin_max: row?.max_tin || '',
+        db_count: countMap.get(provCfg.prefix) || 0,
+        tin_min: mm?.min_tin || '',
+        tin_max: mm?.max_tin || '',
         last_tin: prog?.last_tin || '',
         last_scanned_at: prog?.updated_at || ''
       };
     }
   } catch (err) {
-    if (!pool.ended) {
-      console.error('[Stream Service] Lỗi cập nhật db stats worker:', (err as Error).message);
-    }
+    if (!pool.ended) console.error('[Stream Service] Lỗi cập nhật db stats worker:', (err as Error).message);
   } finally {
     isRefreshing = false;
   }

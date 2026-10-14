@@ -7,28 +7,37 @@ Nhận lệnh từ TypeScript Fastify Backend và điều khiển CrawlerEngine 
 import uvicorn
 from datetime import datetime
 from typing import Optional, List, Dict, Any, Union
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
 
-from server_app.core.database import PROVINCES_CACHE, load_provinces, get_max_tin_by_prefix
+from server_app.core.database import PROVINCES_CACHE, load_provinces
 from server_app.core.state import state
 from server_app.routers.crawler import start_crawler_internal
 from server_app.schemas.requests import StartRequest, StartAllNewestRequest
 from server_app.core.queue_manager import queue_coordinator
 from server_app.core.scheduler import crawler_scheduler
 
-worker_app = FastAPI(title="GDT Python Crawler Worker Bridge", version="1.0.0")
+worker_app = FastAPI(title="GDT Python Crawler Worker Bridge", version="1.1.0")
 
 
 class ControlPayload(BaseModel):
     province_key: str
+
+class CrawlAllPayload(BaseModel):
+    max_pages: Optional[int] = 5
+
+class DkkdSearchPayload(BaseModel):
+    search_field: str
+
+class SyncMissingPayload(BaseModel):
+    batch_size: Optional[int] = 60
 
 
 @worker_app.on_event("startup")
 def startup():
     load_provinces()
     crawler_scheduler.start()
-    print("[Worker Bridge] Python Crawler Worker initialized on port 8124 with Scheduler.")
+    print("[Worker Bridge] Python Crawler Worker initialized on port 8124 with Persistent Scheduler.")
 
 
 @worker_app.on_event("shutdown")
@@ -52,10 +61,7 @@ def get_status():
             "last_tin": state.last_tins.get(prov_key, ""),
             "speed": state.speeds.get(prov_key, 0.0), "uptime": uptime_str
         }
-    return {
-        "engines": engines_data,
-        "logs": list(state.logs)[-50:]
-    }
+    return {"engines": engines_data, "logs": list(state.logs)[-50:]}
 
 
 @worker_app.get("/worker/queue_status")
@@ -77,27 +83,17 @@ def start_all_worker(payload: Union[List[StartRequest], StartAllNewestRequest, D
 
     req = payload if isinstance(payload, StartAllNewestRequest) else StartAllNewestRequest(**(payload or {}))
     provinces = req.selected_provinces or list(PROVINCES_CACHE.keys())
-    gap = req.gap or 20
-    workers = req.num_workers or 1
-    max_c = req.max_concurrent_provinces or 3
-
-    requests = []
-    for prov_name in provinces:
-        prov_cfg = PROVINCES_CACHE.get(prov_name, {})
-        requests.append(StartRequest(
-            province_key=prov_name,
-            scan_mode="newest",
-            seed_tin=prov_cfg.get("activation_tin", ""),
-            gap=gap,
-            num_workers=workers
-        ))
-
+    gap, workers, max_c = req.gap or 20, req.num_workers or 1, req.max_concurrent_provinces or 3
+    requests = [
+        StartRequest(
+            province_key=prov_name, scan_mode="newest",
+            seed_tin=PROVINCES_CACHE.get(prov_name, {}).get("activation_tin", ""),
+            gap=gap, num_workers=workers
+        )
+        for prov_name in provinces
+    ]
     queue_coordinator.start_batch(requests, max_concurrent=max_c)
-    return {
-        "status": "started_batch",
-        "total_queued": len(requests),
-        "max_concurrent": max_c
-    }
+    return {"status": "started_batch", "total_queued": len(requests), "max_concurrent": max_c}
 
 
 @worker_app.post("/worker/pause")
@@ -130,18 +126,6 @@ def stop_all_worker():
     queue_coordinator.stop()
     stopped = [k for k, eng in list(state.engines.items()) if eng._running and not eng.stop()]
     return {"status": "all_stopped", "stopped_count": len(stopped)}
-
-
-class CrawlAllPayload(BaseModel):
-    max_pages: Optional[int] = 5
-
-
-class DkkdSearchPayload(BaseModel):
-    search_field: str
-
-
-class SyncMissingPayload(BaseModel):
-    batch_size: Optional[int] = 60
 
 
 @worker_app.post("/worker/bocao/crawl")
@@ -177,23 +161,39 @@ def get_sched_status():
 def toggle_sched_newest(p: Dict[str, Any] = None):
     return {"enabled": crawler_scheduler.toggle_newest((p or {}).get("enable"))}
 
+
 @worker_app.post("/worker/schedule/toggle_gap_fill")
 def toggle_sched_gap_fill(p: Dict[str, Any] = None):
     return {"enabled": crawler_scheduler.toggle_gap_fill((p or {}).get("enable"))}
+
 
 @worker_app.post("/worker/schedule/trigger_newest")
 def trigger_sched_newest():
     crawler_scheduler.trigger_newest()
     return {"status": "triggered_newest"}
 
+
 @worker_app.post("/worker/schedule/trigger_gap_fill")
 def trigger_sched_gap_fill():
     crawler_scheduler.trigger_gap_fill()
     return {"status": "triggered_gap_fill_500"}
 
+
 @worker_app.post("/worker/schedule/gap_fill_mode")
 def set_sched_gap_fill_mode(p: Dict[str, Any] = None):
     return {"reset_on_existing": crawler_scheduler.set_gap_fill_mode((p or {}).get("reset_on_existing", True))}
+
+
+@worker_app.post("/worker/schedule/configure_bocao")
+def configure_sched_bocao(p: Dict[str, Any] = None):
+    return crawler_scheduler.configure_bocao(p or {})
+
+
+@worker_app.post("/worker/schedule/trigger_bocao")
+def trigger_sched_bocao():
+    crawler_scheduler.trigger_bocao()
+    return {"status": "triggered_bocao"}
+
 
 if __name__ == "__main__":
     uvicorn.run(worker_app, host="127.0.0.1", port=8124, log_level="warning")
