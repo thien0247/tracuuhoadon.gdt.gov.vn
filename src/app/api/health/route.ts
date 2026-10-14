@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   return NextResponse.json({
     status: 'ok',
-    engine: 'Next.js App Router + Fastify Unified Core',
+    engine: 'Pure Next.js 14 App Router',
     uptime: Math.round(process.uptime()),
     timestamp: new Date().toISOString(),
   });

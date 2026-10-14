@@ -2,74 +2,48 @@
 // @related 01M4V0FH069WB44ZWJCRPYR4FA, 01M4V0FGZN8KJG6YHQM6560EK1
 /**
  * src/modules/services/services.routes.ts
- * REST API Endpoints điều khiển và giám sát các dịch vụ liên quan.
+ * Next.js Native Route Handler điều khiển và giám sát các dịch vụ liên quan.
  */
 
-import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
+import { NextRequest, NextResponse } from 'next/server';
 import { ServicesService } from './services.service.js';
 import { ServicesDiagService } from './services.diag.js';
 import type { ServiceControlDto } from './services.types.js';
 
-export const servicesRoutes: FastifyPluginAsync = async (fastify: FastifyInstance) => {
-  // Chẩn đoán chuyên sâu sức khỏe hệ thống
-  fastify.get('/api/services/diagnostics', async (_req, reply) => {
-    try {
-      const data = await ServicesDiagService.runSystemDiagnostics();
-      return reply.send(data);
-    } catch (err) {
-      return reply.status(500).send({ error: (err as Error).message });
+export async function handleServicesRoutes(
+  req: NextRequest,
+  pathname: string,
+  method: string,
+): Promise<NextResponse | null> {
+  try {
+    if (pathname === '/api/services/diagnostics' && method === 'GET') {
+      return NextResponse.json(await ServicesDiagService.runSystemDiagnostics());
     }
-  });
 
-  // Tự phục hồi hệ thống khi có sự cố
-  fastify.post('/api/services/auto_heal', async (_req, reply) => {
-    try {
-      const result = await ServicesDiagService.executeAutoHeal();
-      return reply.send(result);
-    } catch (err) {
-      return reply.status(500).send({ error: (err as Error).message });
+    if (pathname === '/api/services/auto_heal' && method === 'POST') {
+      return NextResponse.json(await ServicesDiagService.executeAutoHeal());
     }
-  });
-  // Lấy tổng quan trạng thái các dịch vụ
-  fastify.get('/api/services/status', async (_req, reply) => {
-    try {
-      const data = await ServicesService.getOverview();
-      return reply.send(data);
-    } catch (err) {
-      return reply.status(500).send({ error: (err as Error).message });
-    }
-  });
 
-  // Điều khiển tác vụ trên một dịch vụ cụ thể
-  fastify.post<{ Body: ServiceControlDto }>('/api/services/control', async (req, reply) => {
-    try {
-      const { service_id, action } = req.body || {};
-      if (!service_id || !action) {
-        return reply.status(400).send({ error: 'Thiếu trường service_id hoặc action hợp lệ' });
+    if (pathname === '/api/services/status' && method === 'GET') {
+      return NextResponse.json(await ServicesService.getOverview());
+    }
+
+    if (pathname === '/api/services/control' && method === 'POST') {
+      const body = (await req.json().catch(() => ({}))) as ServiceControlDto;
+      if (!body.service_id || !body.action) {
+        return NextResponse.json({ error: 'Thiếu trường service_id hoặc action hợp lệ' }, { status: 400 });
       }
-      const result = await ServicesService.executeControl(req.body);
-      return reply.send(result);
-    } catch (err) {
-      return reply.status(500).send({ error: (err as Error).message });
+      return NextResponse.json(await ServicesService.executeControl(body));
     }
-  });
 
-  // Khởi động lại toàn bộ dịch vụ an toàn
-  fastify.post('/api/services/restart_all', async (_req, reply) => {
-    try {
-      const result = await ServicesService.executeControl({
-        service_id: 'gdt_windows_service',
-        action: 'restart'
-      });
-      return reply.send(result);
-    } catch (err) {
-      return reply.status(500).send({ error: (err as Error).message });
+    if ((pathname === '/api/services/restart_all' || pathname === '/api/system/restart') && method === 'POST') {
+      return NextResponse.json(
+        await ServicesService.executeControl({ service_id: 'gdt_windows_service', action: 'restart' }),
+      );
     }
-  });
+  } catch (err) {
+    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+  }
 
-  // Endpoint tương thích ngược
-  fastify.post('/api/system/restart', async (_req, reply) => {
-    const result = await ServicesService.executeControl({ service_id: 'gdt_windows_service', action: 'restart' });
-    return reply.send(result);
-  });
-};
+  return null;
+}

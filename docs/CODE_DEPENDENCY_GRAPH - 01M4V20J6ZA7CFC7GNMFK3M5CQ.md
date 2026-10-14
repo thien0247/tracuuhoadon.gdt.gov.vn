@@ -3,7 +3,7 @@ id: 01M4V20J6ZA7CFC7GNMFK3M5CQ
 title: Codebase Dependency & Knowledge Graph
 category: architecture
 status: completed
-edges_count: 638
+edges_count: 643
 broken_links: 0
 ---
 
@@ -51,6 +51,6 @@ graph TD
 ```
 
 ## 2. Thống Kê Ma Trận Quan Hệ
-- **Tổng số quan hệ thực tế:** 638 liên kết hợp lệ.
+- **Tổng số quan hệ thực tế:** 643 liên kết hợp lệ.
 - **Tỷ lệ liên kết hỏng:** 0 broken links (100% hợp lệ).
 - **Cơ chế xác thực:** Tự động kiểm tra liên tục qua `python scripts/audit_code_graph.py`.

@@ -127,6 +127,8 @@ Lưu trữ toàn bộ các phiên lập kế hoạch và báo cáo nghiệm thu 
 | **117** | 2026-10-14 18:10:00 | `walkthrough` | Nghiệm Thu Tự Động Reload Dữ Liệu Khi Chọn Số Dòng, Lưu Trữ Cache & Hiển Thị URL Query Parameters | ✅ Đã nghiệm thu | [117_20261014_181000_walkthrough.md](117_20261014_181000_walkthrough.md) |
 | **118** | 2026-10-14 18:15:00 | `implementation_plan` | Kế Hoạch Chuyển Đổi Toàn Bộ Từ Vue Sang Next.js App Router (Full-Stack Unified Với Thư Mục SRC & ULID) | ✅ Đã phê duyệt & thực thi | [118_20261014_181500_implementation_plan.md](118_20261014_181500_implementation_plan.md) |
 | **119** | 2026-10-14 18:53:00 | `walkthrough` | Nghiệm Thu Chuyển Đổi Toàn Bộ Từ Vue Sang Next.js 14 App Router (Full-Stack Unified Với Thư Mục SRC & ULID) | ✅ Đã nghiệm thu | [119_20261014_185300_walkthrough.md](119_20261014_185300_walkthrough.md) |
+| **120** | 2026-10-14 19:57:00 | `implementation_plan` | Kế Hoạch Loại Bỏ Hoàn Toàn Fastify — Thuần 100% Next.js 14 App Router (Native Web Fetch & ULID Graph) | ✅ Đã phê duyệt & thực thi | [120_20261014_195700_implementation_plan.md](120_20261014_195700_implementation_plan.md) |
+| **121** | 2026-10-14 20:10:00 | `walkthrough` | Nghiệm Thu Loại Bỏ Hoàn Toàn Fastify — Thuần 100% Next.js 14 App Router (Native Web Fetch & ULID Graph) | ✅ Đã nghiệm thu | [121_20261014_201000_walkthrough.md](121_20261014_201000_walkthrough.md) |
 
 
 

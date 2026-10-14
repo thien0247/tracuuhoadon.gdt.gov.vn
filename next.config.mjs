@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    serverComponentsExternalPackages: ['pg', 'exceljs', 'fastify', '@fastify/cors', '@fastify/static'],
+    serverComponentsExternalPackages: ['pg', 'exceljs'],
   },
   eslint: {
     ignoreDuringBuilds: true,

@@ -2,44 +2,64 @@
 // @related 01M4V0FH069WB44ZWJCRPYR4FA, 01M4V0FGZN8KJG6YHQM6560EK1
 /**
  * src/modules/stream/stream.routes.ts
- * Server-Sent Events (SSE) Endpoint truyền dữ liệu trực tiếp về Dashboard.
+ * Next.js Native Web ReadableStream Server-Sent Events (SSE) Endpoint (/api/stream).
  */
 
-import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
+import { NextRequest, NextResponse } from 'next/server';
 import { buildStreamPayload, startDbStatsWorker } from './stream.service.js';
 import { generateUlid } from '../../utils/ulid.js';
 
-export const streamRoutes: FastifyPluginAsync = async (fastify: FastifyInstance) => {
-  // Khởi động worker cập nhật db stats ngầm
-  startDbStatsWorker();
+let workerStarted = false;
 
-  fastify.get('/api/stream', (req, reply) => {
-    reply.raw.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      Connection: 'keep-alive',
-      'Access-Control-Allow-Origin': '*'
-    });
+export function handleStreamRoutes(
+  req: NextRequest,
+  pathname: string,
+  method: string,
+): NextResponse | null {
+  if (pathname !== '/api/stream' || method !== 'GET') return null;
 
-    reply.raw.flushHeaders?.();
+  if (!workerStarted) {
+    workerStarted = true;
+    startDbStatsWorker();
+  }
 
-    let isClosed = false;
-    const interval = setInterval(async () => {
-      if (isClosed) return;
-      try {
-        const payload = await buildStreamPayload();
-        if (!isClosed) {
-          const eventId = generateUlid();
-          reply.raw.write(`id: ${eventId}\ndata: ${payload}\n\n`);
+  const encoder = new TextEncoder();
+  let timer: ReturnType<typeof setInterval> | null = null;
+  let closed = false;
+
+  const stream = new ReadableStream({
+    start(controller) {
+      timer = setInterval(async () => {
+        if (closed) return;
+        try {
+          const payload = await buildStreamPayload();
+          if (!closed) {
+            const eventId = generateUlid();
+            controller.enqueue(encoder.encode(`id: ${eventId}\ndata: ${payload}\n\n`));
+          }
+        } catch {
+          /* ignore transient SSE error */
         }
-      } catch (err) {
-        console.error('[SSE Stream] Lỗi phát dữ liệu:', err);
-      }
-    }, 500);
+      }, 500);
 
-    req.raw.on('close', () => {
-      isClosed = true;
-      clearInterval(interval);
-    });
+      req.signal.addEventListener('abort', () => {
+        closed = true;
+        if (timer) clearInterval(timer);
+        try { controller.close(); } catch { /* ignore */ }
+      });
+    },
+    cancel() {
+      closed = true;
+      if (timer) clearInterval(timer);
+    },
   });
-};
+
+  return new NextResponse(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream; charset=utf-8',
+      'Cache-Control': 'no-cache, no-transform',
+      Connection: 'keep-alive',
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+}

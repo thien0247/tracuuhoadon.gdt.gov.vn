@@ -5,7 +5,7 @@
  * Barrel file xuất khẩu công khai của Module Danh Mục HTKK.
  */
 
-export { htkkRoutes } from './htkk.routes.js';
+export { handleHtkkRoutes } from './htkk.routes.js';
 export { HtkkService } from './htkk.service.js';
 export type {
   HtkkProvinceV3,

@@ -2,10 +2,10 @@
 // @related 01M4V0FH069WB44ZWJCRPYR4FA, 01M4V0FGZN8KJG6YHQM6560EK1
 /**
  * src/modules/enrichment/enrichment.routes.ts
- * REST API router cho Module Làm Giàu & Bổ Sung Dữ Liệu Thuế (Enrichment).
+ * Next.js Native Route Handler cho Module Làm Giàu & Bổ Sung Dữ Liệu Thuế (Enrichment).
  */
 
-import type { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify';
+import { NextRequest, NextResponse } from 'next/server';
 import { EnrichmentService } from './enrichment.service.js';
 import { getProvincesCache } from '../provinces/index.js';
 
@@ -21,84 +21,68 @@ function resolveProvinceInfo(key: string): { prefix: string; name: string } {
   return { prefix: clean, name: `Tỉnh (${clean})` };
 }
 
-export const enrichmentRoutes: FastifyPluginAsync = async (fastify) => {
-  // Thống kê tổng quan dữ liệu bổ sung toàn quốc và 62 tỉnh
-  fastify.get('/api/enrichment/summary', async (_req, reply: FastifyReply) => {
-    const summary = await EnrichmentService.getNationalSummary();
-    return reply.send(summary);
-  });
+export async function handleEnrichmentRoutes(
+  req: NextRequest,
+  pathname: string,
+  method: string,
+): Promise<NextResponse | null> {
+  if (!pathname.startsWith('/api/enrichment/')) return null;
 
-  // Lấy tiến trình thời gian thực của toàn bộ các Job đồng bộ đang chạy
-  fastify.get('/api/enrichment/jobs', async (_req, reply: FastifyReply) => {
-    const jobs = EnrichmentService.getAllJobs();
-    return reply.send({ jobs });
-  });
+  if (pathname === '/api/enrichment/summary' && method === 'GET') {
+    return NextResponse.json(await EnrichmentService.getNationalSummary());
+  }
 
-  // Lấy tiến trình thời gian thực của một tỉnh cụ thể
-  fastify.get('/api/enrichment/jobs/:provinceKey', async (
-    req: FastifyRequest<{ Params: { provinceKey: string } }>,
-    reply: FastifyReply
-  ) => {
-    const { prefix } = resolveProvinceInfo(req.params.provinceKey);
-    const job = EnrichmentService.getJobProgress(prefix);
-    return reply.send({ prefix, job });
-  });
+  if (pathname === '/api/enrichment/jobs' && method === 'GET') {
+    return NextResponse.json({ jobs: EnrichmentService.getAllJobs() });
+  }
 
-  // Tra cứu & bổ sung thông tin NNT cho 1 MST (chỉ cập nhật khi API tồn tại)
-  fastify.get('/api/enrichment/:tin', async (
-    req: FastifyRequest<{ Params: { tin: string } }>,
-    reply: FastifyReply
-  ) => {
-    const { tin } = req.params;
-    if (!tin) return reply.status(400).send({ error: 'Mã số thuế không được để trống' });
-    const result = await EnrichmentService.enrichSingleRecord(tin);
-    if (!result) return reply.status(404).send({ error: 'Không tìm thấy dữ liệu cho MST này' });
-    return reply.send(result);
-  });
+  const mJob = pathname.match(/^\/api\/enrichment\/jobs\/([^/]+)$/);
+  if (mJob && method === 'GET') {
+    const { prefix } = resolveProvinceInfo(mJob[1]);
+    return NextResponse.json({ prefix, job: EnrichmentService.getJobProgress(prefix) });
+  }
 
-  // Làm sạch / Reset dữ liệu suy đoán không chuẩn xác để đồng bộ chuẩn từ API
-  fastify.post('/api/enrichment/reset-unverified', async (
-    req: FastifyRequest<{ Body?: { prefix?: string } }>,
-    reply: FastifyReply
-  ) => {
-    const prefix = req.body?.prefix;
-    const result = await EnrichmentService.resetUnverifiedRecords(prefix);
-    return reply.send({
+  if (pathname === '/api/enrichment/reset-unverified' && method === 'POST') {
+    const body = (await req.json().catch(() => ({}))) as { prefix?: string };
+    const result = await EnrichmentService.resetUnverifiedRecords(body.prefix);
+    return NextResponse.json({
       message: `Đã dọn dẹp ${result.affectedRows} bản ghi về trạng thái chờ đồng bộ chuẩn từ API`,
-      ...result
+      ...result,
     });
-  });
+  }
 
-  // Kiểm tra trạng thái & tỷ lệ hoàn thành dữ liệu bổ sung của 1 tỉnh
-  fastify.get('/api/enrichment/province/:provinceKey/status', async (
-    req: FastifyRequest<{ Params: { provinceKey: string } }>,
-    reply: FastifyReply
-  ) => {
-    const { prefix, name } = resolveProvinceInfo(req.params.provinceKey);
-    const status = await EnrichmentService.getProvinceStatus(prefix, req.params.provinceKey);
-    return reply.send({ ...status, provinceName: name });
-  });
+  const mProvStatus = pathname.match(/^\/api\/enrichment\/province\/([^/]+)\/status$/);
+  if (mProvStatus && method === 'GET') {
+    const { prefix, name } = resolveProvinceInfo(mProvStatus[1]);
+    const status = await EnrichmentService.getProvinceStatus(prefix, mProvStatus[1]);
+    return NextResponse.json({ ...status, provinceName: name });
+  }
 
-  // Bắt đầu tiến trình nền đồng bộ trực tuyến API Xinvoice cho toàn bộ tỉnh
-  fastify.post('/api/enrichment/province/:provinceKey/start', async (
-    req: FastifyRequest<{ Params: { provinceKey: string } }>,
-    reply: FastifyReply
-  ) => {
-    const { prefix, name } = resolveProvinceInfo(req.params.provinceKey);
+  const mProvStart = pathname.match(/^\/api\/enrichment\/province\/([^/]+)\/start$/);
+  if (mProvStart && method === 'POST') {
+    const { prefix, name } = resolveProvinceInfo(mProvStart[1]);
     const started = EnrichmentService.startProvinceOnlineQueue(prefix, name);
-    return reply.send({
-      provinceKey: req.params.provinceKey, prefix, provinceName: name, started,
-      message: started ? 'Đã khởi động tiến trình đồng bộ nền API' : 'Tiến trình đang chạy sẵn cho tỉnh này'
+    return NextResponse.json({
+      provinceKey: mProvStart[1], prefix, provinceName: name, started,
+      message: started ? 'Đã khởi động tiến trình đồng bộ nền API' : 'Tiến trình đang chạy sẵn cho tỉnh này',
     });
-  });
+  }
 
-  // Dừng tiến trình nền đồng bộ trực tuyến cho 1 tỉnh
-  fastify.post('/api/enrichment/province/:provinceKey/stop', async (
-    req: FastifyRequest<{ Params: { provinceKey: string } }>,
-    reply: FastifyReply
-  ) => {
-    const { prefix, name } = resolveProvinceInfo(req.params.provinceKey);
+  const mProvStop = pathname.match(/^\/api\/enrichment\/province\/([^/]+)\/stop$/);
+  if (mProvStop && method === 'POST') {
+    const { prefix, name } = resolveProvinceInfo(mProvStop[1]);
     const stopped = EnrichmentService.stopProvinceOnlineQueue(prefix);
-    return reply.send({ provinceKey: req.params.provinceKey, prefix, provinceName: name, stopped });
-  });
-};
+    return NextResponse.json({ provinceKey: mProvStop[1], prefix, provinceName: name, stopped });
+  }
+
+  const mTin = pathname.match(/^\/api\/enrichment\/([^/]+)$/);
+  if (mTin && method === 'GET') {
+    const tin = decodeURIComponent(mTin[1]);
+    if (!tin) return NextResponse.json({ error: 'Mã số thuế không được để trống' }, { status: 400 });
+    const result = await EnrichmentService.enrichSingleRecord(tin);
+    if (!result) return NextResponse.json({ error: 'Không tìm thấy dữ liệu cho MST này' }, { status: 404 });
+    return NextResponse.json(result);
+  }
+
+  return null;
+}

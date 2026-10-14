@@ -5,7 +5,7 @@
  * Barrel file xuất khẩu công khai của Module Enrichment.
  */
 
-export { enrichmentRoutes } from './enrichment.routes.js';
+export { handleEnrichmentRoutes } from './enrichment.routes.js';
 export { EnrichmentService } from './enrichment.service.js';
 export { EnrichmentJobManager } from './enrichment.job.js';
 export type {
