@@ -1,0 +1,18 @@
+﻿<Sections Version="525">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###703###70301###Thành phố Đà Lạt" />
+			<Item Value ="0###703###70303###Thành phố Bảo Lộc" />
+			<Item Value ="0###703###70305###Huyện Lạc Dương" />
+			<Item Value ="0###703###70307###Huyện Đơn Dương" />
+			<Item Value ="0###703###70309###Huyện Đức Trọng" />
+			<Item Value ="0###703###70311###Huyện Lâm Hà" />
+			<Item Value ="0###703###70313###Huyện Bảo Lâm" />
+			<Item Value ="0###703###70315###Huyện Di Linh" />
+			<Item Value ="0###703###70317###Huyện Đạ Huoai" />
+			<Item Value ="0###703###70319###Huyện Đạ Tẻh (hết hiệu lực)" />
+			<Item Value ="0###703###70321###Huyện Cát Tiên (hết hiệu lực)" />
+			<Item Value ="0###703###70323###Huyện Đam Rông" />
+		</Items>
+	</Section>	
+</Sections>

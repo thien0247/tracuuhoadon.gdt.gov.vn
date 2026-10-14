@@ -1,0 +1,13 @@
+﻿<Sections Version="330">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###211###21101###Thành Phố Tuyên Quang" />
+			<Item Value ="0###211###21103###Huyện Na Hang" />
+			<Item Value ="0###211###21105###Huyện Chiêm Hoá" />
+			<Item Value ="0###211###21107###Huyện Hàm Yên" />
+			<Item Value ="0###211###21109###Huyện Yên Sơn" />
+			<Item Value ="0###211###21111###Huyện Sơn Dương" />
+			<Item Value ="0###211###21113###Huyện Lâm Bình" />
+		</Items>
+	</Section>	
+</Sections>

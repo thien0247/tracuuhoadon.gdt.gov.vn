@@ -1,0 +1,33 @@
+﻿<Sections Version="526">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###401###40101###Thành phố Thanh Hoá" />
+      <Item Value="0###401###40103###Thị xã Bỉm Sơn" />
+      <Item Value="0###401###40105###Thành phố Sầm Sơn" />
+      <Item Value="0###401###40107###Huyện Mường Lát" />
+      <Item Value="0###401###40109###Huyện Quan Hoá" />
+      <Item Value="0###401###40111###Huyện Quan Sơn" />
+      <Item Value="0###401###40113###Huyện Bá Thước" />
+      <Item Value="0###401###40115###Huyện Cẩm Thuỷ" />
+      <Item Value="0###401###40117###Huyện Lang Chánh" />
+      <Item Value="0###401###40119###Huyện Thạch Thành" />
+      <Item Value="0###401###40121###Huyện Ngọc Lặc" />
+      <Item Value="0###401###40123###Huyện Thường Xuân" />
+      <Item Value="0###401###40125###Huyện Như Xuân" />
+      <Item Value="0###401###40127###Huyện Như Thanh" />
+      <Item Value="0###401###40129###Huyện Vĩnh Lộc" />
+      <Item Value="0###401###40131###Huyện Hà Trung" />
+      <Item Value="0###401###40133###Huyện Nga Sơn" />
+      <Item Value="0###401###40135###Huyện Yên Định" />
+      <Item Value="0###401###40137###Huyện Thọ Xuân" />
+      <Item Value="0###401###40139###Huyện Hậu Lộc" />
+      <Item Value="0###401###40141###Huyện Thiệu Hoá" />
+      <Item Value="0###401###40143###Huyện Hoằng Hoá" />
+      <Item Value="0###401###40145###Huyện Đông Sơn (hết hiệu lực)" />
+      <Item Value="0###401###40147###Huyện Triệu Sơn" />
+      <Item Value="0###401###40149###Huyện Quảng Xương" />
+      <Item Value="0###401###40151###Huyện Nông Cống" />
+      <Item Value="0###401###40153###Thị xã Nghi Sơn" />
+    </Items>
+  </Section>
+</Sections>

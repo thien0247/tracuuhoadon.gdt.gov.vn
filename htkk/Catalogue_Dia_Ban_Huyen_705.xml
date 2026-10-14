@@ -1,0 +1,13 @@
+﻿<Sections Version="330">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###705###70501###TP. Phan Rang-Tháp Chàm" />
+			<Item Value ="0###705###70503###Huyện Ninh Sơn" />
+			<Item Value ="0###705###70505###Huyện Ninh Hải" />
+			<Item Value ="0###705###70507###Huyện Ninh Phước" />
+			<Item Value ="0###705###70509###Huyện Bác ái" />
+			<Item Value ="0###705###70511###Huyện Thuận Bắc" />
+			<Item Value ="0###705###70513###Huyện Thuận Nam" />
+		</Items>
+	</Section>	
+</Sections>

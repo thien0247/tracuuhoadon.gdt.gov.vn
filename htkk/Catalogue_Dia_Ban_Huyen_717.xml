@@ -1,0 +1,15 @@
+﻿<Sections Version="530">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###717###71701###Thành phố Vũng Tàu" />
+      <Item Value="0###717###71703###Thành Phố Bà Rịa" />
+      <Item Value="0###717###71705###Huyện Châu Đức" />
+      <Item Value="0###717###71707###Huyện Xuyên Mộc" />
+      <Item Value="0###717###71709###Thành phố Phú Mỹ" />
+      <Item Value="0###717###71711###Huyện Long Điền (hết hiệu lực)" />
+      <Item Value="0###717###71712###Huyện Long Đất" />
+      <Item Value="0###717###71713###Huyện Côn Đảo" />
+
+    </Items>
+  </Section>
+</Sections>

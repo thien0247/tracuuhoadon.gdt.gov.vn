@@ -1,0 +1,15 @@
+﻿<Sections Version="519">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###711###71101###Thành phố Thủ Dầu Một" />
+      <Item Value="0###711###71103###Thành phố Bến Cát" />
+      <Item Value="0###711###71105###Thành phố Tân Uyên" />
+      <Item Value="0###711###71107###Thành phố Thuận An" />
+      <Item Value="0###711###71109###Thành phố Dĩ An" />
+      <Item Value="0###711###71111###Huyện Phú Giáo" />
+      <Item Value="0###711###71113###Huyện Dầu tiếng" />
+      <Item Value="0###711###71115###Huyện Bàu Bàng" />
+      <Item Value="0###711###71117###Huyện Bắc Tân Uyên" />
+    </Items>
+  </Section>
+</Sections>

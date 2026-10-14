@@ -1,0 +1,14 @@
+﻿<Sections Version="330">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###302###30201###Huyện Mường Tè" />
+      <Item Value="0###302###30202###Thành phố Lai Châu" />
+      <Item Value="0###302###30203###Huyện Phong Thổ" />
+      <Item Value="0###302###30205###Huyện Tam Đường" />
+      <Item Value="0###302###30207###Huyện Sìn Hồ" />
+      <Item Value="0###302###30209###Huyện Than Uyên" />
+      <Item Value="0###302###30211###Huyện Tân Uyên" />
+      <Item Value="0###302###30213###Huyện Nậm Nhùn" />
+    </Items>
+  </Section>
+</Sections>

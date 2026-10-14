@@ -1,0 +1,9 @@
+- [x] Phần 1: Xây dựng Data Pipeline
+  - [x] Tạo thư mục `dataset/images` và script `download_captchas.py`
+  - [/] Chạy script để tải khoảng 1000 ảnh CAPTCHA (Đang tải 500 ảnh)
+  - [x] Viết script `label_captchas_ui.py` (hỗ trợ gán nhãn thủ công qua giao diện Tkinter)
+- [x] Phần 2: Xây dựng Model & Training Code
+  - [x] Cài đặt môi trường (`tensorflow`, `opencv-python`, v.v. đã cấu hình trong `requirements.txt`)
+  - [x] Viết script `train_model.py` với kiến trúc CRNN + CTC Loss
+- [x] Phần 3: Ứng dụng Giải mã Code
+  - [x] Viết script `solve_captcha.py` tải model lên và dự đoán

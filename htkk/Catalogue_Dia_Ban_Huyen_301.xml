@@ -1,0 +1,16 @@
+﻿<Sections Version="330">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###301###30101###TP Điện Biên Phủ" />
+      <Item Value="0###301###30103###Thị xã Mường Lay" />
+      <Item Value="0###301###30104###Huyện Mường Nhé" />
+      <Item Value="0###301###30111###Huyện Mường Chà" />
+      <Item Value="0###301###30113###Huyện Tủa Chùa" />
+      <Item Value="0###301###30115###Huyện Tuần Giáo" />
+      <Item Value="0###301###30117###Huyện Điện Biên" />
+      <Item Value="0###301###30119###Huyện Điện Biên Đông" />
+      <Item Value="0###301###30121###Huyện Mường ảng" />
+      <Item Value="0###301###30123###Huyện Nậm Pồ" />
+    </Items>
+  </Section>
+</Sections>

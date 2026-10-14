@@ -1,0 +1,21 @@
+﻿<Sections Version="526">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###103###10301###Quận Hồng Bàng" />
+      <Item Value="0###103###10303###Quận Ngô Quyền" />
+      <Item Value="0###103###10304###Quận Hải An" />
+      <Item Value="0###103###10305###Quận Lê Chân" />
+      <Item Value="0###103###10307###Quận Kiến An" />
+      <Item Value="0###103###10309###Quận Đồ Sơn" />
+      <Item Value="0###103###10311###Thành phố Thuỷ Nguyên" />
+      <Item Value="0###103###10313###Quận An Dương" />
+      <Item Value="0###103###10315###Huyện An Lão" />
+      <Item Value="0###103###10317###Huyện Kiến Thụy" />
+      <Item Value="0###103###10319###Huyện Tiên Lãng" />
+      <Item Value="0###103###10321###Huyện Vĩnh Bảo" />
+      <Item Value="0###103###10323###Huyện Cát Hải" />
+      <Item Value="0###103###10325###Huyện Bạch Long Vĩ" />
+      <Item Value="0###103###10327###Quận Dương Kinh" />
+    </Items>
+  </Section>
+</Sections>

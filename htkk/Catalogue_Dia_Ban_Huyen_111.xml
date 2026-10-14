@@ -1,0 +1,12 @@
+﻿<Sections Version="526">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###111###11101###Thành phố Phủ Lý" />
+			<Item Value ="0###111###11103###Thị xã Duy Tiên" />
+			<Item Value ="0###111###11105###Thị xã Kim Bảng" />
+			<Item Value ="0###111###11107###Huyện Lý Nhân" />
+			<Item Value ="0###111###11109###Huyện Thanh Liêm" />
+			<Item Value ="0###111###11111###Huyện Bình Lục" />
+		</Items>
+	</Section>	
+</Sections>

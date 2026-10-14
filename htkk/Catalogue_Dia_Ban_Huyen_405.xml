@@ -1,0 +1,19 @@
+﻿<Sections Version="526">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###405###40501###Thành phố Hà Tĩnh" />
+			<Item Value ="0###405###40503###Thị xã Hồng Lĩnh" />
+			<Item Value ="0###405###40505###Huyện Nghi Xuân" />
+			<Item Value ="0###405###40507###Huyện Đức Thọ" />
+			<Item Value ="0###405###40509###Huyện Hương Sơn" />
+			<Item Value ="0###405###40511###Huyện Can Lộc" />
+			<Item Value ="0###405###40513###Huyện Thạch Hà" />
+			<Item Value ="0###405###40515###Huyện Cẩm Xuyên" />
+			<Item Value ="0###405###40517###Huyện Hương Khê" />
+			<Item Value ="0###405###40519###Huyện Kỳ Anh" />
+      			<Item Value="0###405###40520###Thị xã Kỳ Anh" />
+			<Item Value ="0###405###40521###Huyện Vũ Quang" />
+			<Item Value ="0###405###40523###Huyện Lộc Hà (hết hiệu lực)" />
+		</Items>
+	</Section>	
+</Sections>

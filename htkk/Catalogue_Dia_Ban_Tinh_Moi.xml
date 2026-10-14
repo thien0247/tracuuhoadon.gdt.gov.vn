@@ -1,0 +1,41 @@
+﻿<Sections Version="537">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+    	<Item Value="0###101###Thành phố Hà Nội" />
+		<Item Value="0###211###Tỉnh Tuyên Quang" />
+		<Item Value="0###203###Tỉnh Cao Bằng" />
+		<Item Value="0###215###Tỉnh Thái Nguyên" />
+		<Item Value="0###213###Tỉnh Lào Cai" />
+		<Item Value="0###301###Tỉnh Điện Biên" />
+		<Item Value="0###302###Tỉnh Lai Châu" />
+		<Item Value="0###303###Tỉnh Sơn La" />
+		<Item Value="0###217###Tỉnh Phú Thọ" />
+		<Item Value="0###209###Tỉnh Lạng Sơn" />
+		<Item Value="0###225###Tỉnh Quảng Ninh" />
+		<Item Value="0###221###Tỉnh Bắc Ninh" />
+		<Item Value="0###103###Thành phố Hải Phòng" />
+		<Item Value="0###109###Tỉnh Hưng Yên" />
+		<Item Value="0###117###Tỉnh Ninh Bình" />
+		<Item Value="0###401###Tỉnh Thanh Hóa" />
+		<Item Value="0###403###Tỉnh Nghệ An" />
+		<Item Value="0###405###Tỉnh Hà Tĩnh" />
+		<Item Value="0###407###Tỉnh Quảng Trị" />
+		<Item Value="0###411###Thành phố Huế" />
+		<Item Value="0###501###Thành phố Đà Nẵng" />
+		<Item Value="0###505###Tỉnh Quảng Ngãi" />
+		<Item Value="0###507###Tỉnh Gia Lai" />
+		<Item Value="0###605###Tỉnh Đắk Lắk" />
+		<Item Value="0###511###Tỉnh Khánh Hòa" />
+		<Item Value="0###703###Tỉnh Lâm Đồng" />
+		<Item Value="0###801###Tỉnh Tây Ninh" />
+		<Item Value="0###713###Thành phố Đồng Nai" />
+		<Item Value="0###701###Thành phố Hồ Chí Minh" />
+		<Item Value="0###809###Tỉnh Vĩnh Long" />
+		<Item Value="0###807###Tỉnh Đồng Tháp" />
+		<Item Value="0###813###Tỉnh An Giang" />
+		<Item Value="0###815###Thành phố Cần Thơ" />
+		<Item Value="0###823###Tỉnh Cà Mau" />
+		<Item Value="1###999###Khác" />
+    </Items>
+  </Section>
+</Sections>

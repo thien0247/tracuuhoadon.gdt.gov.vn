@@ -1,0 +1,18 @@
+﻿<Sections Version="452">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###803###80301###Thành phố Cao Lãnh" />
+      <Item Value="0###803###80303###Thành phố Sa Đéc" />
+      <Item Value="0###803###80305###Huyện Tân Hồng" />
+      <Item Value="0###803###80307###Huyện Hồng Ngự" />
+      <Item Value="0###803###80309###Huyện Tam Nông" />
+      <Item Value="0###803###80311###Huyện Thanh Bình" />
+      <Item Value="0###803###80313###Huyện Tháp mười" />
+      <Item Value="0###803###80315###Huyện Cao Lãnh" />
+      <Item Value="0###803###80317###Huyện Lấp Vò" />
+      <Item Value="0###803###80319###Huyện Lai Vung" />
+      <Item Value="0###803###80321###Huyện Châu Thành" />
+      <Item Value="0###803###80323###Thành phố Hồng Ngự" />
+    </Items>
+  </Section>
+</Sections>

@@ -1,0 +1,21 @@
+﻿<Sections Version="342">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###801###80101###Thành phố Tân An" />
+      <Item Value="0###801###80103###Huyện Tân Hưng" />
+      <Item Value="0###801###80105###Huyện Vĩnh Hưng" />
+      <Item Value="0###801###80107###Huyện Mộc Hoá" />
+      <Item Value="0###801###80109###Huyện Tân Thạnh" />
+      <Item Value="0###801###80111###Huyện Thạnh Hoá" />
+      <Item Value="0###801###80113###Huyện Đức Huệ" />
+      <Item Value="0###801###80115###Huyện Đức Hoà" />
+      <Item Value="0###801###80117###Huyện Bến Lức" />
+      <Item Value="0###801###80119###Huyện Thủ Thừa" />
+      <Item Value="0###801###80121###Huyện Châu Thành" />
+      <Item Value="0###801###80123###Huyện Tân Trụ" />
+      <Item Value="0###801###80125###Huyện Cần Đước" />
+      <Item Value="0###801###80127###Huyện Cần Giuộc" />
+      <Item Value="0###801###80129###Thị xã Kiến Tường" />
+    </Items>
+  </Section>
+</Sections>

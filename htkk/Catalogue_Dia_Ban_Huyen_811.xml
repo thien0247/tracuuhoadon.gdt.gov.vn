@@ -1,0 +1,15 @@
+﻿<Sections Version="330">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###811###81101###Thành phố Bến Tre" />
+			<Item Value ="0###811###81103###Huyện Châu Thành" />
+			<Item Value ="0###811###81105###Huyện Chợ Lách" />
+			<Item Value ="0###811###81107###Huyện Mỏ Cày Nam" />
+			<Item Value ="0###811###81108###Huyện Mỏ Cày Bắc" />
+			<Item Value ="0###811###81109###Huyện Giồng Trôm" />
+			<Item Value ="0###811###81111###Huyện Bình Đại" />
+			<Item Value ="0###811###81113###Huyện Ba Tri" />
+			<Item Value ="0###811###81115###Huyện Thạnh Phú" />
+		</Items>
+	</Section>	
+</Sections>

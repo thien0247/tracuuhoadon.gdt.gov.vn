@@ -1,0 +1,17 @@
+﻿<Sections Version="432">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###305###30501###Thành phố Hoà Bình" />
+      <Item Value="0###305###30503###Huyện Đà Bắc" />
+      <Item Value="0###305###30505###Huyện Mai Châu" />
+      <Item Value="0###305###30507###Huyện Kỳ Sơn (hết hiệu lực)" />
+      <Item Value="0###305###30509###Huyện Lương Sơn" />
+      <Item Value="0###305###30510###Huyện Cao Phong" />
+      <Item Value="0###305###30511###Huyện Kim Bôi" />
+      <Item Value="0###305###30513###Huyện Tân Lạc" />
+      <Item Value="0###305###30515###Huyện Lạc Sơn" />
+      <Item Value="0###305###30517###Huyện Lạc Thuỷ" />
+      <Item Value="0###305###30519###Huyện Yên Thuỷ" />
+    </Items>
+  </Section>
+</Sections>

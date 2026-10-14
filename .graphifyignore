@@ -1,0 +1,18 @@
+# Graphify Ignore File
+node_modules/
+dist/
+bin/
+__pycache__/
+captchas/
+dataset/
+archive/
+logs/
+scratch/
+*.jpg
+*.png
+*.h5
+*.pkl
+*.exe
+*.dll
+package-lock.json
+skills-lock.json

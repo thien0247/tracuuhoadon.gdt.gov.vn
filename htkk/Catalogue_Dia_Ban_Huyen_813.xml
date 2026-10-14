@@ -1,0 +1,21 @@
+﻿<Sections Version="450">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###813###81301###Thành phố Rạch Giá" />
+      <Item Value="0###813###81303###Huyện Kiên Lương" />
+      <Item Value="0###813###81304###Huyện Giang Thành" />
+      <Item Value="0###813###81305###Huyện Hòn Đất" />
+      <Item Value="0###813###81307###Huyện Tân Hiệp" />
+      <Item Value="0###813###81309###Huyện Châu Thành" />
+      <Item Value="0###813###81311###Huyện Giồng Riềng" />
+      <Item Value="0###813###81313###Huyện Gò Quao" />
+      <Item Value="0###813###81315###Huyện An Biên" />
+      <Item Value="0###813###81317###Huyện An Minh" />
+      <Item Value="0###813###81319###Huyện Vĩnh Thuận" />
+      <Item Value="0###813###81321###Thành phố Phú Quốc" />
+      <Item Value="0###813###81323###Huyện Kiên Hải" />
+      <Item Value="0###813###81325###Thành phố Hà Tiên" />
+      <Item Value="0###813###81327###Huyện U Minh Thượng" />
+    </Items>
+  </Section>
+</Sections>

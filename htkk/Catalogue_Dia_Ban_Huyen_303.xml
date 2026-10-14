@@ -1,0 +1,18 @@
+﻿<Sections Version="330">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###303###30301###Thành phố Sơn La" />
+			<Item Value ="0###303###30303###Huyện Quỳnh Nhai" />
+			<Item Value ="0###303###30305###Huyện Mường La" />
+			<Item Value ="0###303###30307###Huyện Thuận Châu" />
+			<Item Value ="0###303###30309###Huyện Bắc Yên" />
+			<Item Value ="0###303###30311###Huyện Phù Yên" />
+			<Item Value ="0###303###30313###Huyện Mai Sơn" />
+			<Item Value ="0###303###30315###Huyện Sông Mã" />
+			<Item Value ="0###303###30317###Huyện Yên Châu" />
+			<Item Value ="0###303###30319###Huyện Mộc Châu" />
+			<Item Value ="0###303###30321###Huyện Sốp Cộp" />
+			<Item Value ="0###303###30323###Huyện Vân Hồ" />
+		</Items>
+	</Section>	
+</Sections>

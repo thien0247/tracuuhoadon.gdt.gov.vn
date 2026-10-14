@@ -1,0 +1,24 @@
+﻿<Sections Version="526">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###503###50301###Thành phố Tam Kỳ" />
+      <Item Value="0###503###50302###Huyện Phú Ninh" />
+      <Item Value="0###503###50303###Thành phố Hội An" />
+      <Item Value="0###503###50304###Huyện Tây Giang" />
+      <Item Value="0###503###50305###Huyện Đông Giang" />
+      <Item Value="0###503###50307###Huyện Đại Lộc" />
+      <Item Value="0###503###50309###Thị Xã Điện Bàn" />
+      <Item Value="0###503###50311###Huyện Duy Xuyên" />
+      <Item Value="0###503###50313###Huyện Nam Giang" />
+      <Item Value="0###503###50315###Huyện Thăng Bình" />
+      <Item Value="0###503###50317###Huyện Quế Sơn" />
+      <Item Value="0###503###50318###Huyện Nông Sơn (hết hiệu lực)" />
+      <Item Value="0###503###50319###Huyện Hiệp Đức" />
+      <Item Value="0###503###50321###Huyện Tiên Phước" />
+      <Item Value="0###503###50323###Huyện Phước Sơn" />
+      <Item Value="0###503###50325###Huyện Núi Thành" />
+      <Item Value="0###503###50327###Huyện Bắc Trà My" />
+      <Item Value="0###503###50329###Huyện Nam Trà My" />
+    </Items>
+  </Section>
+</Sections>

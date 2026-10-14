@@ -1,0 +1,31 @@
+﻿<Sections Version="464">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###701###70101###Quận 1" />
+			<Item Value ="0###701###70103###Quận 2 (hết hiệu lực)" />
+			<Item Value ="0###701###70105###Quận 3" />
+			<Item Value ="0###701###70107###Quận 4" />
+			<Item Value ="0###701###70109###Quận 5" />
+			<Item Value ="0###701###70111###Quận 6" />
+			<Item Value ="0###701###70113###Quận 7" />
+			<Item Value ="0###701###70115###Quận 8" />
+			<Item Value ="0###701###70117###Quận 9 (hết hiệu lực)" />
+			<Item Value ="0###701###70119###Quận 10" />
+			<Item Value ="0###701###70121###Quận 11" />
+			<Item Value ="0###701###70123###Quận 12" />
+			<Item Value ="0###701###70125###Quận Gò Vấp" />
+			<Item Value ="0###701###70127###Quận Tân Bình" />
+			<Item Value ="0###701###70128###Quận Tân phú" />
+			<Item Value ="0###701###70129###Quận Bình Thạnh" />
+			<Item Value ="0###701###70131###Quận Phú Nhuận" />
+			<Item Value ="0###701###70133###Quận Thủ Đức (hết hiệu lực)" />
+			<Item Value ="0###701###70134###Quận Bình Tân" />
+			<Item Value ="0###701###70135###Huyện Củ Chi" />
+			<Item Value ="0###701###70137###Huyện Hóc Môn" />
+			<Item Value ="0###701###70139###Huyện Bình Chánh" />
+			<Item Value ="0###701###70141###Huyện Nhà Bè" />
+			<Item Value ="0###701###70143###Huyện Cần Giờ" />
+			<Item Value ="0###701###70145###Thành phố Thủ Đức" />
+		</Items>
+	</Section>	
+</Sections>

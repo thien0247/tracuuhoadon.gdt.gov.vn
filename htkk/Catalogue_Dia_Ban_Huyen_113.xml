@@ -1,0 +1,16 @@
+﻿<Sections Version="523">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###113###11301###Thành phố Nam Định" />
+			<Item Value ="0###113###11303###Huyện Vụ Bản" />
+			<Item Value ="0###113###11305###Huyện Mỹ Lộc (hết hiệu lực)" />
+			<Item Value ="0###113###11307###Huyện Ý Yên" />
+			<Item Value ="0###113###11309###Huyện Nam Trực" />
+			<Item Value ="0###113###11311###Huyện Trực Ninh" />
+			<Item Value ="0###113###11313###Huyện Xuân Trường" />
+			<Item Value ="0###113###11315###Huyện Giao Thuỷ" />
+			<Item Value ="0###113###11317###Huyện Nghĩa Hưng" />
+			<Item Value ="0###113###11319###Huyện Hải Hậu" />
+		</Items>
+	</Section>	
+</Sections>

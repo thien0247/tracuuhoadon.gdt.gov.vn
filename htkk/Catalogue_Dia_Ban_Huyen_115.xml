@@ -1,0 +1,14 @@
+﻿<Sections Version="330">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###115###11501###Thành phố Thái Bình" />
+			<Item Value ="0###115###11503###Huyện Quỳnh Phụ" />
+			<Item Value ="0###115###11505###Huyện Hưng Hà" />
+			<Item Value ="0###115###11507###Huyện Thái Thụy" />
+			<Item Value ="0###115###11509###Huyện Đông Hưng" />
+			<Item Value ="0###115###11511###Huyện Vũ Thư" />
+			<Item Value ="0###115###11513###Huyện Kiến Xương" />
+			<Item Value ="0###115###11515###Huyện Tiền Hải" />
+		</Items>
+	</Section>	
+</Sections>

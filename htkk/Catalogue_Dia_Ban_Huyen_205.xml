@@ -1,0 +1,15 @@
+﻿<Sections Version="428">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###205###20501###Thành phố Lào Cai" />
+			<Item Value ="0###205###20505###Huyện Mường Khương" />
+			<Item Value ="0###205###20507###Huyện Bát Xát" />
+			<Item Value ="0###205###20509###Huyện Bắc Hà" />
+			<Item Value ="0###205###20511###Huyện Bảo Thắng" />
+			<Item Value ="0###205###20513###Thị xã Sa Pa" />
+			<Item Value ="0###205###20515###Huyện Bảo Yên" />
+			<Item Value ="0###205###20519###Huyện Văn Bàn" />
+			<Item Value ="0###205###20521###Huyện Si Ma Cai" />
+		</Items>
+	</Section>	
+</Sections>

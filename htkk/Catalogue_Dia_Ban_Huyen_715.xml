@@ -1,0 +1,16 @@
+﻿<Sections Version="330">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###715###71501###Thành phố  Phan Thiết" />
+			<Item Value ="0###715###71503###Huyện Tuy Phong" />
+			<Item Value ="0###715###71505###Huyện Bắc Bình" />
+			<Item Value ="0###715###71507###Huyện Hàm Thuận Bắc" />
+			<Item Value ="0###715###71509###Huyện Hàm Thuận Nam" />
+			<Item Value ="0###715###71511###Huyện Tánh Linh" />
+			<Item Value ="0###715###71513###Thị xã La Gi" />
+			<Item Value ="0###715###71514###Huyện Hàm Tân" />
+			<Item Value ="0###715###71515###Huyện Đức Linh" />
+			<Item Value ="0###715###71517###Huyện Phú Quý" />
+		</Items>
+	</Section>	
+</Sections>

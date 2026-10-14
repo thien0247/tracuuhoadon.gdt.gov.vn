@@ -1,0 +1,14 @@
+﻿<Sections Version="340">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###809###80901###Thành phố Vĩnh Long" />
+      <Item Value="0###809###80903###Huyện Long Hồ" />
+      <Item Value="0###809###80905###Huyện Mang Thít" />
+      <Item Value="0###809###80907###Thị xã Bình Minh" />
+      <Item Value="0###809###80908###Huyện Bình Tân" />
+      <Item Value="0###809###80909###Huyện Tam Bình" />
+      <Item Value="0###809###80911###Huyện Trà Ôn" />
+      <Item Value="0###809###80913###Huyện Vũng Liêm" />
+    </Items>
+  </Section>
+</Sections>

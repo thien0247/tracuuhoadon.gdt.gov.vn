@@ -1,0 +1,19 @@
+﻿<Sections Version="441">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###203###20301###Thành phố Cao Bằng" />
+      <Item Value="0###203###20303###Huyện Bảo Lạc" />
+      <Item Value="0###203###20305###Huyện Hà Quảng" />
+      <Item Value="0###203###20307###Huyện Thông Nông (hết hiệu lực)" />
+      <Item Value="0###203###20309###Huyện Trà Lĩnh (hết hiệu lực)" />
+      <Item Value="0###203###20311###Huyện Trùng Khánh" />
+      <Item Value="0###203###20313###Huyện Nguyên Bình" />
+      <Item Value="0###203###20315###Huyện Hoà An" />
+      <Item Value="0###203###20317###Huyện Quảng Hòa" />
+      <Item Value="0###203###20318###Huyện Phục Hoà (hết hiệu lực)" />
+      <Item Value="0###203###20319###Huyện Hạ Lang" />
+      <Item Value="0###203###20321###Huyện Thạch An" />
+      <Item Value="0###203###20323###Huyện Bảo Lâm" />	  
+    </Items>
+  </Section>
+</Sections>

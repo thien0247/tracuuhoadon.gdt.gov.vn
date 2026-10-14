@@ -1,0 +1,17 @@
+﻿<Sections Version="519">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###807###80701###Thành phố Mỹ Tho" />
+			<Item Value ="0###807###80703###Thành phố Gò Công" />
+			<Item Value ="0###807###80705###Huyện Tân Phước" />
+			<Item Value ="0###807###80707###Huyện Châu Thành" />
+			<Item Value ="0###807###80709###Huyện Cai Lậy" />
+			<Item Value ="0###807###80711###Huyện Chợ Gạo" />
+			<Item Value ="0###807###80713###Huyện Cái Bè" />
+			<Item Value ="0###807###80715###Huyện Gò Công Tây" />
+			<Item Value ="0###807###80717###Huyện Gò Công Đông" />
+			<Item Value ="0###807###80719###Huyện Tân Phú Đông" />
+			<Item Value ="0###807###80721###Thị Xã Cai Lậy" />
+		</Items>
+	</Section>	
+</Sections>

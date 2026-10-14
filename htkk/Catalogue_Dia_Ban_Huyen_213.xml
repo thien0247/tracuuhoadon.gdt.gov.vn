@@ -1,0 +1,15 @@
+﻿<Sections Version="432">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+      			<Item Value="0###213###21301###Thành phố Yên Bái" />
+			<Item Value ="0###213###21303###Thị xã Nghĩa Lộ" />
+			<Item Value ="0###213###21305###Huyện Lục Yên" />
+			<Item Value ="0###213###21307###Huyện Văn Yên" />
+			<Item Value ="0###213###21309###Huyện Mù Cang Chải" />
+			<Item Value ="0###213###21311###Huyện Trấn Yên" />
+			<Item Value ="0###213###21313###Huyện Yên Bình" />
+			<Item Value ="0###213###21315###Huyện Văn Chấn" />
+			<Item Value ="0###213###21317###Huyện Trạm Tấu" />
+		</Items>
+	</Section>	
+</Sections>

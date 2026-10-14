@@ -1,0 +1,21 @@
+﻿<Sections Version="512">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###605###60501###TP.Buôn Ma Thuột" />
+			<Item Value ="0###605###60503###Huyện Ea H'leo" />
+			<Item Value ="0###605###60505###Huyện Ea Súp" />
+			<Item Value ="0###605###60507###Huyện Krông Năng" />
+			<Item Value ="0###605###60509###Thị xã Buôn Hồ" />
+			<Item Value ="0###605###60511###Huyện Buôn Đôn" />
+			<Item Value ="0###605###60513###Huyện Cư M'gar" />
+			<Item Value ="0###605###60515###Huyện Ea Kar" />
+			<Item Value ="0###605###60517###Huyện M'ĐrắK" />
+			<Item Value ="0###605###60519###Huyện Krông Pắc" />
+			<Item Value ="0###605###60523###Huyện Krông A Na" />
+			<Item Value ="0###605###60525###Huyện Krông Bông" />
+			<Item Value ="0###605###60531###Huyện Lắk" />
+			<Item Value ="0###605###60537###Huyện Cư Kuin" />
+      		<Item Value="0###605###60539###Huyện Krông Búk" />
+		</Items>
+	</Section>	
+</Sections>

@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "skills": {
+    "fastapi-python": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "fastapi-python/SKILL.md",
+      "computedHash": "4521c6090735152b7b8df670cefe5c1c6d1dcaa115de67bb96e74ebf802d4f24"
+    },
+    "postgresql-optimization": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/postgresql-optimization/SKILL.md",
+      "computedHash": "8022448de70ba9a485e3b5bce34c5bbc644f93eb39b68431c9f7dabcf03aeb09"
+    },
+    "sql-best-practices": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "sql-best-practices/SKILL.md",
+      "computedHash": "a7f4ea6fa2b8e6438fd6d3ac4a8826880f666315737ea77e8c29832d616cd547"
+    },
+    "supabase-postgres-best-practices": {
+      "source": "midudev/autoskills",
+      "sourceType": "github",
+      "skillPath": "packages/autoskills/skills-registry/supabase-postgres-best-practices/SKILL.md",
+      "computedHash": "8e41c7417894e6f394614ee7ca3ee5322b1e58d890255d441f42dea98732597f"
+    },
+    "vue-best-practices": {
+      "source": "midudev/autoskills",
+      "sourceType": "github",
+      "skillPath": "packages/autoskills/skills-registry/vue-best-practices/SKILL.md",
+      "computedHash": "6aebf11b392505e1aa40a6805e714c36095830cc3f0a7a41aebffee2854596b8"
+    },
+    "web-perf": {
+      "source": "midudev/autoskills",
+      "sourceType": "github",
+      "skillPath": "packages/autoskills/skills-registry/web-perf/SKILL.md",
+      "computedHash": "a411d7a1d052e39069ad7c898d6b7e22100945a3f104794e0b76e3af480d3f44"
+    },
+    "web-scraping": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "web-scraping/SKILL.md",
+      "computedHash": "29bd2147c7e254f8c431e2778ee8dda44d027d8fd58a4ddbedba68644f6fb00d"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+﻿<Sections Version="432">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###505###50501###Thành phố Quảng Ngãi" />
+      <Item Value="0###505###50503###Huyện Lý Sơn" />
+      <Item Value="0###505###50505###Huyện Bình Sơn" />
+      <Item Value="0###505###50507###Huyện Trà Bồng" />
+      <Item Value="0###505###50508###Huyện Tây Trà (hết hiệu lực)" />
+      <Item Value="0###505###50509###Huyện Sơn Tịnh" />
+      <Item Value="0###505###50511###Huyện Sơn Tây" />
+      <Item Value="0###505###50513###Huyện SƠn Hà" />
+      <Item Value="0###505###50515###Huyện Tư Nghĩa" />
+      <Item Value="0###505###50517###Huyện NGhĩa Hành" />
+      <Item Value="0###505###50519###Huyện MInh Long" />
+      <Item Value="0###505###50521###Huyện Mộ Đức" />
+      <Item Value="0###505###50523###Thị xã Đức Phổ" />
+      <Item Value="0###505###50525###Huyện Ba Tơ" />
+    </Items>
+  </Section>
+</Sections>

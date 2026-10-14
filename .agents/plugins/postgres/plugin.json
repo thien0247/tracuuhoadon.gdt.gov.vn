@@ -1,0 +1,4 @@
+{
+  "name": "postgres",
+  "description": "Tích hợp PostgreSQL MCP Server kết nối CSDL taxdb để truy vấn và phân tích dữ liệu tax_records."
+}

@@ -1,0 +1,15 @@
+﻿<Sections Version="330">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###815###81503###Quận Thốt Nốt" />
+			<Item Value ="0###815###81505###Quận Ô Môn" />
+			<Item Value ="0###815###81519###Quận Ninh Kiều" />
+			<Item Value ="0###815###81521###Quận Bình Thuỷ" />
+			<Item Value ="0###815###81523###Quận Cái Răng" />
+			<Item Value ="0###815###81525###Huyện Vĩnh Thạnh" />
+			<Item Value ="0###815###81527###Huyện Cờ Đỏ" />
+			<Item Value ="0###815###81529###Huyện Phong Điền" />
+			<Item Value ="0###815###81531###Huyện Thới Lai" />
+		</Items>
+	</Section>	
+</Sections>

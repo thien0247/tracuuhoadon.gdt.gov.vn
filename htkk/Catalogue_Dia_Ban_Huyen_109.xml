@@ -1,0 +1,16 @@
+﻿<Sections Version="340">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###109###10901###Thành phố Hưng yên" />
+      <Item Value="0###109###10903###Thị xã Mỹ Hào" />
+      <Item Value="0###109###10905###Huyện Khoái Châu" />
+      <Item Value="0###109###10907###Huyện Ân Thi" />
+      <Item Value="0###109###10909###Huyện Kim Động" />
+      <Item Value="0###109###10911###Huyện Phù Cừ" />
+      <Item Value="0###109###10913###Huyện Tiên Lữ" />
+      <Item Value="0###109###10915###Huyện Văn Giang" />
+      <Item Value="0###109###10917###Huyện Văn Lâm" />
+      <Item Value="0###109###10919###Huyện Yên Mỹ" />
+    </Items>
+  </Section>
+</Sections>

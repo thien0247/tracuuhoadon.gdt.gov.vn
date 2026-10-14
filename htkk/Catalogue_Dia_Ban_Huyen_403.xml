@@ -1,0 +1,27 @@
+﻿<Sections Version="525">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###403###40301###Thành phố Vinh" />
+      <Item Value="0###403###40303###Thị xã Cửa Lò (hết hiệu lực)" />
+      <Item Value="0###403###40305###Huyện Quế Phong" />
+      <Item Value="0###403###40307###Huyện Quỳ Châu" />
+      <Item Value="0###403###40309###Huyện Kỳ Sơn" />
+      <Item Value="0###403###40311###Huyện Quỳ Hợp" />
+      <Item Value="0###403###40313###Huyện Nghĩa Đàn" />
+      <Item Value="0###403###40314###Thị xã Thái Hoà" />
+      <Item Value="0###403###40315###Huyện Tương Dương" />
+      <Item Value="0###403###40317###Huyện Quỳnh Lưu" />
+      <Item Value="0###403###40319###Huyện Tân Kỳ" />
+      <Item Value="0###403###40321###Huyện Con Cuông" />
+      <Item Value="0###403###40323###Huyện Yên Thành" />
+      <Item Value="0###403###40325###Huyện Diễn Châu" />
+      <Item Value="0###403###40327###Huyện Anh Sơn" />
+      <Item Value="0###403###40329###Huyện Đô Lương" />
+      <Item Value="0###403###40331###Huyện Thanh Chương" />
+      <Item Value="0###403###40333###Huyện Nghi Lộc" />
+      <Item Value="0###403###40335###Huyện Nam Đàn" />
+      <Item Value="0###403###40337###Huyện Hưng Nguyên" />
+      <Item Value="0###403###40339###Thị xã Hoàng Mai" />
+    </Items>
+  </Section>
+</Sections>

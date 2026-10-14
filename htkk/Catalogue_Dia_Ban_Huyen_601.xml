@@ -1,0 +1,16 @@
+﻿<Sections Version="340">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###601###60101###Thành phố Kon Tum" />
+      <Item Value="0###601###60103###Huyện Đắk Glei" />
+      <Item Value="0###601###60105###Huyện Ngọc Hồi" />
+      <Item Value="0###601###60107###Huyện Đắk Tô" />
+      <Item Value="0###601###60108###Huyện Kon Rẫy" />
+      <Item Value="0###601###60109###Huyện Kon Plông" />
+      <Item Value="0###601###60111###Huyện Đák Hà" />
+      <Item Value="0###601###60113###Huyện Sa Thầy" />
+      <Item Value="0###601###60114###Huyện Ia H'Drai" />
+      <Item Value="0###601###60115###Huyện  Tu Mơ Rông" />
+    </Items>
+  </Section>
+</Sections>

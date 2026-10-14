@@ -1,0 +1,14 @@
+﻿<Sections Version="428">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###606###60603###Huyện Cư Jút" />
+			<Item Value ="0###606###60605###Huyện Krông Nô" />
+			<Item Value ="0###606###60607###Huyện Đắk Mil" />
+			<Item Value ="0###606###60609###Huyện Đắk Song" />
+			<Item Value ="0###606###60611###Huyện Đắk R'Lấp" />
+			<Item Value ="0###606###60613###Thành phố Gia Nghĩa" />
+			<Item Value ="0###606###60615###Huyện Đắk Glong" />
+			<Item Value ="0###606###60617###Huyện Tuy Đức" />
+		</Items>
+	</Section>	
+</Sections>

@@ -1,0 +1,143 @@
+# 📑 Nhật Ký Thực Thi (Audit Log Index)
+
+Lưu trữ toàn bộ các phiên lập kế hoạch và báo cáo nghiệm thu theo Quy định Rule 6 trong `GEMINI.md`.
+
+---
+
+## Danh Sách Nhật Ký
+
+| STT | Thời Gian | Loại Tài Liệu | Mô Tả | Trạng Thái | Liên Kết |
+|:---:|:---:|:---|:---|:---:|:---|
+| **01** | 2026-09-19 23:40:00 | `implementation_plan` | Kế hoạch áp dụng Template & Chuyển đổi Hybrid Backend sang TypeScript | ✅ Đã phê duyệt | [01_20260919_234000_implementation_plan.md](01_20260919_234000_implementation_plan.md) |
+| **02** | 2026-09-20 00:15:00 | `walkthrough` | Nghiệm thu hoàn thành áp dụng Template & Chuyển đổi Hybrid Backend sang TypeScript | ✅ Đã nghiệm thu | [02_20260920_001500_walkthrough.md](02_20260920_001500_walkthrough.md) |
+| **03** | 2026-09-20 01:00:00 | `walkthrough` | Nghiệm thu toàn diện rà soát giải thuật, Sprint 1, Sprint 2, AI Inspector Mode và Sprint 3 | ✅ Đã nghiệm thu | [03_20260920_010000_walkthrough.md](03_20260920_010000_walkthrough.md) |
+| **04** | 2026-09-20 07:15:00 | `implementation_plan` | Kế hoạch áp dụng toàn diện Template VDDS (Design System, Dark/Light Mode, Layout 50px/240px) | ✅ Đã phê duyệt | [04_20260920_071500_implementation_plan.md](04_20260920_071500_implementation_plan.md) |
+| **05** | 2026-09-20 07:35:00 | `walkthrough` | Nghiệm thu hoàn thành áp dụng VNPT VDDS Design System, Sticky Header 50px, Collapsible Sidebar và Dark/Light Mode | ✅ Đã nghiệm thu | [05_20260920_073500_walkthrough.md](05_20260920_073500_walkthrough.md) |
+| **06** | 2026-09-20 07:55:00 | `implementation_plan` | Kế hoạch phân tích API Xinvoice, lập Topic 03, xây dựng module enrichment bổ sung orgType, address, taxDepartment | ✅ Đã phê duyệt | [06_20260920_075500_implementation_plan.md](06_20260920_075500_implementation_plan.md) |
+| **07** | 2026-09-20 08:15:00 | `walkthrough` | Nghiệm thu hoàn thành phân tích API Xinvoice, Module Enrichment và cập nhật bổ sung theo toàn tỉnh | ✅ Đã nghiệm thu | [07_20260920_081500_walkthrough.md](07_20260920_081500_walkthrough.md) |
+| **08** | 2026-09-20 08:20:00 | `implementation_plan` | Kế hoạch bổ sung Menu Thống Kê & Sync Enrichment cho 62 tỉnh thành | ✅ Đã phê duyệt | [08_20260920_082000_implementation_plan.md](08_20260920_082000_implementation_plan.md) |
+| **09** | 2026-09-20 08:30:00 | `walkthrough` | Nghiệm thu hoàn thành Menu Thống Kê & Giao Diện Quản Lý Sync Enrichment 62 Tỉnh | ✅ Đã nghiệm thu | [09_20260920_083000_walkthrough.md](09_20260920_083000_walkthrough.md) |
+| **10** | 2026-09-20 08:35:00 | `implementation_plan` | Kế hoạch Chuẩn hóa dữ liệu Sync chỉ qua API & Giám sát tiến trình Real-time (Thành công, Thất bại, Thời gian, Tỷ lệ %) | ✅ Đã phê duyệt | [10_20260920_083500_implementation_plan.md](10_20260920_083500_implementation_plan.md) |
+| **11** | 2026-09-20 08:45:00 | `walkthrough` | Nghiệm thu Chuẩn Hóa Dữ Liệu Sync Theo API & Giám Sát Tiến Trình Real-time (Thành công, Thất bại, Thời gian, %) | ✅ Đã nghiệm thu | [11_20260920_084500_walkthrough.md](11_20260920_084500_walkthrough.md) |
+| **12** | 2026-09-20 09:00:00 | `implementation_plan` | Kế hoạch Tích Hợp CSDL Địa Bàn Hành Chính & Cơ Quan Thuế HTKK (Mô Hình 3 Cấp Có Huyện & 2 Cấp Bỏ Huyện) | ✅ Đã phê duyệt | [12_20260920_090000_implementation_plan.md](12_20260920_090000_implementation_plan.md) |
+| **13** | 2026-09-20 09:15:00 | `walkthrough` | Nghiệm thu Tích Hợp CSDL Địa Bàn Hành Chính & Cơ Quan Thuế HTKK (Mô Hình 3 Cấp Có Huyện & 2 Cấp Bỏ Huyện) | ✅ Đã nghiệm thu | [13_20260920_091500_walkthrough.md](13_20260920_091500_walkthrough.md) |
+| **14** | 2026-09-20 09:30:00 | `implementation_plan` | Kế hoạch Chuẩn Hóa Ánh Xạ Dữ Liệu Thuế GDT (tran_dist, pay_taxo_id) với Địa Bàn HTKK 2 Cấp & 3 Cấp | ✅ Đã phê duyệt | [14_20260920_093000_implementation_plan.md](14_20260920_093000_implementation_plan.md) |
+| **15** | 2026-09-20 09:45:00 | `walkthrough` | Nghiệm thu Ánh Xạ Dữ Liệu Thuế GDT với Địa Bàn & Mạng Lưới Thuế HTKK (3 Cấp & 2 Cấp Cải Cách) | ✅ Đã nghiệm thu | [15_20260920_094500_walkthrough.md](15_20260920_094500_walkthrough.md) |
+| **16** | 2026-09-20 10:30:00 | `implementation_plan` | Kế hoạch Nâng Cấp FilterTab: Lọc Theo Tỉnh, Xã Mới & Cơ Quan Thuế Kèm Xuất CSV | ✅ Đã phê duyệt | [16_20260920_103000_implementation_plan.md](16_20260920_103000_implementation_plan.md) |
+| **17** | 2026-09-20 10:45:00 | `walkthrough` | Nghiệm thu Nâng Cấp FilterTab (Lọc Theo Tỉnh, Xã Mới, Cơ Quan Thuế & Xuất CSV) | ✅ Đã nghiệm thu | [17_20260920_104500_walkthrough.md](17_20260920_104500_walkthrough.md) |
+| **18** | 2026-09-20 11:55:00 | `implementation_plan` | Kế hoạch Bổ Sung Tất Cả Tỉnh/Xã Mới Vào FilterTab & Bộ Cột V2, V3 Vào Bảng tax_records | ✅ Đã phê duyệt | [18_20260920_115500_implementation_plan.md](18_20260920_115500_implementation_plan.md) |
+| **19** | 2026-09-20 12:15:00 | `walkthrough` | Nghiệm thu Bổ Sung Tất Cả Tỉnh/Xã Mới Vào FilterTab, Bộ Cột V2/V3 Vào tax_records & Xuất CSV | ✅ Đã nghiệm thu | [19_20260920_121500_walkthrough.md](19_20260920_121500_walkthrough.md) |
+| **20** | 2026-09-20 12:05:00 | `implementation_plan` | Kế hoạch Bổ Sung Ô Tìm Kiếm Trong Combobox & Bộ Lọc Header Cho FilterTab | ✅ Đã phê duyệt | [20_20260920_120500_implementation_plan.md](20_20260920_120500_implementation_plan.md) |
+| **21** | 2026-09-20 12:15:00 | `walkthrough` | Nghiệm thu Ô Tìm Kiếm Trong Combobox & Bộ Lọc Header Thời Gian Thực Cho FilterTab | ✅ Đã nghiệm thu | [21_20260920_121500_walkthrough.md](21_20260920_121500_walkthrough.md) |
+| **22** | 2026-09-20 14:15:00 | `implementation_plan` | Kế hoạch Phân Tích & Xây Dựng Module Cào Bố Cáo Điện Tử DKKD Lưu Vào Bảng Mới | ✅ Đã phê duyệt | [22_20260920_141500_implementation_plan.md](22_20260920_141500_implementation_plan.md) |
+| **23** | 2026-09-20 14:30:00 | `walkthrough` | Nghiệm thu Module Cào Bố Cáo Điện Tử DKKD, Bảng bocao_records & Giao Diện BocaoTab | ✅ Đã nghiệm thu | [23_20260920_143000_walkthrough.md](23_20260920_143000_walkthrough.md) |
+| **24** | 2026-09-20 14:35:00 | `implementation_plan` | Kế hoạch Cào Toàn Bộ Các Trang Bố Cáo & Tra Cứu Doanh Nghiệp Qua API GetSearch DKKD | ✅ Đã phê duyệt | [24_20260920_143500_implementation_plan.md](24_20260920_143500_implementation_plan.md) |
+| **25** | 2026-09-20 14:50:00 | `walkthrough` | Nghiệm thu Cào Toàn Bộ Các Trang Bố Cáo & Tra Cứu Doanh Nghiệp Trực Tuyến DKKD Solr | ✅ Đã nghiệm thu | [25_20260920_145000_walkthrough.md](25_20260920_145000_walkthrough.md) |
+| **26** | 2026-09-20 14:58:00 | `walkthrough` | Nghiệm thu Tra Cứu Solr DKKD Đầy Đủ Chi Tiết & Tích Hợp Toàn Diện Icon Inspector ? | ✅ Đã nghiệm thu | [26_20260920_145800_walkthrough.md](26_20260920_145800_walkthrough.md) |
+| **27** | 2026-09-20 15:00:00 | `implementation_plan` | Kế hoạch Trang Menu Đối Soát Mã Số Doanh Nghiệp bocao_records với CSDL tax_records | ✅ Đã phê duyệt | [27_20260920_150000_implementation_plan.md](27_20260920_150000_implementation_plan.md) |
+| **28** | 2026-09-20 15:15:00 | `walkthrough` | Nghiệm thu Trang Menu Đối Soát Mã Số Doanh Nghiệp bocao_records với CSDL tax_records | ✅ Đã nghiệm thu | [28_20260920_151500_walkthrough.md](28_20260920_151500_walkthrough.md) |
+| **29** | 2026-09-20 16:45:00 | `implementation_plan` | Kế hoạch Bocao Radar (Quét Bù Vào Thuế) & Nâng Cấp CrawlerTab (Chế Độ Gap-Fill & Đỉnh Động) | ✅ Đã phê duyệt | [29_20260920_164500_implementation_plan.md](29_20260920_164500_implementation_plan.md) |
+| **30** | 2026-09-20 17:00:00 | `walkthrough` | Nghiệm thu Bocao Radar (Quét Bù Vào Thuế) & Nâng Cấp CrawlerTab (Chế Độ Gap-Fill & Đỉnh Động) | ✅ Đã nghiệm thu | [30_20260920_170000_walkthrough.md](30_20260920_170000_walkthrough.md) |
+| **31** | 2026-09-20 20:35:00 | `implementation_plan` | Kế hoạch Chuẩn Hóa Prompt & Nâng Cấp CrawlerTab (Lịch Sử Scan Gần Nhất & Mặc Định List View) | ✅ Đã phê duyệt | [31_20260920_203500_implementation_plan.md](31_20260920_203500_implementation_plan.md) |
+| **32** | 2026-09-20 20:45:00 | `walkthrough` | Nghiệm thu Nâng Cấp CrawlerTab (Lịch Sử Scan Gần Nhất & Mặc Định List View) | ✅ Đã nghiệm thu | [32_20260920_204500_walkthrough.md](32_20260920_204500_walkthrough.md) |
+| **33** | 2026-09-21 09:00:00 | `implementation_plan` | Kế hoạch Nâng Cấp FilterTab (Multi-Select Filter & Xuất Excel XLSX) | ✅ Đã phê duyệt | [33_20260921_090000_implementation_plan.md](33_20260921_090000_implementation_plan.md) |
+| **34** | 2026-09-21 09:10:00 | `walkthrough` | Nghiệm thu Nâng Cấp FilterTab (Multi-Select Filter & Xuất Excel XLSX) | ✅ Đã nghiệm thu | [34_20260921_091000_walkthrough.md](34_20260921_091000_walkthrough.md) |
+| **35** | 2026-09-21 09:20:00 | `implementation_plan` | Kế hoạch Bộ Công Cụ Quản Trị Windows Service (service.bat & nssm) | ✅ Đã phê duyệt | [35_20260921_092000_implementation_plan.md](35_20260921_092000_implementation_plan.md) |
+| **36** | 2026-09-21 09:40:00 | `walkthrough` | Nghiệm thu Bộ Công Cụ Quản Trị Windows Service (service.bat & nssm) | ✅ Đã nghiệm thu | [36_20260921_094000_walkthrough.md](36_20260921_094000_walkthrough.md) |
+| **37** | 2026-09-21 09:45:00 | `implementation_plan` | Kế hoạch Xây Dựng Ứng Dụng Python GUI Quản Trị Windows Service | ✅ Đã phê duyệt | [37_20260921_094500_implementation_plan.md](37_20260921_094500_implementation_plan.md) |
+| **38** | 2026-09-21 09:50:00 | `walkthrough` | Nghiệm thu Ứng Dụng Python GUI Quản Trị Windows Service (Color Badges & Logs) | ✅ Đã nghiệm thu | [38_20260921_095000_walkthrough.md](38_20260921_095000_walkthrough.md) |
+| **39** | 2026-09-21 09:52:00 | `implementation_plan` | Kế hoạch Module Auto Crawl Bố Cáo Định Kỳ 2h Cho Component BocaoTab | ✅ Đã phê duyệt | [39_20260921_095200_implementation_plan.md](39_20260921_095200_implementation_plan.md) |
+| **40** | 2026-09-21 10:00:00 | `walkthrough` | Nghiệm thu Module Auto Crawl Bố Cáo Định Kỳ 2h Cho Component BocaoTab | ✅ Đã nghiệm thu | [40_20260921_100000_walkthrough.md](40_20260921_100000_walkthrough.md) |
+| **41** | 2026-09-21 11:10:00 | `implementation_plan` | Kế hoạch Sửa Lỗi Lọc Doanh Nghiệp Theo Đắk Lắk & Xã Mới HTKK V2 | ✅ Đã phê duyệt | [41_20260921_111000_implementation_plan.md](41_20260921_111000_implementation_plan.md) |
+| **42** | 2026-09-21 11:20:00 | `walkthrough` | Nghiệm thu Sửa Lỗi Lọc Doanh Nghiệp Theo Đắk Lắk & Xã Mới HTKK V2 | ✅ Đã nghiệm thu | [42_20260921_112000_walkthrough.md](42_20260921_112000_walkthrough.md) |
+| **43** | 2026-09-22 11:20:00 | `implementation_plan` | Kế hoạch Tái Cấu Trúc Toàn Diện Kiến Trúc Hệ Thống (Topic 07 & CSDL 10M+) | ✅ Đã phê duyệt | [43_20260922_112000_implementation_plan.md](43_20260922_112000_implementation_plan.md) |
+| **44** | 2026-09-22 11:35:00 | `walkthrough` | Nghiệm thu Tái Cấu Trúc Toàn Diện Kiến Trúc Hệ Thống (Topic 07 & CSDL 10M+) | ✅ Đã nghiệm thu | [44_20260922_113500_walkthrough.md](44_20260922_113500_walkthrough.md) |
+| **45** | 2026-09-22 11:45:00 | `implementation_plan` | Kế hoạch Tái Thiết Kế Menu Điều Hướng Theo Nhóm (Phương Án A) | ✅ Đã phê duyệt | [45_20260922_114500_implementation_plan.md](45_20260922_114500_implementation_plan.md) |
+| **46** | 2026-09-22 11:50:00 | `walkthrough` | Nghiệm thu Tái Thiết Kế Menu Điều Hướng Theo Nhóm (Phương Án A) | ✅ Đã nghiệm thu | [46_20260922_115000_walkthrough.md](46_20260922_115000_walkthrough.md) |
+| **47** | 2026-09-22 12:45:00 | `implementation_plan` | Kế hoạch Chuẩn Hóa Prompt & Nâng Cấp CrawlerTab (Crawl Theo Bố Cáo ĐKKD) | ✅ Đã phê duyệt | [47_20260922_124500_implementation_plan.md](47_20260922_124500_implementation_plan.md) |
+| **48** | 2026-09-22 14:10:00 | `walkthrough` | Nghiệm thu Chuẩn Hóa Prompt & Nâng Cấp CrawlerTab (Crawl Theo Bố Cáo ĐKKD) | ✅ Đã nghiệm thu | [48_20260922_141000_walkthrough.md](48_20260922_141000_walkthrough.md) |
+| **49** | 2026-09-22 15:30:00 | `walkthrough` | Nghiệm thu Quét & Nạp Trực Tiếp Toàn Bộ MST Bố Cáo ĐKKD Vào CSDL Thuế | ✅ Đã nghiệm thu | [49_20260922_153000_walkthrough.md](49_20260922_153000_walkthrough.md) |
+| **50** | 2026-09-23 18:10:00 | `implementation_plan` | Kế hoạch Phân Tích CSHARP_WINFORMS_TEMPLATE & Tạo GUI C# WinForms | ✅ Đã phê duyệt | [50_20260923_181000_implementation_plan.md](50_20260923_181000_implementation_plan.md) |
+| **51** | 2026-09-23 18:20:00 | `walkthrough` | Nghiệm thu C# WinForms Native GUI Quản Trị Windows Service (Dual Theme & Port Monitor) | ✅ Đã nghiệm thu | [51_20260923_182000_walkthrough.md](51_20260923_182000_walkthrough.md) |
+| **52** | 2026-09-23 18:45:00 | `implementation_plan` | Kế hoạch Ứng Dụng Graphify & Triển Khai Pha 1 (Codebase Knowledge Graph) | ✅ Đã phê duyệt | [52_20260923_184500_implementation_plan.md](52_20260923_184500_implementation_plan.md) |
+| **53** | 2026-09-23 18:55:00 | `walkthrough` | Nghiệm thu Triển Khai Graphify Pha 1 (Codebase Knowledge Graph, 929 Nodes, HTML/D3 Visual) | ✅ Đã nghiệm thu | [53_20260923_185500_walkthrough.md](53_20260923_185500_walkthrough.md) |
+| **54** | 2026-09-24 17:55:00 | `implementation_plan` | Kế hoạch Tích Hợp Graphify Web Visualizer Vào Local Web Dashboard | ✅ Đã phê duyệt | [54_20260924_175500_implementation_plan.md](54_20260924_175500_implementation_plan.md) |
+| **55** | 2026-09-24 18:05:00 | `walkthrough` | Nghiệm thu Tích Hợp Graphify Visualizer Vào Local Web Dashboard (3 Chế Độ Xem & Làm Mới AST) | ✅ Đã nghiệm thu | [55_20260924_180500_walkthrough.md](55_20260924_180500_walkthrough.md) |
+| **56** | 2026-09-24 19:20:00 | `implementation_plan` | Kế hoạch Tích Hợp Hệ Thống Kỹ Năng, Tiêu Chuẩn & Kiểm Toán Dữ Liệu CodexKit (3 Pha) | ✅ Đã phê duyệt | [56_20260924_192000_implementation_plan.md](56_20260924_192000_implementation_plan.md) |
+| **57** | 2026-09-24 19:40:00 | `walkthrough` | Nghiệm thu Tích Hợp Hệ Thống Kỹ Năng, Tiêu Chuẩn & Kiểm Toán Dữ Liệu CodexKit (3 Pha) | ✅ Đã nghiệm thu | [57_20260924_194000_walkthrough.md](57_20260924_194000_walkthrough.md) |
+| **58** | 2026-09-30 07:00:00 | `implementation_plan` | Kế hoạch Khắc Phục Toàn Diện 7 Vấn Đề Module Quét Đa Tỉnh (Topic 10) | ✅ Đã phê duyệt | [58_20260930_070000_implementation_plan.md](58_20260930_070000_implementation_plan.md) |
+| **59** | 2026-09-30 07:30:00 | `walkthrough` | Nghiệm thu Gia Cố Toàn Diện Workflow Quét Đa Tỉnh & Tính Năng Auto Quét Fill Lỗ Hổng 500 MST (12h) | ✅ Đã nghiệm thu | [59_20260930_073000_walkthrough.md](59_20260930_073000_walkthrough.md) |
+| **60** | 2026-09-30 12:45:00 | `implementation_plan` | Kế hoạch Module Báo Cáo Số Lượng MST Crawl (Ngày, Tháng, Năm & Biểu Đồ) | ✅ Đã phê duyệt | [60_20260930_124500_implementation_plan.md](60_20260930_124500_implementation_plan.md) |
+| **61** | 2026-09-30 13:15:00 | `walkthrough` | Nghiệm thu Module Báo Cáo Số Lượng MST Crawl (Ngày, Tháng, Năm & Biểu Đồ) | ✅ Đã nghiệm thu | [61_20260930_131500_walkthrough.md](61_20260930_131500_walkthrough.md) |
+| **62** | 2026-09-30 14:20:00 | `implementation_plan` | Kế hoạch Bảng Thống Kê Riêng crawl_stats_daily & Hiển Thị Chi Tiết Ngày Cụ Thể | ✅ Đã phê duyệt | [62_20260930_142000_implementation_plan.md](62_20260930_142000_implementation_plan.md) |
+| **63** | 2026-09-30 14:30:00 | `walkthrough` | Nghiệm thu Bảng Thống Kê Riêng crawl_stats_daily & Hiển Thị Chi Tiết Ngày Cụ Thể | ✅ Đã nghiệm thu | [63_20260930_143000_walkthrough.md](63_20260930_143000_walkthrough.md) |
+| **64** | 2026-09-30 14:37:00 | `implementation_plan` | Kế hoạch Bổ Sung Mã Số Thuế Mới Theo Ngày & Kiểm Tra Số Hiển Thị Trên Biểu Đồ | ✅ Đã phê duyệt | [64_20260930_143700_implementation_plan.md](64_20260930_143700_implementation_plan.md) |
+| **65** | 2026-09-30 14:45:00 | `walkthrough` | Nghiệm thu Bổ Sung Mã Số Thuế Mới Theo Ngày & Kiểm Tra Hiển Thị Biểu Đồ | ✅ Đã nghiệm thu | [65_20260930_144500_walkthrough.md](65_20260930_144500_walkthrough.md) |
+| **66** | 2026-09-30 15:55:00 | `implementation_plan` | Kế hoạch Bổ Sung Số Trên Đầu Biểu Đồ & Chi Tiết Theo Ngày Thành Lập Đăng Ký | ✅ Đã phê duyệt | [66_20260930_155500_implementation_plan.md](66_20260930_155500_implementation_plan.md) |
+| **67** | 2026-09-30 16:00:00 | `walkthrough` | Nghiệm thu Hiển Thị Số Trên Đầu Cột Biểu Đồ & Chi Tiết Theo Ngày Thành Lập ĐKKD | ✅ Đã nghiệm thu | [67_20260930_160000_walkthrough.md](67_20260930_160000_walkthrough.md) |
+| **68** | 2026-10-01 14:50:00 | `implementation_plan` | Kế hoạch Bổ Sung Cột Số Điện Thoại (tran_tel) Vào FilterTab & Xuất Dữ Liệu CSV/XLSX | ✅ Đã phê duyệt | [68_20261001_145000_implementation_plan.md](68_20261001_145000_implementation_plan.md) |
+| **69** | 2026-10-01 15:00:00 | `walkthrough` | Nghiệm thu Bổ Sung Cột Số Điện Thoại (tran_tel) Vào FilterTab & Xuất Dữ Liệu CSV/XLSX | ✅ Đã nghiệm thu | [69_20261001_150000_walkthrough.md](69_20261001_150000_walkthrough.md) |
+| **70** | 2026-10-10 17:36:00 | `implementation_plan` | Kế hoạch Chuyển Đổi Toàn Diện Frontend Sang Chuẩn Vue 3 Hiện Đại (Vite + SFC .vue + TypeScript) | ✅ Đã phê duyệt | [70_20261010_173600_implementation_plan.md](70_20261010_173600_implementation_plan.md) |
+| **71** | 2026-10-10 17:48:00 | `walkthrough` | Nghiệm thu Chuyển Đổi Toàn Diện Frontend Sang Chuẩn Vue 3 Hiện Đại (Vite 5 + SFC .vue + TypeScript) | ✅ Đã nghiệm thu | [71_20261010_174800_walkthrough.md](71_20261010_174800_walkthrough.md) |
+| **72** | 2026-10-10 17:52:00 | `implementation_plan` | Kế hoạch Nâng Cấp GUI Control Sang .NET 10 & Tích Hợp WebView2 Vue 3 | ✅ Đã phê duyệt | [72_20261010_175200_implementation_plan.md](72_20261010_175200_implementation_plan.md) |
+| **73** | 2026-10-10 17:55:00 | `walkthrough` | Nghiệm thu Nâng Cấp GUI Control Sang .NET 10 & Tích Hợp WebView2 Vue 3 | ✅ Đã nghiệm thu | [73_20261010_175500_walkthrough.md](73_20261010_175500_walkthrough.md) |
+| **74** | 2026-10-10 18:20:00 | `walkthrough` | Nghiệm thu Nạp Local Vue 3 Vào WebView2 GUI Control (.NET 10) | ✅ Đã nghiệm thu | [74_20261010_182000_walkthrough.md](74_20261010_182000_walkthrough.md) |
+| **75** | 2026-10-10 18:36:00 | `implementation_plan` | Kế hoạch Chuẩn Hóa Cơ Chế Ghi Nhật Ký (Standardized Logging Engine) | ✅ Đã phê duyệt | [75_20261010_183600_implementation_plan.md](75_20261010_183600_implementation_plan.md) |
+| **76** | 2026-10-10 18:45:00 | `walkthrough` | Nghiệm thu Chuẩn Hóa Cơ Chế Ghi Nhật Ký (Standardized Logging Engine) | ✅ Đã nghiệm thu | [76_20261010_184500_walkthrough.md](76_20261010_184500_walkthrough.md) |
+| **77** | 2026-10-11 09:25:00 | `implementation_plan` | Kế hoạch Cơ Chế Single-Instance & Xử Lý Triệt Để Trùng Lặp Icon System Tray | ✅ Đã phê duyệt | [77_20261011_092500_implementation_plan.md](77_20261011_092500_implementation_plan.md) |
+| **78** | 2026-10-11 09:35:00 | `walkthrough` | Nghiệm thu Cơ Chế Single-Instance & Xử Lý Triệt Để Trùng Lặp Icon System Tray | ✅ Đã nghiệm thu | [78_20261011_093500_walkthrough.md](78_20261011_093500_walkthrough.md) |
+| **79** | 2026-10-11 09:50:00 | `implementation_plan` | Kế hoạch Tích Hợp Tab Quản Trị & Điều Khiển Toàn Bộ Các Dịch Vụ Liên Quan | ✅ Đã phê duyệt | [79_20261011_095000_implementation_plan.md](79_20261011_095000_implementation_plan.md) |
+| **80** | 2026-10-11 10:05:00 | `walkthrough` | Nghiệm thu Tích Hợp Tab Quản Trị & Điều Khiển Toàn Bộ Các Dịch Vụ Liên Quan | ✅ Đã nghiệm thu | [80_20261011_100500_walkthrough.md](80_20261011_100500_walkthrough.md) |
+| **81** | 2026-10-11 10:25:00 | `implementation_plan` | Kế hoạch Bổ Sung Tham Số Parameter Để Gọi & Kích Hoạt Dịch Vụ | ✅ Đã phê duyệt | [81_20261011_102500_implementation_plan.md](81_20261011_102500_implementation_plan.md) |
+| **82** | 2026-10-11 10:40:00 | `walkthrough` | Nghiệm thu Bổ Sung Tham Số Parameter Để Gọi & Kích Hoạt Dịch Vụ Hệ Thống | ✅ Đã nghiệm thu | [82_20261011_104000_walkthrough.md](82_20261011_104000_walkthrough.md) |
+| **83** | 2026-10-11 12:10:00 | `walkthrough` | Nghiệm thu Khắc Phục Triệt Để Sự Cố "Lỗi tải bố cáo: TypeError: Failed to fetch" | ✅ Đã nghiệm thu | [83_20261011_121000_walkthrough.md](83_20261011_121000_walkthrough.md) |
+| **84** | 2026-10-11 12:15:00 | `implementation_plan` | Kế hoạch Áp Dụng Mô Hình Service Manager & WebView2 Bridge Từ Muasamcong | ✅ Đã phê duyệt | [84_20261011_121500_implementation_plan.md](84_20261011_121500_implementation_plan.md) |
+| **85** | 2026-10-11 12:30:00 | `walkthrough` | Nghiệm thu Áp Dụng Mô Hình Service Manager & WebView2 Bridge Từ Muasamcong | ✅ Đã nghiệm thu | [85_20261011_123000_walkthrough.md](85_20261011_123000_walkthrough.md) |
+| **86** | 2026-10-11 12:50:00 | `walkthrough` | Nghiệm thu Khắc Phục Triệt Để "Lỗi nạp dữ liệu bố cáo: Failed to fetch" | ✅ Đã nghiệm thu | [86_20261011_125000_walkthrough.md](86_20261011_125000_walkthrough.md) |
+| **87** | 2026-10-13 22:45:00 | `walkthrough` | Nghiệm thu Kiểm Tra & Chuẩn Hóa Toàn Bộ Thư Mục Chứa Code (129 files) | ✅ Đã nghiệm thu | [87_20261013_224500_walkthrough.md](87_20261013_224500_walkthrough.md) |
+| **88** | 2026-10-13 22:55:00 | `implementation_plan` | Kế hoạch Áp Dụng Bộ Template Software Project Chuẩn AI Vào Dự Án | ✅ Đã phê duyệt | [88_20261013_225500_implementation_plan.md](88_20261013_225500_implementation_plan.md) |
+| **89** | 2026-10-13 23:00:00 | `walkthrough` | Nghiệm thu Áp Dụng Bộ Template Software Project Chuẩn AI Từ RAG | ✅ Đã nghiệm thu | [89_20261013_230000_walkthrough.md](89_20261013_230000_walkthrough.md) |
+| **90** | 2026-10-13 23:02:00 | `implementation_plan` | Kế hoạch Áp Dụng Chuẩn Định Danh Bất Biến ULID Toàn Diện (ULID: `01M4V069EVY6CSP27QAG6GXS30`) | ✅ Đã phê duyệt & thực thi | [90_20261013_230200_implementation_plan.md](90_20261013_230200_implementation_plan.md) |
+| **91** | 2026-10-13 23:15:00 | `walkthrough` | Nghiệm thu Triển Khai Toàn Diện Chuẩn Định Danh Bất Biến ULID Cho Toàn Bộ Dự Án | ✅ Đã nghiệm thu | [91_20261013_231500_walkthrough.md](91_20261013_231500_walkthrough.md) |
+| **92** | 2026-10-13 23:20:00 | `implementation_plan` | Kế hoạch Chức Năng Cập Nhật Lại Max TIN Thủ Công (ULID: `01M4V0TG7K99M0K8W6B1V7X6M0`) | ✅ Đã phê duyệt & thực thi | [92_20261013_232000_implementation_plan.md](92_20261013_232000_implementation_plan.md) |
+| **93** | 2026-10-13 23:28:00 | `walkthrough` | Nghiệm thu Chức Năng Cập Nhật Lại Max TIN Thủ Công Cho Toàn Bộ 62 Tỉnh Thành | ✅ Đã nghiệm thu | [93_20261013_232800_walkthrough.md](93_20261013_232800_walkthrough.md) |
+| **94** | 2026-10-13 23:35:00 | `implementation_plan` | Kế hoạch Brainstorm Giải Thuật Scan & Chuẩn Liên Kết `@related` Codebase Bằng ULID | ✅ Đã phê duyệt & thực thi | [94_20261013_233500_implementation_plan.md](94_20261013_233500_implementation_plan.md) |
+| **95** | 2026-10-13 23:45:00 | `walkthrough` | Nghiệm thu Brainstorm Giải Thuật Scan (Adaptive Dynamic Probe) & Mạng Lưới Quan Hệ Code ↔ Docs | ✅ Đã nghiệm thu | [95_20261013_234500_walkthrough.md](95_20261013_234500_walkthrough.md) |
+| **96** | 2026-10-13 23:55:00 | `walkthrough` | Nghiệm thu Đồng Bộ Max TIN 62 Tỉnh Thành & Khởi Chạy Quét Newest Với Adaptive Dynamic Probe | ✅ Đã nghiệm thu | [96_20261013_235500_walkthrough.md](96_20261013_235500_walkthrough.md) |
+| **97** | 2026-10-13 23:58:00 | `walkthrough` | Nghiệm thu Quét Lại Tin Mới Nhất Toàn Quốc (62 Tỉnh Thành, Nạp 795 Doanh Nghiệp Mới) | ✅ Đã nghiệm thu | [97_20261013_235800_walkthrough.md](97_20261013_235800_walkthrough.md) |
+| **98** | 2026-10-14 00:05:00 | `implementation_plan` | Kế hoạch Brainstorm & Tái Cấu Trúc Toàn Diện Module Báo Cáo & Phân Tích (Report & Analytics 2.0) | ✅ Đã phê duyệt & thực thi | [98_20261014_000500_implementation_plan.md](98_20261014_000500_implementation_plan.md) |
+| **99** | 2026-10-14 00:25:00 | `walkthrough` | Nghiệm thu Tái Cấu Trúc Toàn Diện Module Báo Cáo & Phân Tích (34 Tỉnh Sáp Nhập & Độ Đặc Dải Số) | ✅ Đã nghiệm thu | [99_20261014_002500_walkthrough.md](99_20261014_002500_walkthrough.md) |
+| **100** | 2026-10-14 01:15:00 | `walkthrough` | Nghiệm thu Kiểm Tra & Khắc Phục Lỗi Trạng Thái Bảng Điều Khiển Dịch Vụ (GUI C# & Web Services Tab) | ✅ Đã nghiệm thu | [100_20261014_011500_walkthrough.md](100_20261014_011500_walkthrough.md) |
+| **101** | 2026-10-14 01:20:00 | `walkthrough` | Nghiệm thu Khắc Phục Triệt Để Sự Cố "GUI Không Tự Cập Nhật Lại Được" (SSE Auto-Reconnect & Polling) | ✅ Đã nghiệm thu | [101_20261014_012000_walkthrough.md](101_20261014_012000_walkthrough.md) |
+| **102** | 2026-10-14 01:25:00 | `implementation_plan` | Kế Hoạch Brainstorm & Tái Cấu Trúc Toàn Diện Bảng Điều Khiển Dịch Vụ (Resilient & Self-Healing Control Panel) | ✅ Đã phê duyệt & thực thi | [102_20261014_012500_implementation_plan.md](102_20261014_012500_implementation_plan.md) |
+| **103** | 2026-10-14 01:35:00 | `walkthrough` | Báo Cáo Nghiệm Thu: Tái Cấu Trúc Toàn Diện Bảng Điều Khiển Dịch Vụ Tự Phục Hồi (Self-Healing Control Panel & Diagnostics) | ✅ Đã nghiệm thu | [103_20261014_013500_walkthrough.md](103_20261014_013500_walkthrough.md) |
+| **104** | 2026-10-14 01:45:00 | `implementation_plan` | Kế Hoạch Triển Khai: Tối Ưu Hóa Toàn Diện WebView2 (Server Origin 8123 & Khắc Phục Triệt Để Mọi Trang Nghiệp Vụ) | ✅ Đã thực thi | [104_20261014_014500_implementation_plan.md](104_20261014_014500_implementation_plan.md) |
+| **105** | 2026-10-14 01:50:00 | `walkthrough` | Nghiệm Thu Phương Án 2: Server Origin Trực Tiếp Cho WebView2 & Khôi Phục Toàn Diện Mọi Trang | ✅ Đã nghiệm thu | [105_20261014_015000_walkthrough.md](105_20261014_015000_walkthrough.md) |
+| **106** | 2026-10-14 07:30:00 | `implementation_plan` | Kế Hoạch Tái Cấu Trúc Toàn Diện Module Lọc & Xuất Dữ Liệu (Mô Hình 2 Cấp HTKK V2 & 3 Cấp V3, Chuẩn Hóa CQT) | ✅ Đã thực thi | [106_20261014_073000_implementation_plan.md](106_20261014_073000_implementation_plan.md) |
+| **107** | 2026-10-14 07:55:00 | `walkthrough` | Nghiệm Thu Tái Cấu Trúc Toàn Diện Module Lọc & Xuất Dữ Liệu (Song Song HTKK V2 & V3, Chuẩn Hóa CQT & Thuế Cơ Sở) | ✅ Đã nghiệm thu | [107_20261014_075500_walkthrough.md](107_20261014_075500_walkthrough.md) |
+| **108** | 2026-10-14 08:48:00 | `walkthrough` | Nghiệm Thu Audit & Khắc Phục Triệt Để 2 Bộ Lọc Nghiệp Vụ (HTKK V2 & V3), B-Tree Index 7.2M Dòng & Chuẩn Hóa Combobox | ✅ Đã nghiệm thu | [108_20261014_084800_walkthrough.md](108_20261014_084800_walkthrough.md) |
+| **109** | 2026-10-14 17:30:00 | `implementation_plan` | Kế Hoạch Áp Dụng TanStack Table v8 Vào Bảng Tra Cứu Dữ Liệu Doanh Nghiệp | ✅ Đã thực thi | [109_20261014_173000_implementation_plan.md](109_20261014_173000_implementation_plan.md) |
+| **110** | 2026-10-14 17:35:00 | `walkthrough` | Nghiệm Thu Áp Dụng TanStack Table v8 Vào Bảng Tra Cứu Dữ Liệu Doanh Nghiệp | ✅ Đã nghiệm thu | [110_20261014_173500_walkthrough.md](110_20261014_173500_walkthrough.md) |
+| **111** | 2026-10-14 17:45:00 | `walkthrough` | Nghiệm Thu Điều Chỉnh Style Bảng Tra Cứu & Lọc Theo Ma Trận Lưới Google Sheets | ✅ Đã nghiệm thu | [111_20261014_174500_walkthrough.md](111_20261014_174500_walkthrough.md) |
+| **112** | 2026-10-14 17:48:00 | `implementation_plan` | Kế Hoạch Tối Ưu Gap, Resize Cột & Lưu Cache Trình Duyệt Cho Các Bảng Ma Trận | ✅ Đã phê duyệt & thực thi | [112_20261014_174800_implementation_plan.md](112_20261014_174800_implementation_plan.md) |
+| **113** | 2026-10-14 17:50:00 | `walkthrough` | Nghiệm Thu Tối Ưu Gap, Kéo Giãn Cột & Lưu Cache Trình Duyệt Cho Bảng Ma Trận (Google Sheets Density) | ✅ Đã nghiệm thu | [113_20261014_175000_walkthrough.md](113_20261014_175000_walkthrough.md) |
+| **114** | 2026-10-14 17:58:00 | `implementation_plan` | Kế Hoạch Giới Hạn Bảng Xem Trước Mặc Định 50 Dòng, Page Size 30/50/100 & Lưu Cache Mặc Định | ✅ Đã phê duyệt & thực thi | [114_20261014_175800_implementation_plan.md](114_20261014_175800_implementation_plan.md) |
+| **115** | 2026-10-14 18:02:00 | `walkthrough` | Nghiệm Thu Giới Hạn Bảng Xem Trước Mặc Định 50 Dòng, Tùy Chọn Page Size 30/50/100 & Lưu Cache Mặc Định | ✅ Đã nghiệm thu | [115_20261014_180200_walkthrough.md](115_20261014_180200_walkthrough.md) |
+| **116** | 2026-10-14 18:08:00 | `implementation_plan` | Kế Hoạch Tự Động Reload Dữ Liệu Khi Chọn Số Dòng, Lưu Trữ Cache & Hiển Thị URL Query Parameters | ✅ Đã phê duyệt & thực thi | [116_20261014_180800_implementation_plan.md](116_20261014_180800_implementation_plan.md) |
+| **117** | 2026-10-14 18:10:00 | `walkthrough` | Nghiệm Thu Tự Động Reload Dữ Liệu Khi Chọn Số Dòng, Lưu Trữ Cache & Hiển Thị URL Query Parameters | ✅ Đã nghiệm thu | [117_20261014_181000_walkthrough.md](117_20261014_181000_walkthrough.md) |
+| **118** | 2026-10-14 18:15:00 | `implementation_plan` | Kế Hoạch Chuyển Đổi Toàn Bộ Từ Vue Sang Next.js App Router (Full-Stack Unified Với Thư Mục SRC & ULID) | ✅ Đã phê duyệt & thực thi | [118_20261014_181500_implementation_plan.md](118_20261014_181500_implementation_plan.md) |
+| **119** | 2026-10-14 18:53:00 | `walkthrough` | Nghiệm Thu Chuyển Đổi Toàn Bộ Từ Vue Sang Next.js 14 App Router (Full-Stack Unified Với Thư Mục SRC & ULID) | ✅ Đã nghiệm thu | [119_20261014_185300_walkthrough.md](119_20261014_185300_walkthrough.md) |
+
+
+
+
+
+
+
+
+
+
+
+
+
+

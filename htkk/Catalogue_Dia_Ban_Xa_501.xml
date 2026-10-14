@@ -1,0 +1,67 @@
+﻿<Sections Version="526">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+		<Item Value="0###501###50101###5010101###Phường Hải Châu I (hết hiệu lực)" />
+		<Item Value="0###501###50101###5010103###Phường Thạch Thang" />
+		<Item Value="0###501###50101###5010105###Phường Nam Dương (hết hiệu lực)" />
+		<Item Value="0###501###50101###5010107###Phường Thanh Bình" />
+		<Item Value="0###501###50101###5010109###Phường Thuận Phước" />
+		<Item Value="0###501###50101###5010111###Phường Hải Châu II (hết hiệu lực)" />
+		<Item Value="0###501###50101###5010113###Phường Phước Ninh" />
+		<Item Value="0###501###50101###5010115###Phường Hoà Thuận" />
+		<Item Value="0###501###50101###5010117###Phường Bình Hiên (hết hiệu lực)" />
+		<Item Value="0###501###50101###5010119###Phường Bình Thuận" />
+		<Item Value="0###501###50101###5010121###Phường Hoà Cường" />
+		<Item Value="0###501###50101###5010125###Phường Hoà Thuận Đông (hết hiệu lực)" />
+		<Item Value="0###501###50101###5010127###Phường Hoà Thuận Tây" />
+		<Item Value="0###501###50101###5010129###Phường Hoà Cường Nam" />
+		<Item Value="0###501###50101###5010131###Phường Hoà Cường Bắc" />
+		<Item Value="0###501###50101###5010133###Phường Hải Châu" />
+		<Item Value="0###501###50103###5010301###Phường Xuân Hà" />
+		<Item Value="0###501###50103###5010303###Phường Thạc Gián" />
+		<Item Value="0###501###50103###5010305###Phường Tam Thuận (hết hiệu lực)" />
+		<Item Value="0###501###50103###5010309###Phường Tân Chính (hết hiệu lực)" />
+		<Item Value="0###501###50103###5010311###Phường Chính Gián" />
+		<Item Value="0###501###50103###5010313###Phường Vĩnh Trung (hết hiệu lực)" />
+		<Item Value="0###501###50103###5010315###Phường An Khê" />
+		<Item Value="0###501###50103###5010317###Phường Thanh Khê Đông" />
+		<Item Value="0###501###50103###5010319###Phường Thanh Khê Tây" />
+		<Item Value="0###501###50103###5010321###Phường Hoà Khê (hết hiệu lực)" />
+		<Item Value="0###501###50105###5010501###Phường An Hải Tây (hết hiệu lực)" />
+		<Item Value="0###501###50105###5010503###Phường Thọ Quang" />
+		<Item Value="0###501###50105###5010505###Phường Phước Mỹ" />
+		<Item Value="0###501###50105###5010507###Phường Nại Hiên Đông" />
+		<Item Value="0###501###50105###5010509###Phường Mân Thái" />
+		<Item Value="0###501###50105###5010511###Phường An Hải Bắc" />
+		<Item Value="0###501###50105###5010513###Phường An Hải Đông (hết hiệu lực)" />
+		<Item Value="0###501###50105###5010515###Phường An Hải Nam" />
+		<Item Value="0###501###50107###5010701###Phường Hoà Quý" />
+		<Item Value="0###501###50107###5010703###Phường Mỹ An" />
+		<Item Value="0###501###50107###5010704###Phường Khuê Mỹ" />
+		<Item Value="0###501###50107###5010705###Phường Hoà Hải" />
+		<Item Value="0###501###50109###5010901###Phường Hoà Khánh Bắc" />
+		<Item Value="0###501###50109###5010903###Phường Hoà Hiệp Bắc" />
+		<Item Value="0###501###50109###5010905###Phường Hoà Minh" />
+		<Item Value="0###501###50109###5010907###Phường Hoà Hiệp Nam" />
+		<Item Value="0###501###50109###5010909###Phường Hoà Khánh Nam" />
+		<Item Value="0###501###50111###5011101###Xã Hoà Phú" />
+		<Item Value="0###501###50111###5011103###Xã Hoà Sơn" />
+		<Item Value="0###501###50111###5011107###Xã Hoà Châu" />
+		<Item Value="0###501###50111###5011109###Xã Hoà Bắc" />
+		<Item Value="0###501###50111###5011111###Xã Hoà Liên" />
+		<Item Value="0###501###50111###5011113###Xã Hoà Ninh" />
+		<Item Value="0###501###50111###5011117###Xã Hoà Nhơn" />
+		<Item Value="0###501###50111###5011121###Xã Hoà Phong" />
+		<Item Value="0###501###50111###5011123###Xã Hoà Tiến" />
+		<Item Value="0###501###50111###5011125###Xã Hoà Phước" />
+		<Item Value="0###501###50111###5011127###Xã Hoà Khương" />
+		<Item Value="0###501###50115###5011501###Phường Khuê Trung" />
+		<Item Value="0###501###50115###5011503###Phường Hoà Xuân" />
+		<Item Value="0###501###50115###5011505###Phường Hoà Thọ Đông" />
+		<Item Value="0###501###50115###5011507###Phường Hoà Thọ Tây" />
+		<Item Value="0###501###50115###5011509###Phường Hoà An" />
+		<Item Value="0###501###50115###5011511###Phường Hoà Phát" />      
+      
+    </Items>
+  </Section>
+</Sections>

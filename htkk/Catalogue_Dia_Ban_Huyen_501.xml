@@ -1,0 +1,14 @@
+﻿<Sections Version="340">
+  <Section Dynamic="0" MaxRows="0">
+    <Items>
+      <Item Value="0###501###50101###Quận Hải Châu" />
+      <Item Value="0###501###50103###Quận Thanh Khê" />
+      <Item Value="0###501###50105###Quận Sơn Trà" />
+      <Item Value="0###501###50107###Quận Ngũ Hành Sơn" />
+      <Item Value="0###501###50109###Quận Liên Chiểu" />
+      <Item Value="0###501###50111###Huyện Hoà Vang" />
+      <Item Value="0###501###50113###Huyện Đảo Hoàng Sa" />
+      <Item Value="0###501###50115###Quận cẩm lệ" />
+    </Items>
+  </Section>
+</Sections>

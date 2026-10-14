@@ -1,0 +1,14 @@
+﻿<Sections Version="330">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###407###40701###Thành phố Đồng Hới" />
+			<Item Value ="0###407###40703###Huyện Tuyên Hoá" />
+			<Item Value ="0###407###40705###Huyện Minh Hoá" />
+			<Item Value ="0###407###40707###Huyện Quảng Trạch" />
+			<Item Value ="0###407###40709###Huyện Bố Trạch" />
+			<Item Value ="0###407###40711###Huyện Quảng Ninh" />
+			<Item Value ="0###407###40713###Huyện Lệ Thuỷ" />
+			<Item Value ="0###407###40715###Thị Xã Ba Đồn" />
+		</Items>
+	</Section>	
+</Sections>

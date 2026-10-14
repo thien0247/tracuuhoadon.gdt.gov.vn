@@ -1,0 +1,23 @@
+﻿<Sections Version="340">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###603###60301###Thành phố Pleiku" />
+			<Item Value ="0###603###60303###Huyện Kbang" />
+			<Item Value ="0###603###60305###Huyện Mang Yang" />
+			<Item Value ="0###603###60307###Huyện Chư Păh" />
+			<Item Value ="0###603###60309###Huyện Ia Grai" />
+			<Item Value ="0###603###60311###Thị xã An Khê" />
+			<Item Value ="0###603###60313###Huyện Kông Chro" />
+			<Item Value ="0###603###60315###Huyện Đức Cơ" />
+			<Item Value ="0###603###60317###Huyện Chư Prông" />
+			<Item Value ="0###603###60319###Huyện Chư Sê" />
+			<Item Value ="0###603###60320###Huyện IaPa" />
+			<Item Value ="0###603###60321###Thị xã Ayun Pa" />
+			<Item Value ="0###603###60323###Huyện Krông Pa" />
+			<Item Value ="0###603###60325###Huyện Đak Đoa" />
+      			<Item Value="0###603###60327###Huyện ĐakPơ" />
+			<Item Value ="0###603###60329###Huyện Phú Thiện" />
+			<Item Value ="0###603###60331###Huyện Chư Pưh" />
+		</Items>
+	</Section>	
+</Sections>

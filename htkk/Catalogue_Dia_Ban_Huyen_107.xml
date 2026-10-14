@@ -1,0 +1,18 @@
+﻿<Sections Version="425">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###107###10701###Thành phố Hải Dương" />
+			<Item Value ="0###107###10703###Thành phố Chí Linh" />
+			<Item Value ="0###107###10705###Huyện Nam Sách" />
+			<Item Value ="0###107###10707###Huyện Thanh Hà" />
+			<Item Value ="0###107###10709###Thị xã Kinh Môn" />
+			<Item Value ="0###107###10711###Huyện Kim Thành" />
+			<Item Value ="0###107###10713###Huyện Gia Lộc" />
+			<Item Value ="0###107###10715###Huyện Tứ Kỳ" />
+			<Item Value ="0###107###10717###Huyện Cẩm Giàng" />
+			<Item Value ="0###107###10719###Huyện Bình Giang" />
+			<Item Value ="0###107###10721###Huyện Thanh Miện" />
+			<Item Value ="0###107###10723###Huyện Ninh Giang" />
+		</Items>
+	</Section>	
+</Sections>

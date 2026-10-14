@@ -1,0 +1,1203 @@
+using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using System.IO;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
+using System.ServiceProcess;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
+
+namespace GDTTaxCrawlerManager
+{
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
+        }
+    }
+
+    public class MainForm : Form
+    {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        extern static bool DestroyIcon(IntPtr handle);
+
+        // =====================================================================
+        //  1. CẤU HÌNH DỰ ÁN
+        // =====================================================================
+        private const string APP_TITLE = "GDT Tax Crawler - Quản Lý Dịch Vụ & Máy Chủ";
+        private const string APP_SUBTITLE = "Hệ thống Vét Cạn Mã Số Thuế & Tra Cứu Doanh Nghiệp (Fastify 8123 + Python 8124)";
+        private const string SERVICE_NAME = "GDTTaxCrawler";
+        private const int DEFAULT_PORT = 8123;
+        private const int DEFAULT_WORKER_PORT = 8124;
+
+        private string appDir;
+        private string projectRootDir;
+        private string configFile;
+        private string serviceBatFile;
+        private string logsDir;
+
+        // =====================================================================
+        //  2. THEME ENGINE (BẢNG MÀU SÁNG / TỐI)
+        // =====================================================================
+        public class AppTheme
+        {
+            public string Name;
+            public Color FormBg;
+            public Color HeaderBg;
+            public Color HeaderTitle;
+            public Color HeaderSub;
+            public Color CardBg;
+            public Color CardBorder;
+            public Color TextPrimary;
+            public Color TextSecondary;
+            public Color InputBg;
+            public Color InputBorder;
+            public Color InputText;
+            public Color LogBg;
+            public Color LogHeaderBg;
+            public Color FooterBg;
+            public Color FooterText;
+            public Color SecondaryBtnBg;
+            public Color SecondaryBtnHover;
+            public Color SecondaryBtnText;
+        }
+
+        private AppTheme currentTheme;
+        private string currentThemeName = "light";
+
+        // =====================================================================
+        //  3. CÁC CONTROL GIAO DIỆN
+        // =====================================================================
+        private Panel pnlHeader;
+        private Label lblLogo;
+        private Label lblTitle;
+        private Label lblSub;
+        private Button btnThemeToggle;
+        private Button btnOpenBrowserTop;
+
+        private Panel pnlContent;
+
+        // Thẻ Trạng Thái (Status Card)
+        private Panel pnlStatusCard;
+        private Panel ledPanel;
+        private Color currentLedColor = Color.FromArgb(113, 113, 122);
+        private Label lblStatusTag;
+        private Label lblStatus;
+        private Label lblUrl;
+        private Label lblServiceInfo;
+        private Label lblPid;
+        private Label lblPort8123Status;
+        private Label lblPort8124Status;
+
+        // Thẻ Nút Hành Động Lớn (Hero Action)
+        private Panel pnlHeroButton;
+        private Button btnHeroAction;
+
+        // Thẻ Điều Khiển (Service Control Card)
+        private Panel pnlActions;
+        private Label lblActionTitle;
+        private Button btnRegister;
+        private Button btnUnregister;
+        private Button btnStart;
+        private Button btnStop;
+        private Button btnRestart;
+
+        // Thẻ Cấu Hình Port & Tiện Ích
+        private Panel pnlPort;
+        private Label lblPortTitle;
+        private TextBox txtPort;
+        private Button btnSavePort;
+        private Button btnOpenLogs;
+        private Button btnOpenWorker;
+        private Button btnRefresh;
+
+        // Thẻ Khung Log (Log Container)
+        private Panel pnlLogContainer;
+        private Panel pnlLogHeader;
+        private Label lblLogTitle;
+        private Button btnClearLog;
+        private RichTextBox rtbLog;
+
+        // Thanh Footer
+        private Panel pnlFooter;
+        private Label lblFooter;
+
+        // Timer & Khay Hệ Thống
+        private System.Windows.Forms.Timer statusTimer;
+        private NotifyIcon trayIcon;
+        private ContextMenuStrip trayMenu;
+        private Icon lastCreatedIcon = null;
+
+        // =====================================================================
+        //  4. KHỞI TẠO FORM & VÒNG ĐỜI
+        // =====================================================================
+        public MainForm()
+        {
+            InitializePaths();
+            currentThemeName = GetSavedTheme();
+            currentTheme = (currentThemeName == "dark") ? GetDarkTheme() : GetLightTheme();
+
+            InitializeComponent();
+            InitializeTrayIcon();
+
+            ApplyTheme(currentThemeName);
+
+            CheckAdminAndLog();
+            UpdateServiceStatus();
+
+            statusTimer = new System.Windows.Forms.Timer();
+            statusTimer.Interval = 2500;
+            statusTimer.Tick += delegate { UpdateServiceStatus(); };
+            statusTimer.Start();
+        }
+
+        private void InitializePaths()
+        {
+            appDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
+            // Thư mục gốc dự án (cha của service_gui_csharp hoặc chính nó)
+            DirectoryInfo parent = Directory.GetParent(appDir);
+            projectRootDir = (parent != null && File.Exists(Path.Combine(parent.FullName, "service.bat"))) 
+                ? parent.FullName 
+                : appDir;
+
+            configFile = Path.Combine(appDir, "config.json");
+            serviceBatFile = Path.Combine(projectRootDir, "service.bat");
+            logsDir = Path.Combine(projectRootDir, "logs");
+        }
+
+        // =====================================================================
+        //  5. THIẾT KẾ GIAO DIỆN
+        // =====================================================================
+        private void InitializeComponent()
+        {
+            this.Text = APP_TITLE;
+            this.Size = new Size(820, 830);
+            this.MinimumSize = new Size(780, 750);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.Font = new Font("Segoe UI", 9.5f, FontStyle.Regular);
+
+            int clientW = this.ClientSize.Width;
+            int contentPadding = 20;
+            int cardW = clientW - (contentPadding * 2);
+
+            this.Resize += delegate {
+                if (this.WindowState == FormWindowState.Minimized)
+                {
+                    this.Hide();
+                    if (trayIcon != null)
+                    {
+                        trayIcon.ShowBalloonTip(1200, APP_TITLE,
+                            "Ứng dụng đang chạy ngầm ở khay hệ thống. Click đúp để mở lại.", ToolTipIcon.Info);
+                    }
+                }
+            };
+
+            this.FormClosing += delegate(object s, FormClosingEventArgs e) {
+                if (e.CloseReason == CloseReason.UserClosing)
+                {
+                    e.Cancel = true;
+                    this.Hide();
+                    if (trayIcon != null)
+                    {
+                        trayIcon.ShowBalloonTip(1200, APP_TITLE,
+                            "Ứng dụng đã được ẩn xuống khay đồng hồ.", ToolTipIcon.Info);
+                    }
+                }
+            };
+
+            // -------------------------------------------------------------
+            // [A] HEADER BAR
+            // -------------------------------------------------------------
+            pnlHeader = new Panel();
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Height = 68;
+            pnlHeader.Width = clientW;
+            pnlHeader.Padding = new Padding(20, 12, 20, 0);
+
+            lblLogo = new Label();
+            lblLogo.Text = "🏛️";
+            lblLogo.Font = new Font("Segoe UI", 18f);
+            lblLogo.Size = new Size(44, 44);
+            lblLogo.TextAlign = ContentAlignment.MiddleCenter;
+            lblLogo.BackColor = Color.FromArgb(79, 70, 229);
+            lblLogo.ForeColor = Color.White;
+            lblLogo.Location = new Point(20, 12);
+            pnlHeader.Controls.Add(lblLogo);
+
+            lblTitle = new Label();
+            lblTitle.Text = APP_TITLE;
+            lblTitle.Font = new Font("Segoe UI", 14f, FontStyle.Bold);
+            lblTitle.AutoSize = true;
+            lblTitle.Location = new Point(74, 10);
+            pnlHeader.Controls.Add(lblTitle);
+
+            lblSub = new Label();
+            lblSub.Text = APP_SUBTITLE;
+            lblSub.Font = new Font("Segoe UI", 8.5f);
+            lblSub.AutoSize = true;
+            lblSub.Location = new Point(76, 38);
+            pnlHeader.Controls.Add(lblSub);
+
+            btnOpenBrowserTop = CreateButton("🌐 Mở Web", Color.FromArgb(37, 99, 235), 115, 36);
+            btnOpenBrowserTop.Location = new Point(clientW - 135, 16);
+            btnOpenBrowserTop.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnOpenBrowserTop.Click += delegate { OpenBrowser(); };
+            pnlHeader.Controls.Add(btnOpenBrowserTop);
+
+            btnThemeToggle = CreateButton("🌙 Giao Diện Tối", Color.FromArgb(226, 232, 240), 145, 36);
+            btnThemeToggle.Location = new Point(clientW - 290, 16);
+            btnThemeToggle.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnThemeToggle.Click += delegate { ToggleTheme(); };
+            pnlHeader.Controls.Add(btnThemeToggle);
+
+            // -------------------------------------------------------------
+            // [B] CONTENT CONTAINER (CHỨA CÁC THẺ CARD)
+            // -------------------------------------------------------------
+            pnlContent = new Panel();
+            pnlContent.Dock = DockStyle.Fill;
+            pnlContent.Width = clientW;
+            pnlContent.Padding = new Padding(20, 10, 20, 12);
+
+            // 1. Thẻ Trạng Thái Kép (Dual Status Card)
+            pnlStatusCard = new Panel();
+            pnlStatusCard.Dock = DockStyle.Top;
+            pnlStatusCard.Height = 78;
+            pnlStatusCard.Width = cardW;
+            pnlStatusCard.Padding = new Padding(15, 8, 15, 8);
+
+            ledPanel = new Panel();
+            ledPanel.Size = new Size(24, 24);
+            ledPanel.Location = new Point(16, 18);
+            ledPanel.Paint += new PaintEventHandler(LedPanel_Paint);
+            pnlStatusCard.Controls.Add(ledPanel);
+
+            lblStatusTag = new Label();
+            lblStatusTag.Text = "DỊCH VỤ:";
+            lblStatusTag.Font = new Font("Segoe UI", 9.5f, FontStyle.Bold);
+            lblStatusTag.AutoSize = true;
+            lblStatusTag.Location = new Point(48, 12);
+            pnlStatusCard.Controls.Add(lblStatusTag);
+
+            lblStatus = new Label();
+            lblStatus.Text = "ĐANG KIỂM TRA...";
+            lblStatus.Font = new Font("Segoe UI", 11f, FontStyle.Bold);
+            lblStatus.AutoSize = true;
+            lblStatus.Location = new Point(118, 10);
+            pnlStatusCard.Controls.Add(lblStatus);
+
+            lblUrl = new Label();
+            lblUrl.Text = string.Format("Dashboard: http://localhost:{0}", GetSavedPort());
+            lblUrl.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            lblUrl.AutoSize = true;
+            lblUrl.Location = new Point(48, 36);
+            pnlStatusCard.Controls.Add(lblUrl);
+
+            lblPort8123Status = new Label();
+            lblPort8123Status.Text = "Port 8123: ●";
+            lblPort8123Status.Font = new Font("Segoe UI", 8.5f, FontStyle.Bold);
+            lblPort8123Status.AutoSize = true;
+            lblPort8123Status.Location = new Point(48, 55);
+            pnlStatusCard.Controls.Add(lblPort8123Status);
+
+            lblPort8124Status = new Label();
+            lblPort8124Status.Text = "Port 8124 (Worker): ●";
+            lblPort8124Status.Font = new Font("Segoe UI", 8.5f, FontStyle.Bold);
+            lblPort8124Status.AutoSize = true;
+            lblPort8124Status.Location = new Point(200, 55);
+            pnlStatusCard.Controls.Add(lblPort8124Status);
+
+            lblServiceInfo = new Label();
+            lblServiceInfo.Text = "Service: " + SERVICE_NAME;
+            lblServiceInfo.Font = new Font("Segoe UI", 9f);
+            lblServiceInfo.AutoSize = true;
+            lblServiceInfo.Location = new Point(cardW - 250, 12);
+            lblServiceInfo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pnlStatusCard.Controls.Add(lblServiceInfo);
+
+            lblPid = new Label();
+            lblPid.Text = "Thư mục: " + projectRootDir;
+            lblPid.Font = new Font("Segoe UI", 8f);
+            lblPid.AutoSize = true;
+            lblPid.Location = new Point(cardW - 350, 38);
+            lblPid.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pnlStatusCard.Controls.Add(lblPid);
+
+            Panel sp1 = CreateSpacer(10);
+
+            // 2. Thẻ Nút Hành Động Lớn (Hero Button)
+            pnlHeroButton = new Panel();
+            pnlHeroButton.Dock = DockStyle.Top;
+            pnlHeroButton.Height = 46;
+            pnlHeroButton.Width = cardW;
+
+            btnHeroAction = new Button();
+            btnHeroAction.Dock = DockStyle.Fill;
+            btnHeroAction.Text = "🌐 MỞ WEB DASHBOARD TRA CỨU THUẾ (PORT 8123)";
+            btnHeroAction.Font = new Font("Segoe UI", 11f, FontStyle.Bold);
+            btnHeroAction.BackColor = Color.FromArgb(37, 99, 235);
+            btnHeroAction.ForeColor = Color.White;
+            btnHeroAction.FlatStyle = FlatStyle.Flat;
+            btnHeroAction.FlatAppearance.BorderSize = 0;
+            btnHeroAction.Cursor = Cursors.Hand;
+            btnHeroAction.Click += delegate { OpenBrowser(); };
+            pnlHeroButton.Controls.Add(btnHeroAction);
+
+            Panel sp2 = CreateSpacer(10);
+
+            // 3. Thẻ Điều Khiển Dịch Vụ (Service Actions Card)
+            pnlActions = new Panel();
+            pnlActions.Dock = DockStyle.Top;
+            pnlActions.Height = 85;
+            pnlActions.Width = cardW;
+            pnlActions.Padding = new Padding(15, 8, 15, 8);
+
+            lblActionTitle = new Label();
+            lblActionTitle.Text = "ĐIỀU KHIỂN DỊCH VỤ WINDOWS";
+            lblActionTitle.Font = new Font("Segoe UI", 9.5f, FontStyle.Bold);
+            lblActionTitle.AutoSize = true;
+            lblActionTitle.Location = new Point(12, 10);
+            pnlActions.Controls.Add(lblActionTitle);
+
+            btnRegister   = CreateButton("➕ Đăng Ký", Color.FromArgb(5, 150, 105), 115, 36);
+            btnUnregister = CreateButton("🗑️ Gỡ Dịch Vụ", Color.FromArgb(220, 38, 38), 125, 36);
+            btnStart      = CreateButton("▶️ Start", Color.FromArgb(22, 163, 74), 105, 36);
+            btnStop       = CreateButton("⏹️ Stop", Color.FromArgb(185, 28, 28), 105, 36);
+            btnRestart    = CreateButton("🔄 Reset", Color.FromArgb(217, 119, 6), 105, 36);
+
+            btnRegister.Location   = new Point(14, 38);
+            btnUnregister.Location = new Point(135, 38);
+            btnStart.Location      = new Point(266, 38);
+            btnStop.Location       = new Point(377, 38);
+            btnRestart.Location    = new Point(488, 38);
+
+            btnRegister.Click   += delegate { ActionRegister(); };
+            btnUnregister.Click += delegate { ActionUnregister(); };
+            btnStart.Click      += delegate { ActionStart(); };
+            btnStop.Click       += delegate { ActionStop(); };
+            btnRestart.Click    += delegate { ActionRestart(); };
+
+            pnlActions.Controls.Add(btnRegister);
+            pnlActions.Controls.Add(btnUnregister);
+            pnlActions.Controls.Add(btnStart);
+            pnlActions.Controls.Add(btnStop);
+            pnlActions.Controls.Add(btnRestart);
+
+            Panel sp3 = CreateSpacer(10);
+
+            // 4. Thẻ Cấu Hình Cổng & Tiện Ích (Config Card)
+            pnlPort = new Panel();
+            pnlPort.Dock = DockStyle.Top;
+            pnlPort.Height = 55;
+            pnlPort.Width = cardW;
+            pnlPort.Padding = new Padding(15, 8, 15, 8);
+
+            lblPortTitle = new Label();
+            lblPortTitle.Text = "Cổng Web:";
+            lblPortTitle.Font = new Font("Segoe UI", 9.5f, FontStyle.Bold);
+            lblPortTitle.AutoSize = true;
+            lblPortTitle.Location = new Point(14, 16);
+            pnlPort.Controls.Add(lblPortTitle);
+
+            txtPort = new TextBox();
+            txtPort.Font = new Font("Segoe UI", 10.5f, FontStyle.Bold);
+            txtPort.BorderStyle = BorderStyle.FixedSingle;
+            txtPort.TextAlign = HorizontalAlignment.Center;
+            txtPort.Size = new Size(70, 26);
+            txtPort.Location = new Point(95, 13);
+            txtPort.Text = GetSavedPort().ToString();
+            pnlPort.Controls.Add(txtPort);
+
+            btnSavePort = CreateButton("💾 Lưu Port", Color.FromArgb(79, 70, 229), 100, 30);
+            btnSavePort.Location = new Point(172, 12);
+            btnSavePort.Click += delegate { ActionChangePort(); };
+            pnlPort.Controls.Add(btnSavePort);
+
+            btnOpenLogs = CreateButton("📁 Xem Logs", Color.FromArgb(100, 116, 139), 105, 30);
+            btnOpenLogs.Location = new Point(280, 12);
+            btnOpenLogs.Click += delegate { OpenLogsFolder(); };
+            pnlPort.Controls.Add(btnOpenLogs);
+
+            btnOpenWorker = CreateButton("⚡ AI Worker (8124)", Color.FromArgb(139, 92, 246), 140, 30);
+            btnOpenWorker.Location = new Point(393, 12);
+            btnOpenWorker.Click += delegate { OpenWorkerApi(); };
+            pnlPort.Controls.Add(btnOpenWorker);
+
+            btnRefresh = CreateButton("🔍 Quét Lại", Color.FromArgb(51, 65, 85), 95, 30);
+            btnRefresh.Location = new Point(cardW - 105, 12);
+            btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRefresh.Click += delegate { UpdateServiceStatus(); Log("Đã làm mới trạng thái hệ thống.", "STATUS"); };
+            pnlPort.Controls.Add(btnRefresh);
+
+            Panel sp4 = CreateSpacer(10);
+
+            // 5. Thanh Footer
+            pnlFooter = new Panel();
+            pnlFooter.Dock = DockStyle.Bottom;
+            pnlFooter.Height = 32;
+            pnlFooter.Width = cardW;
+            pnlFooter.Padding = new Padding(5, 6, 5, 0);
+
+            lblFooter = new Label();
+            lblFooter.Text = "Hệ thống: " + SERVICE_NAME + " • Thu nhỏ để chạy ngầm khay đồng hồ • Đóng để ẩn";
+            lblFooter.Font = new Font("Segoe UI", 8.5f);
+            lblFooter.AutoSize = true;
+            lblFooter.Location = new Point(5, 6);
+            pnlFooter.Controls.Add(lblFooter);
+
+            // 6. Thẻ Hộp Log Đa Luồng (Log Terminal)
+            pnlLogContainer = new Panel();
+            pnlLogContainer.Dock = DockStyle.Fill;
+            pnlLogContainer.Width = cardW;
+            pnlLogContainer.Padding = new Padding(0, 4, 0, 4);
+
+            pnlLogHeader = new Panel();
+            pnlLogHeader.Dock = DockStyle.Top;
+            pnlLogHeader.Height = 28;
+            pnlLogHeader.Width = cardW;
+
+            lblLogTitle = new Label();
+            lblLogTitle.Text = "NHẬT KÝ HOẠT ĐỘNG (LOGS)";
+            lblLogTitle.Font = new Font("Segoe UI", 8.5f, FontStyle.Bold);
+            lblLogTitle.AutoSize = true;
+            lblLogTitle.Location = new Point(4, 6);
+            pnlLogHeader.Controls.Add(lblLogTitle);
+
+            btnClearLog = CreateButton("🧹 Xóa Logs", Color.FromArgb(63, 63, 70), 90, 24);
+            btnClearLog.Font = new Font("Segoe UI", 8f);
+            btnClearLog.Location = new Point(cardW - 95, 2);
+            btnClearLog.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnClearLog.Click += delegate { rtbLog.Clear(); };
+            pnlLogHeader.Controls.Add(btnClearLog);
+
+            rtbLog = new RichTextBox();
+            rtbLog.Dock = DockStyle.Fill;
+            rtbLog.Font = new Font("Consolas", 9.5f);
+            rtbLog.BorderStyle = BorderStyle.None;
+            rtbLog.ReadOnly = true;
+
+            pnlLogContainer.Controls.Add(rtbLog);
+            pnlLogContainer.Controls.Add(pnlLogHeader);
+
+            AttachCardPaint(pnlStatusCard);
+            AttachCardPaint(pnlActions);
+            AttachCardPaint(pnlPort);
+            AttachCardPaint(pnlLogContainer);
+
+            pnlContent.Controls.Add(pnlLogContainer);
+            pnlContent.Controls.Add(pnlFooter);
+            pnlContent.Controls.Add(sp4);
+            pnlContent.Controls.Add(pnlPort);
+            pnlContent.Controls.Add(sp3);
+            pnlContent.Controls.Add(pnlActions);
+            pnlContent.Controls.Add(sp2);
+            pnlContent.Controls.Add(pnlHeroButton);
+            pnlContent.Controls.Add(sp1);
+            pnlContent.Controls.Add(pnlStatusCard);
+
+            this.Controls.Add(pnlContent);
+            this.Controls.Add(pnlHeader);
+        }
+
+        private Panel CreateSpacer(int height)
+        {
+            Panel sp = new Panel();
+            sp.Dock = DockStyle.Top;
+            sp.Height = height;
+            return sp;
+        }
+
+        // =====================================================================
+        //  6. THEME ENGINE
+        // =====================================================================
+        private AppTheme GetLightTheme()
+        {
+            return new AppTheme
+            {
+                Name = "light",
+                FormBg = Color.FromArgb(241, 245, 249),
+                HeaderBg = Color.FromArgb(255, 255, 255),
+                HeaderTitle = Color.FromArgb(15, 23, 42),
+                HeaderSub = Color.FromArgb(100, 116, 139),
+                CardBg = Color.FromArgb(255, 255, 255),
+                CardBorder = Color.FromArgb(203, 213, 225),
+                TextPrimary = Color.FromArgb(15, 23, 42),
+                TextSecondary = Color.FromArgb(100, 116, 139),
+                InputBg = Color.FromArgb(248, 250, 252),
+                InputBorder = Color.FromArgb(203, 213, 225),
+                InputText = Color.FromArgb(15, 23, 42),
+                LogBg = Color.FromArgb(15, 23, 42),
+                LogHeaderBg = Color.FromArgb(30, 41, 59),
+                FooterBg = Color.FromArgb(241, 245, 249),
+                FooterText = Color.FromArgb(100, 116, 139),
+                SecondaryBtnBg = Color.FromArgb(226, 232, 240),
+                SecondaryBtnHover = Color.FromArgb(203, 213, 225),
+                SecondaryBtnText = Color.FromArgb(30, 41, 59)
+            };
+        }
+
+        private AppTheme GetDarkTheme()
+        {
+            return new AppTheme
+            {
+                Name = "dark",
+                FormBg = Color.FromArgb(19, 19, 22),
+                HeaderBg = Color.FromArgb(24, 24, 29),
+                HeaderTitle = Color.FromArgb(244, 244, 245),
+                HeaderSub = Color.FromArgb(161, 161, 170),
+                CardBg = Color.FromArgb(31, 31, 38),
+                CardBorder = Color.FromArgb(45, 45, 56),
+                TextPrimary = Color.FromArgb(244, 244, 245),
+                TextSecondary = Color.FromArgb(161, 161, 170),
+                InputBg = Color.FromArgb(19, 19, 22),
+                InputBorder = Color.FromArgb(55, 65, 81),
+                InputText = Color.FromArgb(244, 244, 245),
+                LogBg = Color.FromArgb(13, 13, 17),
+                LogHeaderBg = Color.FromArgb(26, 26, 32),
+                FooterBg = Color.FromArgb(19, 19, 22),
+                FooterText = Color.FromArgb(113, 113, 122),
+                SecondaryBtnBg = Color.FromArgb(45, 45, 56),
+                SecondaryBtnHover = Color.FromArgb(59, 59, 74),
+                SecondaryBtnText = Color.FromArgb(244, 244, 245)
+            };
+        }
+
+        private void ApplyTheme(string themeName)
+        {
+            currentThemeName = (themeName == "dark") ? "dark" : "light";
+            currentTheme = (currentThemeName == "dark") ? GetDarkTheme() : GetLightTheme();
+
+            this.BackColor = currentTheme.FormBg;
+            this.ForeColor = currentTheme.TextPrimary;
+
+            if (pnlHeader != null) pnlHeader.BackColor = currentTheme.HeaderBg;
+            if (lblTitle != null) lblTitle.ForeColor = currentTheme.HeaderTitle;
+            if (lblSub != null) lblSub.ForeColor = currentTheme.HeaderSub;
+
+            if (btnThemeToggle != null)
+            {
+                if (currentThemeName == "dark")
+                {
+                    btnThemeToggle.Text = "☀️ Giao Diện Sáng";
+                    btnThemeToggle.BackColor = Color.FromArgb(45, 45, 56);
+                    btnThemeToggle.ForeColor = Color.FromArgb(244, 244, 245);
+                    btnThemeToggle.FlatAppearance.MouseOverBackColor = Color.FromArgb(59, 59, 74);
+                }
+                else
+                {
+                    btnThemeToggle.Text = "🌙 Giao Diện Tối";
+                    btnThemeToggle.BackColor = Color.FromArgb(226, 232, 240);
+                    btnThemeToggle.ForeColor = Color.FromArgb(15, 23, 42);
+                    btnThemeToggle.FlatAppearance.MouseOverBackColor = Color.FromArgb(203, 213, 225);
+                }
+            }
+
+            if (pnlContent != null) pnlContent.BackColor = currentTheme.FormBg;
+            if (pnlStatusCard != null) pnlStatusCard.BackColor = currentTheme.CardBg;
+            if (lblStatusTag != null) lblStatusTag.ForeColor = currentTheme.TextSecondary;
+            if (lblServiceInfo != null) lblServiceInfo.ForeColor = currentTheme.TextSecondary;
+            if (lblPid != null) lblPid.ForeColor = currentTheme.TextSecondary;
+
+            if (pnlActions != null) pnlActions.BackColor = currentTheme.CardBg;
+            if (lblActionTitle != null) lblActionTitle.ForeColor = currentTheme.TextPrimary;
+
+            if (pnlPort != null) pnlPort.BackColor = currentTheme.CardBg;
+            if (lblPortTitle != null) lblPortTitle.ForeColor = currentTheme.TextPrimary;
+            if (txtPort != null)
+            {
+                txtPort.BackColor = currentTheme.InputBg;
+                txtPort.ForeColor = currentTheme.InputText;
+            }
+
+            if (pnlFooter != null) pnlFooter.BackColor = currentTheme.FooterBg;
+            if (lblFooter != null) lblFooter.ForeColor = currentTheme.FooterText;
+
+            if (pnlLogContainer != null) pnlLogContainer.BackColor = currentTheme.CardBg;
+            if (pnlLogHeader != null) pnlLogHeader.BackColor = currentTheme.LogHeaderBg;
+            if (lblLogTitle != null) lblLogTitle.ForeColor = (currentThemeName == "light") ? Color.FromArgb(226, 232, 240) : currentTheme.TextSecondary;
+            if (btnClearLog != null)
+            {
+                btnClearLog.BackColor = (currentThemeName == "light") ? Color.FromArgb(51, 65, 85) : currentTheme.SecondaryBtnBg;
+                btnClearLog.ForeColor = Color.FromArgb(244, 244, 245);
+            }
+            if (rtbLog != null) rtbLog.BackColor = currentTheme.LogBg;
+
+            Color linkColor = (currentThemeName == "light") ? Color.FromArgb(2, 132, 199) : Color.FromArgb(56, 189, 248);
+            if (lblUrl != null) lblUrl.ForeColor = linkColor;
+
+            if (pnlStatusCard != null) pnlStatusCard.Invalidate();
+            if (pnlActions != null) pnlActions.Invalidate();
+            if (pnlPort != null) pnlPort.Invalidate();
+            if (pnlLogContainer != null) pnlLogContainer.Invalidate();
+        }
+
+        private void ToggleTheme()
+        {
+            string nextTheme = (currentThemeName == "light") ? "dark" : "light";
+            ApplyTheme(nextTheme);
+            SaveTheme(nextTheme);
+            Log(string.Format("Đã chuyển giao diện sang: {0}", (nextTheme == "light") ? "Sáng (Light)" : "Tối (Dark)"), "STATUS");
+        }
+
+        private void AttachCardPaint(Panel p)
+        {
+            if (p == null) return;
+            p.Paint += delegate(object s, PaintEventArgs e) {
+                if (currentTheme != null)
+                {
+                    using (Pen pen = new Pen(currentTheme.CardBorder, 1))
+                    {
+                        e.Graphics.DrawRectangle(pen, 0, 0, p.ClientSize.Width - 1, p.ClientSize.Height - 1);
+                    }
+                }
+            };
+        }
+
+        private Button CreateButton(string text, Color bg, int width, int height)
+        {
+            Button btn = new Button();
+            btn.Text = text;
+            btn.BackColor = bg;
+            btn.ForeColor = Color.White;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            btn.Size = new Size(width, height);
+            btn.Cursor = Cursors.Hand;
+            btn.FlatAppearance.MouseOverBackColor = ControlPaint.Light(bg, 0.15f);
+            btn.FlatAppearance.MouseDownBackColor = ControlPaint.Dark(bg, 0.15f);
+            return btn;
+        }
+
+        // =====================================================================
+        //  7. ĐÈN LED TRẠNG THÁI GDI+ KHỬ RĂNG CƯA
+        // =====================================================================
+        private void LedPanel_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            using (SolidBrush brush = new SolidBrush(currentLedColor))
+            {
+                e.Graphics.FillEllipse(brush, 2, 2, 20, 20);
+            }
+            using (Pen ringPen = new Pen(Color.FromArgb(70, currentLedColor), 2f))
+            {
+                e.Graphics.DrawEllipse(ringPen, 1, 1, 22, 22);
+            }
+        }
+
+        private void SetLedColor(Color c)
+        {
+            currentLedColor = c;
+            ledPanel.Invalidate();
+        }
+
+        // =====================================================================
+        //  8. KHAY HỆ THỐNG VỚI ICON ĐỘNG
+        // =====================================================================
+        private void InitializeTrayIcon()
+        {
+            trayMenu = new ContextMenuStrip();
+            trayMenu.Font = new Font("Segoe UI", 9f);
+
+            ToolStripMenuItem mnuOpenBrowser = new ToolStripMenuItem("🌐 Mở Web Dashboard");
+            mnuOpenBrowser.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            mnuOpenBrowser.Click += delegate { OpenBrowser(); };
+
+            ToolStripMenuItem mnuOpenWorker = new ToolStripMenuItem("⚡ Mở Python Worker API");
+            mnuOpenWorker.Click += delegate { OpenWorkerApi(); };
+
+            ToolStripSeparator sep1 = new ToolStripSeparator();
+
+            ToolStripMenuItem mnuStart = new ToolStripMenuItem("▶️ Start Dịch Vụ");
+            mnuStart.Click += delegate { ActionStart(); };
+
+            ToolStripMenuItem mnuStop = new ToolStripMenuItem("⏹️ Stop Dịch Vụ");
+            mnuStop.Click += delegate { ActionStop(); };
+
+            ToolStripMenuItem mnuRestart = new ToolStripMenuItem("🔄 Reset Dịch Vụ");
+            mnuRestart.Click += delegate { ActionRestart(); };
+
+            ToolStripSeparator sep2 = new ToolStripSeparator();
+
+            ToolStripMenuItem mnuToggleTheme = new ToolStripMenuItem("🌓 Đổi Giao Diện (Sáng/Tối)");
+            mnuToggleTheme.Click += delegate { ToggleTheme(); };
+
+            ToolStripSeparator sep3 = new ToolStripSeparator();
+
+            ToolStripMenuItem mnuRestore = new ToolStripMenuItem("📱 Mở Cửa Sổ");
+            mnuRestore.Click += delegate { RestoreWindow(); };
+
+            ToolStripMenuItem mnuExit = new ToolStripMenuItem("❌ Thoát Hoàn Toàn");
+            mnuExit.Click += delegate { ExitApplication(); };
+
+            trayMenu.Items.Add(mnuOpenBrowser);
+            trayMenu.Items.Add(mnuOpenWorker);
+            trayMenu.Items.Add(sep1);
+            trayMenu.Items.Add(mnuStart);
+            trayMenu.Items.Add(mnuStop);
+            trayMenu.Items.Add(mnuRestart);
+            trayMenu.Items.Add(sep2);
+            trayMenu.Items.Add(mnuToggleTheme);
+            trayMenu.Items.Add(sep3);
+            trayMenu.Items.Add(mnuRestore);
+            trayMenu.Items.Add(mnuExit);
+
+            trayIcon = new NotifyIcon();
+            trayIcon.Text = APP_TITLE;
+            trayIcon.ContextMenuStrip = trayMenu;
+            trayIcon.Visible = true;
+
+            trayIcon.DoubleClick += delegate { RestoreWindow(); };
+            UpdateTrayIcon(Color.FromArgb(113, 113, 122));
+        }
+
+        private void RestoreWindow()
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            this.BringToFront();
+            this.Activate();
+        }
+
+        private void ExitApplication()
+        {
+            if (trayIcon != null)
+            {
+                trayIcon.Visible = false;
+                trayIcon.Dispose();
+            }
+            Application.Exit();
+        }
+
+        private void UpdateTrayIcon(Color color)
+        {
+            try
+            {
+                using (Bitmap bmp = new Bitmap(32, 32))
+                {
+                    using (Graphics g = Graphics.FromImage(bmp))
+                    {
+                        g.SmoothingMode = SmoothingMode.AntiAlias;
+                        g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+                        g.Clear(Color.Transparent);
+
+                        using (SolidBrush brush = new SolidBrush(color))
+                        {
+                            g.FillEllipse(brush, 1, 1, 30, 30);
+                        }
+
+                        using (Pen pen = new Pen(Color.FromArgb(80, 255, 255, 255), 2))
+                        {
+                            g.DrawEllipse(pen, 2, 2, 28, 28);
+                        }
+
+                        using (Font f = new Font("Segoe UI", 14f, FontStyle.Bold, GraphicsUnit.Pixel))
+                        {
+                            TextRenderer.DrawText(g, "G", f, new Rectangle(0, 0, 32, 32),
+                                Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                        }
+                    }
+
+                    IntPtr hIcon = bmp.GetHicon();
+                    Icon newIcon = Icon.FromHandle(hIcon);
+
+                    if (trayIcon != null) trayIcon.Icon = newIcon;
+                    this.Icon = newIcon;
+
+                    if (lastCreatedIcon != null)
+                    {
+                        DestroyIcon(lastCreatedIcon.Handle);
+                        lastCreatedIcon.Dispose();
+                    }
+                    lastCreatedIcon = newIcon;
+                }
+            }
+            catch { }
+        }
+
+        // =====================================================================
+        //  9. HỆ THỐNG LOG ĐA LUỒNG AN TOÀN
+        // =====================================================================
+        public void Log(string message, string level)
+        {
+            if (rtbLog.InvokeRequired)
+            {
+                rtbLog.BeginInvoke(new Action<string, string>(Log), message, level);
+                return;
+            }
+
+            string time = DateTime.Now.ToString("HH:mm:ss");
+            string prefix = string.Format("[{0}] [{1}] ", time, level);
+
+            Color color = (currentThemeName == "light") ? Color.FromArgb(226, 232, 240) : Color.FromArgb(244, 244, 245);
+            if (level == "SUCCESS") color = Color.FromArgb(34, 197, 94);
+            else if (level == "ERROR") color = Color.FromArgb(239, 68, 68);
+            else if (level == "WARN") color = Color.FromArgb(245, 158, 11);
+            else if (level == "STATUS") color = Color.FromArgb(6, 182, 212);
+
+            rtbLog.SelectionStart = rtbLog.TextLength;
+            rtbLog.SelectionLength = 0;
+            rtbLog.SelectionColor = Color.FromArgb(148, 163, 184);
+            rtbLog.AppendText(string.Format("[{0}] ", time));
+
+            rtbLog.SelectionColor = color;
+            rtbLog.AppendText(string.Format("[{0}] {1}\n", level, message));
+
+            rtbLog.SelectionStart = rtbLog.TextLength;
+            rtbLog.ScrollToCaret();
+        }
+
+        // =====================================================================
+        //  10. KIỂM TRA TRẠNG THÁI HỆ THỐNG & PORT
+        // =====================================================================
+        private void UpdateServiceStatus()
+        {
+            ThreadPool.QueueUserWorkItem(delegate {
+                int status = GetServiceStatus();
+                int port = GetSavedPort();
+                bool isPort8123 = CheckTcpPortListening(port);
+                bool isPort8124 = CheckTcpPortListening(DEFAULT_WORKER_PORT);
+
+                this.BeginInvoke(new Action(delegate {
+                    if (status == 1) // Running
+                    {
+                        lblStatus.Text = "ĐANG CHẠY (RUNNING)";
+                        lblStatus.ForeColor = Color.FromArgb(22, 163, 74);
+                        SetLedColor(Color.FromArgb(34, 197, 94));
+                        UpdateTrayIcon(Color.FromArgb(34, 197, 94));
+                        btnStart.Enabled = false;
+                        btnStop.Enabled = true;
+                        btnRestart.Enabled = true;
+                        btnHeroAction.BackColor = Color.FromArgb(22, 163, 74);
+                    }
+                    else if (status == 0) // Stopped
+                    {
+                        lblStatus.Text = "ĐÃ DỪNG (STOPPED)";
+                        lblStatus.ForeColor = Color.FromArgb(220, 38, 38);
+                        SetLedColor(Color.FromArgb(239, 68, 68));
+                        UpdateTrayIcon(Color.FromArgb(239, 68, 68));
+                        btnStart.Enabled = true;
+                        btnStop.Enabled = false;
+                        btnRestart.Enabled = false;
+                        btnHeroAction.BackColor = Color.FromArgb(100, 116, 139);
+                    }
+                    else // Not Installed (-1)
+                    {
+                        lblStatus.Text = "CHƯA ĐĂNG KÝ (NOT INSTALLED)";
+                        lblStatus.ForeColor = Color.FromArgb(148, 163, 184);
+                        SetLedColor(Color.FromArgb(113, 113, 122));
+                        UpdateTrayIcon(Color.FromArgb(113, 113, 122));
+                        btnStart.Enabled = false;
+                        btnStop.Enabled = false;
+                        btnRestart.Enabled = false;
+                        btnHeroAction.BackColor = Color.FromArgb(100, 116, 139);
+                    }
+
+                    // Cập nhật trạng thái Port
+                    if (isPort8123)
+                    {
+                        lblPort8123Status.Text = string.Format("Port {0} (Dashboard): SẴN SÀNG ✓", port);
+                        lblPort8123Status.ForeColor = Color.FromArgb(22, 163, 74);
+                    }
+                    else
+                    {
+                        lblPort8123Status.Text = string.Format("Port {0} (Dashboard): Chưa kết nối", port);
+                        lblPort8123Status.ForeColor = Color.FromArgb(148, 163, 184);
+                    }
+
+                    if (isPort8124)
+                    {
+                        lblPort8124Status.Text = string.Format("Port {0} (Worker): SẴN SÀNG ✓", DEFAULT_WORKER_PORT);
+                        lblPort8124Status.ForeColor = Color.FromArgb(22, 163, 74);
+                    }
+                    else
+                    {
+                        lblPort8124Status.Text = string.Format("Port {0} (Worker): Chưa kết nối", DEFAULT_WORKER_PORT);
+                        lblPort8124Status.ForeColor = Color.FromArgb(148, 163, 184);
+                    }
+
+                    lblUrl.Text = string.Format("Dashboard: http://localhost:{0}", port);
+                }));
+            });
+        }
+
+        private int GetServiceStatus()
+        {
+            try
+            {
+                using (ServiceController sc = new ServiceController(SERVICE_NAME))
+                {
+                    if (sc.Status == ServiceControllerStatus.Running) return 1;
+                    if (sc.Status == ServiceControllerStatus.Stopped) return 0;
+                    return 2; // Transitioning
+                }
+            }
+            catch
+            {
+                return -1; // Không tìm thấy service
+            }
+        }
+
+        private bool CheckTcpPortListening(int port)
+        {
+            try
+            {
+                IPGlobalProperties props = IPGlobalProperties.GetIPGlobalProperties();
+                IPEndPoint[] listeners = props.GetActiveTcpListeners();
+                foreach (IPEndPoint ep in listeners)
+                {
+                    if (ep.Port == port) return true;
+                }
+            }
+            catch { }
+            return false;
+        }
+
+        // =====================================================================
+        //  11. CÁC HÀNH ĐỘNG ĐIỀU KHIỂN (ACTIONS)
+        // =====================================================================
+        private void RunServiceBat(string arg, string actionLabel)
+        {
+            Log(string.Format("Đang thực hiện lệnh: {0} ({1})...", actionLabel, arg), "STATUS");
+            ThreadPool.QueueUserWorkItem(delegate {
+                try
+                {
+                    if (!File.Exists(serviceBatFile))
+                    {
+                        Log("Không tìm thấy tệp service.bat tại: " + serviceBatFile, "ERROR");
+                        return;
+                    }
+
+                    ProcessStartInfo psi = new ProcessStartInfo();
+                    psi.FileName = "cmd.exe";
+                    psi.Arguments = string.Format("/c \"\"{0}\" {1}\"", serviceBatFile, arg);
+                    psi.WorkingDirectory = projectRootDir;
+                    psi.UseShellExecute = false;
+                    psi.RedirectStandardOutput = true;
+                    psi.RedirectStandardError = true;
+                    psi.CreateNoWindow = true;
+
+                    using (Process p = Process.Start(psi))
+                    {
+                        string output = p.StandardOutput.ReadToEnd();
+                        string error = p.StandardError.ReadToEnd();
+                        p.WaitForExit(15000);
+
+                        if (!string.IsNullOrEmpty(output))
+                        {
+                            string[] lines = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                            foreach (string line in lines)
+                            {
+                                string l = line.Trim();
+                                if (!string.IsNullOrEmpty(l) && !l.Contains("==") && !l.Contains("--"))
+                                {
+                                    Log(l, "INFO");
+                                }
+                            }
+                        }
+
+                        if (p.ExitCode == 0)
+                        {
+                            Log(string.Format("Hoàn tất lệnh: {0} thành công.", actionLabel), "SUCCESS");
+                        }
+                        else
+                        {
+                            Log(string.Format("Lệnh {0} kết thúc với mã {1}. {2}", actionLabel, p.ExitCode, error), "WARN");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log(string.Format("Lỗi thực thi {0}: {1}", actionLabel, ex.Message), "ERROR");
+                }
+
+                this.BeginInvoke(new Action(UpdateServiceStatus));
+            });
+        }
+
+        private void ActionRegister()
+        {
+            RunServiceBat("register", "Đăng Ký Dịch Vụ");
+        }
+
+        private void ActionUnregister()
+        {
+            if (MessageBox.Show("Bạn có chắc chắn muốn gỡ bỏ dịch vụ " + SERVICE_NAME + " khỏi Windows?", 
+                "Xác Nhận Gỡ Dịch Vụ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                RunServiceBat("uninstall", "Gỡ Dịch Vụ");
+            }
+        }
+
+        private void ActionStart()
+        {
+            RunServiceBat("start", "Khởi Động Dịch Vụ");
+        }
+
+        private void ActionStop()
+        {
+            RunServiceBat("stop", "Dừng Dịch Vụ");
+        }
+
+        private void ActionRestart()
+        {
+            RunServiceBat("restart", "Khởi Động Lại Dịch Vụ");
+        }
+
+        private void ActionChangePort()
+        {
+            int p;
+            if (int.TryParse(txtPort.Text.Trim(), out p) && p > 0 && p <= 65535)
+            {
+                SavePort(p);
+                Log(string.Format("Đã lưu cổng Web mới: {0}", p), "SUCCESS");
+                UpdateServiceStatus();
+            }
+            else
+            {
+                MessageBox.Show("Cổng không hợp lệ! Vui lòng nhập số từ 1 đến 65535.", "Cổng Không Hợp Lệ", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void OpenBrowser()
+        {
+            int port = GetSavedPort();
+            string url = string.Format("http://localhost:{0}", port);
+            Log("Mở trình duyệt: " + url, "STATUS");
+            try { Process.Start(url); } catch { }
+        }
+
+        private void OpenWorkerApi()
+        {
+            string url = string.Format("http://localhost:{0}", DEFAULT_WORKER_PORT);
+            Log("Mở API Worker: " + url, "STATUS");
+            try { Process.Start(url); } catch { }
+        }
+
+        private void OpenLogsFolder()
+        {
+            try
+            {
+                if (!Directory.Exists(logsDir)) Directory.CreateDirectory(logsDir);
+                Process.Start("explorer.exe", logsDir);
+                Log("Đã mở thư mục logs: " + logsDir, "STATUS");
+            }
+            catch (Exception ex)
+            {
+                Log("Không thể mở thư mục logs: " + ex.Message, "ERROR");
+            }
+        }
+
+        private void CheckAdminAndLog()
+        {
+            Log("Khởi động GDT Tax Crawler Service Manager...", "STATUS");
+            if (IsAdministrator())
+            {
+                Log("Quyền Thực Thi: Administrator (Đầy đủ chức năng quản trị Service).", "SUCCESS");
+            }
+            else
+            {
+                Log("Lưu ý: Ứng dụng đang chạy ở quyền User thường. Cần Administrator để Start/Stop dịch vụ.", "WARN");
+            }
+        }
+
+        private bool IsAdministrator()
+        {
+            try
+            {
+                WindowsIdentity id = WindowsIdentity.GetCurrent();
+                WindowsPrincipal p = new WindowsPrincipal(id);
+                return p.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            catch { return false; }
+        }
+
+        // =====================================================================
+        //  12. CẤU HÌNH JSON (CONFIG.JSON)
+        // =====================================================================
+        private int GetSavedPort()
+        {
+            if (File.Exists(configFile))
+            {
+                try
+                {
+                    string txt = File.ReadAllText(configFile, Encoding.UTF8);
+                    int idx = txt.IndexOf("\"port\":");
+                    if (idx >= 0)
+                    {
+                        string sub = txt.Substring(idx + 7);
+                        int end = sub.IndexOfAny(new[] { ',', '}', '\r', '\n' });
+                        if (end > 0)
+                        {
+                            int p;
+                            if (int.TryParse(sub.Substring(0, end).Trim(), out p)) return p;
+                        }
+                    }
+                }
+                catch { }
+            }
+            return DEFAULT_PORT;
+        }
+
+        private void SavePort(int port)
+        {
+            try
+            {
+                string json = string.Format("{{\n  \"port\": {0},\n  \"worker_port\": {1},\n  \"theme\": \"{2}\"\n}}", 
+                    port, DEFAULT_WORKER_PORT, currentThemeName);
+                File.WriteAllText(configFile, json, new UTF8Encoding(false));
+            }
+            catch { }
+        }
+
+        private string GetSavedTheme()
+        {
+            if (File.Exists(configFile))
+            {
+                try
+                {
+                    string txt = File.ReadAllText(configFile, Encoding.UTF8);
+                    int idx = txt.IndexOf("\"theme\":");
+                    if (idx >= 0)
+                    {
+                        string sub = txt.Substring(idx + 8);
+                        int q1 = sub.IndexOf('"');
+                        if (q1 >= 0)
+                        {
+                            int q2 = sub.IndexOf('"', q1 + 1);
+                            if (q2 > q1)
+                            {
+                                string t = sub.Substring(q1 + 1, q2 - q1 - 1).Trim().ToLower();
+                                if (t == "light" || t == "dark") return t;
+                            }
+                        }
+                    }
+                }
+                catch { }
+            }
+            return "light";
+        }
+
+        private void SaveTheme(string theme)
+        {
+            try
+            {
+                int port = GetSavedPort();
+                string json = string.Format("{{\n  \"port\": {0},\n  \"worker_port\": {1},\n  \"theme\": \"{2}\"\n}}", 
+                    port, DEFAULT_WORKER_PORT, theme);
+                File.WriteAllText(configFile, json, new UTF8Encoding(false));
+            }
+            catch { }
+        }
+    }
+}

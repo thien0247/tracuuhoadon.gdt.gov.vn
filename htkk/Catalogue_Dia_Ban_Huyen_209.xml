@@ -1,0 +1,17 @@
+﻿<Sections Version="330">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###209###20901###Thành phố Lạng Sơn" />
+			<Item Value ="0###209###20903###Huyện Tràng Định" />
+			<Item Value ="0###209###20905###Huyện Văn Lãng" />
+			<Item Value ="0###209###20907###Huyện Bình Gia" />
+			<Item Value ="0###209###20909###Huyện Bắc Sơn" />
+			<Item Value ="0###209###20911###Huyện Văn Quan" />
+			<Item Value ="0###209###20913###Huyện Cao Lộc" />
+			<Item Value ="0###209###20915###Huyện Lộc Bình" />
+			<Item Value ="0###209###20917###Huyện Chi Lăng" />
+			<Item Value ="0###209###20919###Huyện Đình Lập" />
+			<Item Value ="0###209###20921###Huyện Hữu Lũng" />
+		</Items>
+	</Section>	
+</Sections>

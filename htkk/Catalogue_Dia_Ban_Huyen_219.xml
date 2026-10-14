@@ -1,0 +1,15 @@
+﻿<Sections Version="432">
+	<Section Dynamic="0" MaxRows="0">
+		<Items>
+			<Item Value ="0###219###21901###Thành phố Vĩnh Yên" />
+			<Item Value ="0###219###21902###Thị xã Phúc Yên" />
+			<Item Value ="0###219###21903###Huyện Lập Thạch" />
+			<Item Value ="0###219###21904###Huyện Tam Đảo" />
+			<Item Value ="0###219###21905###Huyện Tam Dương" />
+			<Item Value ="0###219###21907###Huyện Vĩnh Tường" />
+			<Item Value ="0###219###21909###Huyện Yên Lạc" />
+			<Item Value ="0###219###21913###Huyện Bình Xuyên" />
+			<Item Value ="0###219###21915###Huyện Sông Lô" />
+		</Items>
+	</Section>	
+</Sections>
