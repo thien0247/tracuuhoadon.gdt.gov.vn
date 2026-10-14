@@ -19,19 +19,27 @@ const getLogClass = (log: string) => {
 
 export default function ConsoleLog({ logs = [], autoScroll = true, onChangeAutoScroll, onClearLogs }: ConsoleLogProps) {
   const logContainerRef = useRef<HTMLDivElement | null>(null);
+  const [expanded, setExpanded] = React.useState(true);
 
   useEffect(() => {
-    if (autoScroll && logContainerRef.current) {
+    if (autoScroll && expanded && logContainerRef.current) {
       logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
     }
-  }, [logs.length, autoScroll]);
+  }, [logs.length, autoScroll, expanded]);
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700 space-y-3">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-bold text-slate-800 dark:text-slate-100">📋 Nhật Ký Đa Tỉnh Real-time (Console Log)</span>
-        <div className="flex items-center gap-3">
-          <label className="flex items-center gap-1.5 cursor-pointer text-xs font-semibold text-slate-600 dark:text-slate-300">
+    <div className="bg-white dark:bg-slate-800 rounded-xl p-3 shadow-sm border border-slate-200 dark:border-slate-700 space-y-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="text-xs font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5 hover:text-indigo-600 transition"
+        >
+          <span>📋 Nhật Ký Đa Tỉnh Real-time ({logs.length})</span>
+          <span className="text-[10px] text-slate-400">{expanded ? '▼ Thu gọn' : '▶ Mở rộng'}</span>
+        </button>
+        <div className="flex items-center gap-2.5">
+          <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-semibold text-slate-600 dark:text-slate-300">
             <input
               type="checkbox"
               checked={autoScroll}
@@ -42,24 +50,26 @@ export default function ConsoleLog({ logs = [], autoScroll = true, onChangeAutoS
           </label>
           <button
             onClick={onClearLogs}
-            className="text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 px-3 py-1 rounded-lg transition-all"
+            className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 px-2.5 py-0.5 rounded-lg transition-all"
           >
             Xóa Log
           </button>
         </div>
       </div>
 
-      <div ref={logContainerRef} className="bg-slate-900 text-slate-100 font-mono text-xs p-4 rounded-xl h-60 overflow-y-auto space-y-1 shadow-inner">
-        {logs.length === 0 ? (
-          <div className="text-slate-500 italic">Chưa có dữ liệu log...</div>
-        ) : (
-          logs.map((log, idx) => (
-            <div key={idx} className={getLogClass(log)}>
-              {log}
-            </div>
-          ))
-        )}
-      </div>
+      {expanded && (
+        <div ref={logContainerRef} className="bg-slate-900 text-slate-100 font-mono text-[11px] p-3 rounded-lg h-44 overflow-y-auto space-y-0.5 shadow-inner">
+          {logs.length === 0 ? (
+            <div className="text-slate-500 italic">Chưa có dữ liệu log...</div>
+          ) : (
+            logs.map((log, idx) => (
+              <div key={idx} className={getLogClass(log)}>
+                {log}
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }

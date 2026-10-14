@@ -142,7 +142,7 @@ export default function DashboardPage() {
           onStartNewest={startAllNewestProvinces} onStartAll={startAllProvinces} onStopAll={stopAllProvinces}
         />
 
-        <main className="flex-1 min-w-0 p-2.5 sm:p-3 md:p-4 pb-16 md:pb-4 space-y-3 overflow-x-hidden">
+        <main className="flex-1 min-w-0 p-2 sm:p-2.5 md:p-3.5 pb-16 md:pb-4 space-y-2.5 overflow-x-hidden">
           <MasterMetrics
             master={master} maxRps={Number(systemConfig.max_global_rps) || 32}
             onChangeRps={changeGlobalRps} onUpdateRps={(v) => { void saveGlobalRps(v); }}
@@ -150,7 +150,7 @@ export default function DashboardPage() {
 
           <div className={activeTab === 'services' ? '' : 'hidden'}><ServicesTab /></div>
 
-          <div className={activeTab === 'scan' ? 'space-y-5' : 'hidden'}>
+          <div className={activeTab === 'scan' ? 'space-y-2.5' : 'hidden'}>
             <CrawlerTab
               provinceConfigs={provinceConfigs} provinceStatus={provinceStatus}
               onUpdateProvConfig={updateProvinceConfig}
