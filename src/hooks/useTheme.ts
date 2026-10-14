@@ -6,11 +6,17 @@
  */
 import { useState, useEffect, useCallback } from 'react';
 
-export type ThemeMode = 'light' | 'dark' | 'win95';
+export type ThemeMode = 'light' | 'dark' | 'win98';
 
 let currentTheme: ThemeMode = 'light';
 const listeners = new Set<() => void>();
 const notify = () => listeners.forEach((fn) => fn());
+
+function normalizeTheme(raw: string | null): ThemeMode {
+  if (raw === 'win98' || raw === 'win95') return 'win98';
+  if (raw === 'dark') return 'dark';
+  return 'light';
+}
 
 function applyThemeGlobal(val: ThemeMode): void {
   currentTheme = val;
@@ -33,11 +39,9 @@ export function useTheme() {
 
   const initTheme = useCallback(() => {
     if (typeof window !== 'undefined') {
-      const urlTheme = new URLSearchParams(window.location.search).get('theme') as ThemeMode | null;
-      const saved = (urlTheme || localStorage.getItem('gdt_theme')) as ThemeMode | null;
-      const valid: ThemeMode =
-        saved === 'dark' || saved === 'win95' || saved === 'light' ? saved : 'light';
-      applyThemeGlobal(valid);
+      const urlTheme = new URLSearchParams(window.location.search).get('theme');
+      const saved = urlTheme || localStorage.getItem('gdt_theme');
+      applyThemeGlobal(normalizeTheme(saved));
     }
   }, []);
 
@@ -57,7 +61,7 @@ export function useTheme() {
 
   const toggleTheme = useCallback(() => {
     const next: ThemeMode =
-      currentTheme === 'light' ? 'dark' : currentTheme === 'dark' ? 'win95' : 'light';
+      currentTheme === 'light' ? 'dark' : currentTheme === 'dark' ? 'win98' : 'light';
     applyThemeGlobal(next);
   }, []);
 

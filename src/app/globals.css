@@ -84,6 +84,7 @@ table.vdds-table tbody td { padding: 8px 12px; border-bottom: 1px solid var(--bo
 td.tabular-nums { font-variant-numeric: tabular-nums; font-family: 'JetBrains Mono', monospace; }
 tr.total-row { background: rgba(0, 91, 170, 0.08) !important; font-weight: 700; border-top: 2px solid var(--vnpt-blue); }
 
+[data-theme='win98'],
 [data-theme='win95'] {
   --vnpt-blue: #000080;
   --vnpt-blue-light: #1084d0;
@@ -96,112 +97,238 @@ tr.total-row { background: rgba(0, 91, 170, 0.08) !important; font-weight: 700; 
   --bg-card-glass: #c0c0c0;
   --text-primary: #000000;
   --text-secondary: #111111;
-  --text-muted: #404040;
+  --text-muted: #333333;
   --border-color: #808080;
 }
 
-[data-theme='win95'] * {
+[data-theme='win98'] *,
+[data-theme='win98'] *::before,
+[data-theme='win98'] *::after {
   border-radius: 0px !important;
 }
 
-[data-theme='win95'] body {
+[data-theme='win98'] body {
   font-family: 'Tahoma', 'MS Sans Serif', 'Segoe UI', sans-serif;
   background-color: #008080 !important;
   color: #000000 !important;
+  -webkit-font-smoothing: none;
 }
 
-[data-theme='win95'] header.win95-titlebar {
+/* Windows 98 Active Window Titlebar */
+[data-theme='win98'] header.win98-titlebar {
   background: linear-gradient(90deg, #000080 0%, #1084d0 100%) !important;
-  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, 0 2px 0 #c0c0c0 !important;
+  border-top: 2px solid #dfdfdf !important;
+  border-left: 2px solid #dfdfdf !important;
+  border-right: 2px solid #0a0a0a !important;
   border-bottom: 2px solid #808080 !important;
+  box-shadow: 0 1px 0 #c0c0c0 !important;
 }
 
-[data-theme='win95'] .card-glass,
-[data-theme='win95'] .bg-white,
-[data-theme='win95'] aside,
-[data-theme='win95'] footer {
+[data-theme='win98'] .win98-title-text {
+  color: #ffffff !important;
+  font-family: 'Tahoma', 'MS Sans Serif', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2px !important;
+  text-shadow: 1px 1px 0 #000000;
+}
+
+[data-theme='win98'] .win98-status-pill,
+[data-theme='win98'] .win98-theme-group {
   background: #c0c0c0 !important;
+  color: #000000 !important;
+  border: none !important;
+  box-shadow: inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a !important;
+}
+
+[data-theme='win98'] .win98-caption-btn {
+  width: 18px;
+  height: 16px;
+  background: #c0c0c0;
+  color: #000000;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+}
+
+/* Windows 98 3D Raised Dialog Panels & GroupBoxes */
+[data-theme='win98'] .card-glass,
+[data-theme='win98'] .bg-white,
+[data-theme='win98'] .bg-\[var\(--bg-card\)\],
+[data-theme='win98'] div[class*="bg-gradient-to-"],
+[data-theme='win98'] aside,
+[data-theme='win98'] footer.win98-statusbar {
+  background: #c0c0c0 !important;
+  background-image: none !important;
   color: #000000 !important;
   border: none !important;
   backdrop-filter: none !important;
   box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf !important;
 }
 
-[data-theme='win95'] .bg-slate-50,
-[data-theme='win95'] .bg-slate-100 {
+[data-theme='win98'] .win98-status-pane {
+  box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px #808080 !important;
+  padding: 2px 8px !important;
+  background: #c0c0c0 !important;
+  color: #000000 !important;
+}
+
+[data-theme='win98'] .bg-slate-50,
+[data-theme='win98'] .bg-slate-100,
+[data-theme='win98'] .bg-blue-50,
+[data-theme='win98'] .bg-indigo-50,
+[data-theme='win98'] .bg-purple-50,
+[data-theme='win98'] .bg-emerald-50,
+[data-theme='win98'] .bg-amber-50,
+[data-theme='win98'] .bg-amber-100,
+[data-theme='win98'] .bg-rose-50,
+[data-theme='win98'] .bg-rose-100 {
   background-color: #d4d0c8 !important;
   color: #000000 !important;
   border-color: #808080 !important;
+  box-shadow: inset -1px -1px #ffffff, inset 1px 1px #808080 !important;
 }
 
-[data-theme='win95'] .text-slate-400,
-[data-theme='win95'] .text-slate-500,
-[data-theme='win95'] .text-slate-600,
-[data-theme='win95'] .text-slate-700,
-[data-theme='win95'] .text-slate-800,
-[data-theme='win95'] .text-slate-900 {
+/* Text Contrast Enforcement on Win98 Silver/Gray Surfaces */
+[data-theme='win98'] .text-slate-400,
+[data-theme='win98'] .text-slate-500,
+[data-theme='win98'] .text-slate-600,
+[data-theme='win98'] .text-slate-700,
+[data-theme='win98'] .text-slate-800,
+[data-theme='win98'] .text-slate-900,
+[data-theme='win98'] .text-amber-800,
+[data-theme='win98'] .text-amber-900,
+[data-theme='win98'] .text-amber-950 {
   color: #000000 !important;
 }
 
-[data-theme='win95'] button {
+[data-theme='win98'] .text-indigo-600,
+[data-theme='win98'] .text-indigo-700,
+[data-theme='win98'] .text-blue-600,
+[data-theme='win98'] .text-blue-700,
+[data-theme='win98'] .text-purple-600,
+[data-theme='win98'] .text-purple-700 {
+  color: #000080 !important;
+}
+
+[data-theme='win98'] .text-emerald-600,
+[data-theme='win98'] .text-emerald-700 {
+  color: #006400 !important;
+}
+
+[data-theme='win98'] .text-rose-600,
+[data-theme='win98'] .text-rose-700 {
+  color: #800000 !important;
+}
+
+/* Windows 98 3D Push Buttons */
+[data-theme='win98'] button {
   background: #c0c0c0 !important;
+  background-image: none !important;
   color: #000000 !important;
   border: none !important;
   box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf !important;
 }
 
-[data-theme='win95'] button:hover:not(:disabled) {
-  background: #dfdfdf !important;
+[data-theme='win98'] button span {
+  color: inherit !important;
 }
 
-[data-theme='win95'] button:active:not(:disabled),
-[data-theme='win95'] aside button.bg-\[var\(--vnpt-blue\)\] {
+[data-theme='win98'] button:hover:not(:disabled) {
+  background: #dcdcdc !important;
+}
+
+[data-theme='win98'] button:active:not(:disabled),
+[data-theme='win98'] button.win98-btn-active,
+[data-theme='win98'] aside button.bg-\[var\(--vnpt-blue\)\],
+[data-theme='win98'] button.bg-white.text-indigo-600 {
   background: #000080 !important;
   color: #ffffff !important;
+  outline: 1px dotted #ffffff !important;
+  outline-offset: -4px !important;
   box-shadow: inset 1px 1px #0a0a0a, inset -1px -1px #ffffff, inset 2px 2px #808080, inset -2px -2px #dfdfdf !important;
 }
 
-[data-theme='win95'] input:not([type='checkbox']),
-[data-theme='win95'] select {
+/* Windows 98 3D Sunken TextBoxes & ComboBoxes */
+[data-theme='win98'] input:not([type='checkbox']):not([type='radio']),
+[data-theme='win98'] select,
+[data-theme='win98'] textarea {
   background-color: #ffffff !important;
   color: #000000 !important;
   border: none !important;
   box-shadow: inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a !important;
 }
 
-[data-theme='win95'] table {
+/* Windows 98 SysListView32 Data Tables */
+[data-theme='win98'] .table-wrapper,
+[data-theme='win98'] div.overflow-auto {
+  background-color: #ffffff !important;
+  box-shadow: inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a !important;
+}
+
+[data-theme='win98'] table {
   background-color: #ffffff !important;
   color: #000000 !important;
 }
 
-[data-theme='win95'] thead th {
+[data-theme='win98'] thead th {
   background: #c0c0c0 !important;
+  background-image: none !important;
   color: #000000 !important;
   border: none !important;
   box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf !important;
 }
 
-[data-theme='win95'] tbody td {
+[data-theme='win98'] tbody td {
   background-color: #ffffff !important;
   color: #000000 !important;
   border-right: 1px solid #d4d0c8 !important;
   border-bottom: 1px solid #d4d0c8 !important;
 }
 
-[data-theme='win95'] tbody tr:hover td {
+[data-theme='win98'] tbody tr:hover td {
   background-color: #000080 !important;
   color: #ffffff !important;
 }
 
-[data-theme='win95'] tbody tr:hover td span,
-[data-theme='win95'] tbody tr:hover td b,
-[data-theme='win95'] tbody tr:hover td div {
+[data-theme='win98'] tbody tr:hover td > span,
+[data-theme='win98'] tbody tr:hover td > div > span,
+[data-theme='win98'] tbody tr:hover td b {
   color: #ffffff !important;
 }
 
-[data-theme='win95'] ::-webkit-scrollbar { width: 14px; height: 14px; }
-[data-theme='win95'] ::-webkit-scrollbar-track { background: #dfdfdf; box-shadow: inset 1px 1px #808080; }
-[data-theme='win95'] ::-webkit-scrollbar-thumb {
+[data-theme='win98'] tbody tr:hover td input,
+[data-theme='win98'] tbody tr:hover td select,
+[data-theme='win98'] tbody tr:hover td button {
+  color: #000000 !important;
+}
+
+/* Windows 98 MS-DOS Prompt Console Log */
+[data-theme='win98'] .bg-slate-900,
+[data-theme='win98'] .bg-slate-950 {
+  background-color: #000000 !important;
+  color: #c0c0c0 !important;
+  box-shadow: inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a !important;
+}
+
+[data-theme='win98'] .bg-slate-900 .text-slate-300,
+[data-theme='win98'] .bg-slate-900 .text-slate-400,
+[data-theme='win98'] .bg-slate-900 .text-slate-500 {
+  color: #c0c0c0 !important;
+}
+
+[data-theme='win98'] .bg-slate-900 .text-emerald-400 { color: #55ff55 !important; }
+[data-theme='win98'] .bg-slate-900 .text-amber-300 { color: #ffff55 !important; }
+[data-theme='win98'] .bg-slate-900 .text-rose-400 { color: #ff5555 !important; }
+
+[data-theme='win98'] ::-webkit-scrollbar { width: 15px; height: 15px; }
+[data-theme='win98'] ::-webkit-scrollbar-track { background: #dfdfdf; box-shadow: inset 1px 1px #808080; }
+[data-theme='win98'] ::-webkit-scrollbar-thumb {
   background: #c0c0c0;
   box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
 }
