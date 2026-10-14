@@ -30,6 +30,7 @@ import { ApiClient } from '@/api/client';
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState('scan');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
   const [healthLoading, setHealthLoading] = useState(false);
   const [healthReport, setHealthReport] = useState<ReportData>({
@@ -70,6 +71,7 @@ export default function DashboardPage() {
 
   const switchTab = useCallback((t: string) => {
     setActiveTab(t);
+    setMobileMenuOpen(false);
     try {
       const url = new URL(window.location.href);
       if (url.searchParams.get('tab') !== t) {
@@ -77,6 +79,14 @@ export default function DashboardPage() {
         window.history.replaceState({}, '', url.toString());
       }
     } catch { /* ignore */ }
+  }, []);
+
+  const handleToggleSidebar = useCallback(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setMobileMenuOpen((v) => !v);
+    } else {
+      setIsSidebarCollapsed((v) => !v);
+    }
   }, []);
 
   useEffect(() => {
@@ -120,17 +130,19 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-secondary)] text-[var(--text-primary)]">
-      <AppHeader onToggleSidebar={() => setIsSidebarCollapsed((v) => !v)} onSwitchTab={switchTab} />
+      <AppHeader onToggleSidebar={handleToggleSidebar} onSwitchTab={switchTab} />
 
-      <div className="flex flex-1 min-h-[calc(100vh-86px)]">
+      <div className="flex flex-1 min-h-[calc(100vh-86px)] relative">
         <AppSidebar
-          collapsed={isSidebarCollapsed} activeTab={activeTab}
+          collapsed={isSidebarCollapsed} mobileOpen={mobileMenuOpen} activeTab={activeTab}
           maxConcurrent={maxConcurrentProvinces} stalledCount={healthReport.summary?.stalled}
-          onChangeActiveTab={switchTab} onChangeMaxConcurrent={setMaxConcurrentProvinces}
+          onChangeActiveTab={switchTab} onCloseMobile={() => setMobileMenuOpen(false)}
+          onToggleMobile={() => setMobileMenuOpen((v) => !v)}
+          onChangeMaxConcurrent={setMaxConcurrentProvinces}
           onStartNewest={startAllNewestProvinces} onStartAll={startAllProvinces} onStopAll={stopAllProvinces}
         />
 
-        <main className="flex-1 p-3 md:p-4 space-y-3 overflow-x-hidden">
+        <main className="flex-1 min-w-0 p-2.5 sm:p-3 md:p-4 pb-16 md:pb-4 space-y-3 overflow-x-hidden">
           <MasterMetrics
             master={master} maxRps={Number(systemConfig.max_global_rps) || 32}
             onChangeRps={changeGlobalRps} onUpdateRps={(v) => { void saveGlobalRps(v); }}

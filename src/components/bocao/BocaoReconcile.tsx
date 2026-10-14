@@ -97,16 +97,16 @@ export const BocaoReconcile: React.FC<BocaoReconcileProps> = ({ onViewDetail, on
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold">
-              <button onClick={() => setStatusFilter('all')} className={`px-2.5 py-1 rounded-lg transition ${filterStatus === 'all' ? 'bg-white dark:bg-slate-700 shadow-xs font-bold text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>Tất Cả ({fmtNum(stats.total_bocao)})</button>
-              <button onClick={() => setStatusFilter('retry_later')} className={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 ${filterStatus === 'retry_later' ? 'bg-blue-600 text-white font-bold' : 'text-blue-700 dark:text-blue-400'}`}>⏳ Chờ GDT sync ({fmtNum(stats.retry_later_count || stats.unmatched_count)})</button>
-              <button onClick={() => setStatusFilter('unmatched')} className={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 ${filterStatus === 'unmatched' ? 'bg-amber-500 text-white font-bold' : 'text-amber-700 dark:text-amber-400'}`}>⚠️ Chưa Có ({fmtNum(stats.unmatched_count)})</button>
-              <button onClick={() => setStatusFilter('matched')} className={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 ${filterStatus === 'matched' ? 'bg-emerald-600 text-white font-bold' : 'text-emerald-700 dark:text-emerald-400'}`}>✅ Đã Khớp ({fmtNum(stats.matched_count)})</button>
+            <div className="flex flex-wrap items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold w-full sm:w-auto">
+              <button onClick={() => setStatusFilter('all')} className={`px-2 sm:px-2.5 py-1 rounded-lg transition ${filterStatus === 'all' ? 'bg-white dark:bg-slate-700 shadow-xs font-bold text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>Tất Cả ({fmtNum(stats.total_bocao)})</button>
+              <button onClick={() => setStatusFilter('retry_later')} className={`px-2 sm:px-2.5 py-1 rounded-lg transition flex items-center gap-1 ${filterStatus === 'retry_later' ? 'bg-blue-600 text-white font-bold' : 'text-blue-700 dark:text-blue-400'}`}>⏳ Chờ GDT sync ({fmtNum(stats.retry_later_count || stats.unmatched_count)})</button>
+              <button onClick={() => setStatusFilter('unmatched')} className={`px-2 sm:px-2.5 py-1 rounded-lg transition flex items-center gap-1 ${filterStatus === 'unmatched' ? 'bg-amber-500 text-white font-bold' : 'text-amber-700 dark:text-amber-400'}`}>⚠️ Chưa Có ({fmtNum(stats.unmatched_count)})</button>
+              <button onClick={() => setStatusFilter('matched')} className={`px-2 sm:px-2.5 py-1 rounded-lg transition flex items-center gap-1 ${filterStatus === 'matched' ? 'bg-emerald-600 text-white font-bold' : 'text-emerald-700 dark:text-emerald-400'}`}>✅ Đã Khớp ({fmtNum(stats.matched_count)})</button>
             </div>
-            <div className="flex items-center gap-2 flex-1 max-w-md">
-              <input value={filterKeyword} onChange={(e) => setFilterKeyword(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && loadRecords(1)} placeholder="Tìm MST hoặc Tên..." className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-800 dark:text-slate-200" />
-              <input value={filterProvince} onChange={(e) => setFilterProvince(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && loadRecords(1)} placeholder="Tỉnh/TP..." className="w-28 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-800 dark:text-slate-200" />
-              <button onClick={() => loadRecords(1)} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1 px-3 rounded-lg text-xs shadow-sm transition">🔍 Lọc</button>
+            <div className="flex items-center gap-2 w-full sm:w-auto flex-1 max-w-full sm:max-w-md">
+              <input value={filterKeyword} onChange={(e) => setFilterKeyword(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && loadRecords(1)} placeholder="Tìm MST hoặc Tên..." className="flex-1 min-w-0 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-800 dark:text-slate-200" />
+              <input value={filterProvince} onChange={(e) => setFilterProvince(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && loadRecords(1)} placeholder="Tỉnh/TP..." className="w-24 sm:w-28 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-800 dark:text-slate-200" />
+              <button onClick={() => loadRecords(1)} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1 px-3 rounded-lg text-xs shadow-sm transition shrink-0">🔍 Lọc</button>
             </div>
           </div>
         </div>

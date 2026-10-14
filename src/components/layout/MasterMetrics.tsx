@@ -15,45 +15,45 @@ const formatNumber = (n: number | null | undefined) => (n == null || isNaN(n)) ?
 
 export default function MasterMetrics({ master, maxRps, onChangeRps, onUpdateRps }: MasterMetricsProps) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-      <div className="card-glass p-3 rounded-xl border border-[var(--border-color)] flex flex-col justify-between">
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 sm:gap-3">
+      <div className="card-glass p-2.5 sm:p-3 rounded-xl border border-[var(--border-color)] flex flex-col justify-between col-span-2 md:col-span-1">
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-semibold text-[var(--text-muted)] uppercase">Tốc Độ Quét</span>
           <span className="text-[9px] font-bold text-[var(--vnpt-blue)] bg-blue-50 dark:bg-blue-950 px-1 py-0.5 rounded">Max: {maxRps} rps</span>
         </div>
         <div className="flex items-center justify-between mt-1">
-          <div className="text-xl font-extrabold text-[var(--vnpt-blue)] font-mono tabular-nums">
+          <div className="text-lg sm:text-xl font-extrabold text-[var(--vnpt-blue)] font-mono tabular-nums">
             {master.total_speed || 0} <span className="text-[10px] font-normal text-[var(--text-muted)]">req/s</span>
           </div>
           <div className="flex items-center bg-[var(--bg-secondary)] rounded-lg p-0.5 border border-[var(--border-color)]">
-            <button onClick={() => onChangeRps(-2)} className="w-5 h-5 flex items-center justify-center font-bold hover:bg-[var(--bg-card)] rounded text-xs">-</button>
+            <button onClick={() => onChangeRps(-2)} className="w-6 h-6 sm:w-5 sm:h-5 flex items-center justify-center font-bold hover:bg-[var(--bg-card)] rounded text-xs">-</button>
             <input
               type="number"
               value={maxRps}
               onChange={(e) => onUpdateRps(Number(e.target.value))}
-              className="w-8 text-center text-xs font-bold font-mono bg-transparent border-0 p-0 text-[var(--text-primary)] focus:ring-0"
+              className="w-9 sm:w-8 text-center text-xs font-bold font-mono bg-transparent border-0 p-0 text-[var(--text-primary)] focus:ring-0"
             />
-            <button onClick={() => onChangeRps(2)} className="w-5 h-5 flex items-center justify-center font-bold hover:bg-[var(--bg-card)] rounded text-xs">+</button>
+            <button onClick={() => onChangeRps(2)} className="w-6 h-6 sm:w-5 sm:h-5 flex items-center justify-center font-bold hover:bg-[var(--bg-card)] rounded text-xs">+</button>
           </div>
         </div>
       </div>
-      <div className="card-glass p-3 rounded-xl border border-[var(--border-color)]">
-        <span className="text-[11px] font-semibold text-[var(--text-muted)] uppercase">Đang Chạy</span>
-        <div className="text-xl font-extrabold text-emerald-600 mt-1 font-mono tabular-nums">
+      <div className="card-glass p-2.5 sm:p-3 rounded-xl border border-[var(--border-color)]">
+        <span className="text-[10px] sm:text-[11px] font-semibold text-[var(--text-muted)] uppercase">Đang Chạy</span>
+        <div className="text-lg sm:text-xl font-extrabold text-emerald-600 mt-1 font-mono tabular-nums">
           {master.running_count || 0} <span className="text-[10px] font-normal text-[var(--text-muted)]">tỉnh</span>
         </div>
       </div>
-      <div className="card-glass p-3 rounded-xl border border-[var(--border-color)]">
-        <span className="text-[11px] font-semibold text-[var(--text-muted)] uppercase">Tổng Đã Quét</span>
-        <div className="text-xl font-extrabold text-[var(--text-primary)] mt-1 font-mono tabular-nums">{formatNumber(master.total_queried)}</div>
+      <div className="card-glass p-2.5 sm:p-3 rounded-xl border border-[var(--border-color)]">
+        <span className="text-[10px] sm:text-[11px] font-semibold text-[var(--text-muted)] uppercase">Tổng Đã Quét</span>
+        <div className="text-lg sm:text-xl font-extrabold text-[var(--text-primary)] mt-1 font-mono tabular-nums truncate">{formatNumber(master.total_queried)}</div>
       </div>
-      <div className="card-glass p-3 rounded-xl border border-[var(--border-color)]">
-        <span className="text-[11px] font-semibold text-[var(--text-muted)] uppercase">Tổng Tìm Thấy</span>
-        <div className="text-xl font-extrabold text-emerald-600 mt-1 font-mono tabular-nums">{formatNumber(master.total_found)}</div>
+      <div className="card-glass p-2.5 sm:p-3 rounded-xl border border-[var(--border-color)]">
+        <span className="text-[10px] sm:text-[11px] font-semibold text-[var(--text-muted)] uppercase">Tổng Tìm Thấy</span>
+        <div className="text-lg sm:text-xl font-extrabold text-emerald-600 mt-1 font-mono tabular-nums truncate">{formatNumber(master.total_found)}</div>
       </div>
-      <div className="card-glass p-3 rounded-xl border border-[var(--border-color)] col-span-2 md:col-span-1">
-        <span className="text-[11px] font-semibold text-[var(--text-muted)] uppercase">Dữ Liệu DB</span>
-        <div className="text-xl font-extrabold text-purple-600 mt-1 font-mono tabular-nums">{formatNumber(master.total_db_records)}</div>
+      <div className="card-glass p-2.5 sm:p-3 rounded-xl border border-[var(--border-color)]">
+        <span className="text-[10px] sm:text-[11px] font-semibold text-[var(--text-muted)] uppercase">Dữ Liệu DB</span>
+        <div className="text-lg sm:text-xl font-extrabold text-purple-600 mt-1 font-mono tabular-nums truncate">{formatNumber(master.total_db_records)}</div>
       </div>
     </div>
   );

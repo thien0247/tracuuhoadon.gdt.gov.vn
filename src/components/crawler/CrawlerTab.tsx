@@ -76,15 +76,20 @@ export default function CrawlerTab({
     } catch { /* ignore */ }
   }, []);
 
-  useEffect(() => { void loadBocaoCount(); }, [loadBocaoCount]);
+  useEffect(() => {
+    void loadBocaoCount();
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setViewMode('grid');
+    }
+  }, [loadBocaoCount]);
 
   return (
     <div className="space-y-4">
       <CrawlerSchedule />
 
-      <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
-          <div className="relative flex-1 md:w-52">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl p-3 sm:p-4 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5 sm:gap-3">
+        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+          <div className="relative w-full sm:flex-1 md:w-52">
             <span className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400 text-xs">🔍</span>
             <input
               type="text"
@@ -96,14 +101,14 @@ export default function CrawlerTab({
             {searchKeyword && <button onClick={() => setSearchKeyword('')} className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 text-xs">✕</button>}
           </div>
 
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)} className="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)} className="flex-1 sm:flex-none bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
             <option value="all">⚡ Tất cả trạng thái</option>
             <option value="running">🟢 Đang chạy</option>
             <option value="paused">🟡 Tạm dừng</option>
             <option value="stopped">⚪ Đã dừng</option>
           </select>
 
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
+          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="flex-1 sm:flex-none bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
             <option value="default">↕ Sắp xếp mặc định</option>
             <option value="scan_recent">🕒 Quét gần đây nhất</option>
             <option value="speed_desc">🚀 Tốc độ cao nhất</option>
@@ -113,23 +118,27 @@ export default function CrawlerTab({
           </select>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between md:justify-end gap-2.5 w-full md:w-auto">
-          <button onClick={() => openMaxTinModal('')} title="Đối soát và cập nhật lại Max TIN thủ công cho từng tỉnh hoặc toàn quốc" className="px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-1.5 shrink-0">
-            <span>🎯</span><span>Cập Nhật Max TIN</span>
-          </button>
+        <div className="flex flex-wrap items-center justify-between md:justify-end gap-2 w-full md:w-auto">
+          <div className="flex items-center gap-1.5">
+            <button onClick={() => openMaxTinModal('')} title="Đối soát và cập nhật lại Max TIN thủ công cho từng tỉnh hoặc toàn quốc" className="px-2.5 sm:px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-1 shrink-0">
+              <span>🎯</span><span>Max TIN</span>
+            </button>
 
-          <button onClick={() => setShowBocaoModal(true)} title="Crawl bổ sung MST theo danh sách Mã Số Doanh Nghiệp Bố Cáo ĐKKD" className="px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-1.5 shrink-0">
-            <span>📰</span><span>Crawl Bố Cáo</span>
-            {bocaoPendingCount > 0 && <span className="px-1.5 py-0.2 bg-white/20 text-white rounded-full text-[10px] font-mono">{bocaoPendingCount}</span>}
-          </button>
+            <button onClick={() => setShowBocaoModal(true)} title="Crawl bổ sung MST theo danh sách Mã Số Doanh Nghiệp Bố Cáo ĐKKD" className="px-2.5 sm:px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-1 shrink-0">
+              <span>📰</span><span>Bố Cáo</span>
+              {bocaoPendingCount > 0 && <span className="px-1.5 py-0.2 bg-white/20 text-white rounded-full text-[10px] font-mono">{bocaoPendingCount}</span>}
+            </button>
+          </div>
 
-          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-            <span className="text-indigo-600 dark:text-indigo-400 font-bold">{filteredProvinces.length}</span>/{totalProvinces} tỉnh
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+              <span className="text-indigo-600 dark:text-indigo-400 font-bold">{filteredProvinces.length}</span>/{totalProvinces}
+            </span>
 
-          <div className="bg-slate-100 dark:bg-slate-900 p-1 rounded-xl flex items-center gap-1 border border-slate-200 dark:border-slate-700">
-            <button onClick={() => setViewMode('grid')} className={`px-3 py-1 text-xs font-bold rounded-lg transition flex items-center gap-1 ${viewMode === 'grid' ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}>⊞ Lưới</button>
-            <button onClick={() => setViewMode('list')} className={`px-3 py-1 text-xs font-bold rounded-lg transition flex items-center gap-1 ${viewMode === 'list' ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}>☰ Bảng</button>
+            <div className="bg-slate-100 dark:bg-slate-900 p-1 rounded-xl flex items-center gap-1 border border-slate-200 dark:border-slate-700">
+              <button onClick={() => setViewMode('grid')} className={`px-2.5 py-1 text-xs font-bold rounded-lg transition flex items-center gap-1 ${viewMode === 'grid' ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}>⊞ Lưới</button>
+              <button onClick={() => setViewMode('list')} className={`px-2.5 py-1 text-xs font-bold rounded-lg transition flex items-center gap-1 ${viewMode === 'list' ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}>☰ Bảng</button>
+            </div>
           </div>
         </div>
       </div>

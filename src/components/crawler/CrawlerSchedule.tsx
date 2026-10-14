@@ -96,11 +96,11 @@ export default function CrawlerSchedule() {
         </div>
       )}
 
-      <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-indigo-100 dark:border-indigo-900/60 flex flex-col md:flex-row items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">🗓️</span>
+      <div className="bg-white dark:bg-slate-800 rounded-2xl p-3 sm:p-4 shadow-sm border border-indigo-100 dark:border-indigo-900/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+        <div className="flex items-start sm:items-center gap-2.5 sm:gap-3">
+          <span className="text-xl sm:text-2xl shrink-0">🗓️</span>
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <h2 className="text-xs font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Tự Động Quét Đỉnh Mới Nhất</h2>
               <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${status.newest.enabled ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 animate-pulse' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
                 {status.newest.enabled ? '● Chạy mỗi 6h' : '○ Đã tắt'}
@@ -112,20 +112,20 @@ export default function CrawlerSchedule() {
           </div>
         </div>
         <div className="flex items-center gap-2 w-full md:w-auto justify-end">
-          <button onClick={() => void toggleNewest()} className={`px-3 py-1.5 text-xs font-bold rounded-xl transition shadow-sm ${status.newest.enabled ? 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200' : 'bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-100'}`}>
+          <button onClick={() => void toggleNewest()} className={`flex-1 md:flex-none px-3 py-1.5 text-xs font-bold rounded-xl transition shadow-sm ${status.newest.enabled ? 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200' : 'bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-100'}`}>
             {status.newest.enabled ? '⏹ Tắt Auto 6h' : '▶ Bật Auto 6h'}
           </button>
-          <button onClick={() => void triggerNewest()} disabled={status.is_executing || isTriggering} className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl shadow-sm transition disabled:opacity-50">
+          <button onClick={() => void triggerNewest()} disabled={status.is_executing || isTriggering} className="flex-1 md:flex-none px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl shadow-sm transition disabled:opacity-50">
             {isTriggering ? '⏳ Đang kích hoạt...' : '⚡ Quét Đỉnh Ngay'}
           </button>
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-indigo-500/10 rounded-2xl p-4 shadow-sm border border-amber-200 dark:border-amber-800/60 flex flex-col md:flex-row items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">🕳️</span>
+      <div className="bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-indigo-500/10 rounded-2xl p-3 sm:p-4 shadow-sm border border-amber-200 dark:border-amber-800/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+        <div className="flex items-start sm:items-center gap-2.5 sm:gap-3">
+          <span className="text-xl sm:text-2xl shrink-0">🕳️</span>
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <h2 className="text-xs font-black text-amber-900 dark:text-amber-200 uppercase tracking-wider">Auto Quét Fill Lỗ Hổng 500 MST (Từ Max Xuống)</h2>
               <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${status.gap_fill_500.enabled ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 animate-pulse' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
                 {status.gap_fill_500.enabled ? '● Chạy mỗi 12h' : '○ Đã tắt'}
@@ -146,11 +146,11 @@ export default function CrawlerSchedule() {
           </div>
         </div>
         <div className="flex items-center gap-2 w-full md:w-auto justify-end">
-          <button onClick={() => void toggleGapFill()} className={`px-3 py-1.5 text-xs font-bold rounded-xl transition shadow-sm ${status.gap_fill_500.enabled ? 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200' : 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 hover:bg-amber-200'}`}>
+          <button onClick={() => void toggleGapFill()} className={`flex-1 md:flex-none px-3 py-1.5 text-xs font-bold rounded-xl transition shadow-sm ${status.gap_fill_500.enabled ? 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200' : 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 hover:bg-amber-200'}`}>
             {status.gap_fill_500.enabled ? '⏹ Tắt Lịch 12h' : '▶ Bật Lịch 12h'}
           </button>
-          <button onClick={() => void triggerGapFill()} disabled={status.is_executing || isTriggering} className="px-3.5 py-1.5 bg-gradient-to-r from-amber-600 to-purple-600 hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-sm transition disabled:opacity-50">
-            {isTriggering ? '⏳ Đang kích hoạt...' : '⚡ Quét 500 Lỗ Hổng Ngay'}
+          <button onClick={() => void triggerGapFill()} disabled={status.is_executing || isTriggering} className="flex-1 md:flex-none px-3.5 py-1.5 bg-gradient-to-r from-amber-600 to-purple-600 hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-sm transition disabled:opacity-50">
+            {isTriggering ? '⏳ Đang kích hoạt...' : '⚡ Quét 500 Lỗ Hổng'}
           </button>
         </div>
       </div>

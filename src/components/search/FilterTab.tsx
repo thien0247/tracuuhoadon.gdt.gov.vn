@@ -121,11 +121,11 @@ export default function FilterTab({ onSelectTin }: FilterTabProps) {
   return (
     <div className="space-y-2.5">
       <div className="bg-white dark:bg-slate-800 rounded-xl p-3 sm:p-3.5 shadow-sm border border-slate-300 dark:border-slate-700 space-y-2.5">
-        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between flex-wrap gap-2 border-b border-slate-200 dark:border-slate-700 pb-2">
+          <div className="flex items-center flex-wrap gap-1.5 sm:gap-2">
             <span className="text-sm">🔍</span>
             <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100">Bộ Lọc Doanh Nghiệp Đa Cấp</span>
-            <div className="inline-flex rounded bg-slate-100 dark:bg-slate-700 p-0.5 text-xs font-semibold ml-2">
+            <div className="inline-flex rounded bg-slate-100 dark:bg-slate-700 p-0.5 text-xs font-semibold sm:ml-2">
               <button onClick={() => { setModelMode('v2'); void runFilter({ mode: 'v2' }); }} className={`px-2 py-0.5 rounded transition flex items-center gap-1 text-[11px] ${modelMode === 'v2' ? 'bg-white dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 shadow-sm' : 'text-slate-600 dark:text-slate-300'}`}><span>🏛️</span><span>Mô hình 2 Cấp</span></button>
               <button onClick={() => { setModelMode('v3'); void runFilter({ mode: 'v3' }); }} className={`px-2 py-0.5 rounded transition flex items-center gap-1 text-[11px] ${modelMode === 'v3' ? 'bg-white dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 shadow-sm' : 'text-slate-600 dark:text-slate-300'}`}><span>🏢</span><span>Mô hình 3 Cấp</span></button>
             </div>
@@ -148,13 +148,13 @@ export default function FilterTab({ onSelectTin }: FilterTabProps) {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-2 pt-0.5">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2 pt-0.5">
           <div><label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-0.5">Từ ngày ĐKKD:</label><input type="date" value={filterFromDate} onChange={(e) => setFilterFromDate(e.target.value)} className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-xs text-slate-800 dark:text-slate-100" /></div>
           <div><label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-0.5">Đến ngày ĐKKD:</label><input type="date" value={filterToDate} onChange={(e) => setFilterToDate(e.target.value)} className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-xs text-slate-800 dark:text-slate-100" /></div>
-          <div className="flex items-end gap-1.5 col-span-3">
-            <button onClick={() => void runFilter()} disabled={filtering} className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1 px-3 rounded shadow-sm transition text-xs disabled:opacity-50">{filtering ? 'Đang lọc...' : '🔍 Lọc Dữ Liệu'}</button>
+          <div className="flex items-end gap-1.5 col-span-2 md:col-span-3">
+            <button onClick={() => void runFilter()} disabled={filtering} className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1.5 md:py-1 px-3 rounded shadow-sm transition text-xs disabled:opacity-50">{filtering ? 'Đang lọc...' : '🔍 Lọc Dữ Liệu'}</button>
             <div className="relative">
-              <button onClick={() => setShowExportMenu((p) => !p)} disabled={filterRows.length === 0} className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1 px-2.5 rounded shadow-sm transition text-xs disabled:opacity-50 flex items-center gap-1"><span>💾</span><span>Xuất File ▾</span></button>
+              <button onClick={() => setShowExportMenu((p) => !p)} disabled={filterRows.length === 0} className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-1.5 md:py-1 px-2.5 rounded shadow-sm transition text-xs disabled:opacity-50 flex items-center gap-1"><span>💾</span><span>Xuất File ▾</span></button>
               {showExportMenu && (
                 <div className="absolute right-0 mt-1 w-52 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl z-50 py-1 text-xs">
                   <button onClick={() => onExport('csv')} className="w-full text-left px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 text-slate-700 dark:text-slate-200"><span>📄</span> Xuất CSV Toàn Bộ</button>
