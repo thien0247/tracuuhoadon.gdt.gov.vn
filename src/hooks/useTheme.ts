@@ -6,38 +6,60 @@
  */
 import { useState, useEffect, useCallback } from 'react';
 
-let currentTheme: 'light' | 'dark' = 'light';
+export type ThemeMode = 'light' | 'dark' | 'win95';
+
+let currentTheme: ThemeMode = 'light';
 const listeners = new Set<() => void>();
 const notify = () => listeners.forEach((fn) => fn());
 
-function applyThemeGlobal(val: 'light' | 'dark'): void {
+function applyThemeGlobal(val: ThemeMode): void {
   currentTheme = val;
   if (typeof window !== 'undefined') {
     try { localStorage.setItem('gdt_theme', val); } catch { /* ignore */ }
     document.documentElement.setAttribute('data-theme', val);
+    if (val === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }
   notify();
 }
 
+let initialized = false;
+
 export function useTheme() {
   const [, setTick] = useState(0);
+
+  const initTheme = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      const urlTheme = new URLSearchParams(window.location.search).get('theme') as ThemeMode | null;
+      const saved = (urlTheme || localStorage.getItem('gdt_theme')) as ThemeMode | null;
+      const valid: ThemeMode =
+        saved === 'dark' || saved === 'win95' || saved === 'light' ? saved : 'light';
+      applyThemeGlobal(valid);
+    }
+  }, []);
 
   useEffect(() => {
     const fn = () => setTick((t) => t + 1);
     listeners.add(fn);
+    if (!initialized) {
+      initialized = true;
+      initTheme();
+    }
     return () => { listeners.delete(fn); };
+  }, [initTheme]);
+
+  const setTheme = useCallback((mode: ThemeMode) => {
+    applyThemeGlobal(mode);
   }, []);
 
   const toggleTheme = useCallback(() => {
-    applyThemeGlobal(currentTheme === 'dark' ? 'light' : 'dark');
+    const next: ThemeMode =
+      currentTheme === 'light' ? 'dark' : currentTheme === 'dark' ? 'win95' : 'light';
+    applyThemeGlobal(next);
   }, []);
 
-  const initTheme = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      const saved = (localStorage.getItem('gdt_theme') as 'light' | 'dark') || 'light';
-      applyThemeGlobal(saved);
-    }
-  }, []);
-
-  return { theme: currentTheme, toggleTheme, initTheme };
+  return { theme: currentTheme, setTheme, toggleTheme, initTheme };
 }

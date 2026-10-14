@@ -84,6 +84,128 @@ table.vdds-table tbody td { padding: 8px 12px; border-bottom: 1px solid var(--bo
 td.tabular-nums { font-variant-numeric: tabular-nums; font-family: 'JetBrains Mono', monospace; }
 tr.total-row { background: rgba(0, 91, 170, 0.08) !important; font-weight: 700; border-top: 2px solid var(--vnpt-blue); }
 
+[data-theme='win95'] {
+  --vnpt-blue: #000080;
+  --vnpt-blue-light: #1084d0;
+  --vnpt-blue-gradient: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+  --accent-cyan: #008080;
+  --bg-primary: #d4d0c8;
+  --bg-secondary: #008080;
+  --bg-card: #c0c0c0;
+  --bg-card-hover: #dfdfdf;
+  --bg-card-glass: #c0c0c0;
+  --text-primary: #000000;
+  --text-secondary: #111111;
+  --text-muted: #404040;
+  --border-color: #808080;
+}
+
+[data-theme='win95'] * {
+  border-radius: 0px !important;
+}
+
+[data-theme='win95'] body {
+  font-family: 'Tahoma', 'MS Sans Serif', 'Segoe UI', sans-serif;
+  background-color: #008080 !important;
+  color: #000000 !important;
+}
+
+[data-theme='win95'] header.win95-titlebar {
+  background: linear-gradient(90deg, #000080 0%, #1084d0 100%) !important;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, 0 2px 0 #c0c0c0 !important;
+  border-bottom: 2px solid #808080 !important;
+}
+
+[data-theme='win95'] .card-glass,
+[data-theme='win95'] .bg-white,
+[data-theme='win95'] aside,
+[data-theme='win95'] footer {
+  background: #c0c0c0 !important;
+  color: #000000 !important;
+  border: none !important;
+  backdrop-filter: none !important;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf !important;
+}
+
+[data-theme='win95'] .bg-slate-50,
+[data-theme='win95'] .bg-slate-100 {
+  background-color: #d4d0c8 !important;
+  color: #000000 !important;
+  border-color: #808080 !important;
+}
+
+[data-theme='win95'] .text-slate-400,
+[data-theme='win95'] .text-slate-500,
+[data-theme='win95'] .text-slate-600,
+[data-theme='win95'] .text-slate-700,
+[data-theme='win95'] .text-slate-800,
+[data-theme='win95'] .text-slate-900 {
+  color: #000000 !important;
+}
+
+[data-theme='win95'] button {
+  background: #c0c0c0 !important;
+  color: #000000 !important;
+  border: none !important;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf !important;
+}
+
+[data-theme='win95'] button:hover:not(:disabled) {
+  background: #dfdfdf !important;
+}
+
+[data-theme='win95'] button:active:not(:disabled),
+[data-theme='win95'] aside button.bg-\[var\(--vnpt-blue\)\] {
+  background: #000080 !important;
+  color: #ffffff !important;
+  box-shadow: inset 1px 1px #0a0a0a, inset -1px -1px #ffffff, inset 2px 2px #808080, inset -2px -2px #dfdfdf !important;
+}
+
+[data-theme='win95'] input:not([type='checkbox']),
+[data-theme='win95'] select {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: none !important;
+  box-shadow: inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a !important;
+}
+
+[data-theme='win95'] table {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+[data-theme='win95'] thead th {
+  background: #c0c0c0 !important;
+  color: #000000 !important;
+  border: none !important;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf !important;
+}
+
+[data-theme='win95'] tbody td {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-right: 1px solid #d4d0c8 !important;
+  border-bottom: 1px solid #d4d0c8 !important;
+}
+
+[data-theme='win95'] tbody tr:hover td {
+  background-color: #000080 !important;
+  color: #ffffff !important;
+}
+
+[data-theme='win95'] tbody tr:hover td span,
+[data-theme='win95'] tbody tr:hover td b,
+[data-theme='win95'] tbody tr:hover td div {
+  color: #ffffff !important;
+}
+
+[data-theme='win95'] ::-webkit-scrollbar { width: 14px; height: 14px; }
+[data-theme='win95'] ::-webkit-scrollbar-track { background: #dfdfdf; box-shadow: inset 1px 1px #808080; }
+[data-theme='win95'] ::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+}
+
 .ai-inspector-wrap { position: relative; }
 .ai-inspector-ring { outline: 2px solid #a855f7 !important; outline-offset: 2px; box-shadow: 0 0 0 4px #a855f720, 0 0 16px #a855f730; border-radius: 12px; }
 .ai-badge-label {
