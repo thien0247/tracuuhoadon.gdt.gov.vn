@@ -4,8 +4,8 @@
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
     <security>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
-        <!-- Đòi hỏi quyền Administrator để quản lý Windows Service GDTTaxCrawler -->
-        <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
+        <!-- Dùng highestAvailable để cho phép tự khởi động cùng Windows qua HKCU\...\Run xuống System Tray -->
+        <requestedExecutionLevel level="highestAvailable" uiAccess="false" />
       </requestedPrivileges>
     </security>
   </trustInfo>

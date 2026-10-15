@@ -16,6 +16,7 @@ namespace GDTTaxCrawlerManager
 
         private NotifyIcon notifyIcon = null!;
         private ContextMenuStrip trayMenu = null!;
+        private ToolStripMenuItem startupMenuItem = null!;
         private bool isExplicitExit = false;
 
         private void SetupTrayIntegration()
@@ -28,6 +29,28 @@ namespace GDTTaxCrawlerManager
             trayMenu.Items.Add("⏹ Dừng Dịch Vụ", null, async (s, e) => await OnStopServiceClicked());
             trayMenu.Items.Add("🔄 Khởi Động Lại Dịch Vụ", null, async (s, e) => await OnRestartServiceClicked());
             trayMenu.Items.Add("-");
+
+            startupMenuItem = new ToolStripMenuItem("🚀 Khởi Động Cùng Windows (System Tray)")
+            {
+                Checked = ServiceHelper.IsStartupRegistered(),
+                CheckOnClick = false
+            };
+            startupMenuItem.Click += (s, e) =>
+            {
+                bool next = !ServiceHelper.IsStartupRegistered();
+                if (ServiceHelper.SetStartupRegistration(next))
+                {
+                    startupMenuItem.Checked = next;
+                    notifyIcon.ShowBalloonTip(
+                        2000,
+                        "GDT Tax Crawler",
+                        next ? "Đã BẬT tự khởi động cùng Windows ở System Tray." : "Đã TẮT tự khởi động cùng Windows.",
+                        ToolTipIcon.Info
+                    );
+                }
+            };
+            trayMenu.Items.Add(startupMenuItem);
+            trayMenu.Items.Add("-");
             trayMenu.Items.Add("📁 Mở Thư Mục Logs", null, (s, e) => AppLogger.OpenLogFolder());
             trayMenu.Items.Add("📝 Xem File Log Hôm Nay", null, (s, e) => AppLogger.OpenCurrentLogFile());
             trayMenu.Items.Add("-");
@@ -36,7 +59,7 @@ namespace GDTTaxCrawlerManager
 
             notifyIcon = new NotifyIcon
             {
-                Text = "GDT Tax Crawler Manager (Vue 3 + .NET 10)",
+                Text = "GDT Tax Crawler Manager (Next.js 14 + .NET 10)",
                 Visible = true,
                 ContextMenuStrip = trayMenu
             };
@@ -46,7 +69,7 @@ namespace GDTTaxCrawlerManager
             {
                 try { notifyIcon.Visible = false; notifyIcon.Dispose(); } catch { }
             };
-            UpdateTrayIcon(Color.FromArgb(113, 113, 122));
+            UpdateTrayIcon(Color.FromArgb(16, 185, 129));
         }
 
         public void UpdateTrayServiceMenuItems(ServiceState status)
@@ -95,14 +118,17 @@ namespace GDTTaxCrawlerManager
             catch { }
         }
 
-        public void ShowAndRestore()
+        public async void ShowAndRestore()
         {
             AppLogger.Info("Tray", "Khôi phục cửa sổ quản trị từ khay hệ thống.");
+            ShowInTaskbar = true;
+            Opacity = 1;
             Show();
             if (WindowState == FormWindowState.Minimized)
                 WindowState = FormWindowState.Normal;
             BringToFront();
             Activate();
+            await EnsureWebViewReadyAsync();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -110,6 +136,7 @@ namespace GDTTaxCrawlerManager
             if (!isExplicitExit && e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
+                ShowInTaskbar = false;
                 Hide();
                 AppLogger.Info("Tray", "Thu nhỏ cửa sổ xuống khay hệ thống.");
                 notifyIcon.ShowBalloonTip(2000, "GDT Tax Crawler", "Ứng dụng đang chạy ngầm trong khay hệ thống.", ToolTipIcon.Info);

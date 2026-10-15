@@ -6,6 +6,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.ServiceProcess;
 using System.Threading.Tasks;
+using Microsoft.Win32;
 
 namespace GDTTaxCrawlerManager
 {
@@ -22,8 +23,46 @@ namespace GDTTaxCrawlerManager
     public static class ServiceHelper
     {
         public const string SERVICE_NAME = "GDTTaxCrawler";
+        public const string RUN_REG_KEY = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        public const string RUN_APP_NAME = "GDTTaxCrawlerManager";
         public const int WEB_PORT = 8123;
         public const int WORKER_PORT = 8124;
+
+        public static bool IsStartupRegistered()
+        {
+            try
+            {
+                using var key = Registry.CurrentUser.OpenSubKey(RUN_REG_KEY, false);
+                return key?.GetValue(RUN_APP_NAME) != null;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool SetStartupRegistration(bool enable)
+        {
+            try
+            {
+                using var key = Registry.CurrentUser.OpenSubKey(RUN_REG_KEY, true);
+                if (key == null) return false;
+                if (enable)
+                {
+                    var exePath = Environment.ProcessPath ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GDTTaxCrawlerManager.exe");
+                    key.SetValue(RUN_APP_NAME, $"\"{exePath}\" --tray");
+                }
+                else if (key.GetValue(RUN_APP_NAME) != null)
+                {
+                    key.DeleteValue(RUN_APP_NAME, false);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         public static ServiceState GetStatus()
         {

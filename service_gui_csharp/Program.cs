@@ -2,6 +2,7 @@
 // @related 01M4V0FH0V3ZG4NN14DWF01R81, 01M4V0FH0GKXYPS38JG5J0A4FF
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -38,10 +39,18 @@ namespace GDTTaxCrawlerManager
             };
 
             string? snapshotPath = null;
-            for (int i = 0; i < args.Length; i++)
+            bool startInTray = args != null && args.Any(a =>
+                a.Equals("--tray", StringComparison.OrdinalIgnoreCase) ||
+                a.Equals("--minimized", StringComparison.OrdinalIgnoreCase) ||
+                a.Equals("-minimized", StringComparison.OrdinalIgnoreCase));
+
+            if (args != null)
             {
-                if (args[i] == "--snapshot" && i + 1 < args.Length)
-                    snapshotPath = args[i + 1];
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (args[i] == "--snapshot" && i + 1 < args.Length)
+                        snapshotPath = args[i + 1];
+                }
             }
 
             // Single-Instance Check
@@ -50,12 +59,17 @@ namespace GDTTaxCrawlerManager
             if (!isOnlyInstance && string.IsNullOrEmpty(snapshotPath))
             {
                 AppLogger.Warn("Bootstrap", $"Phát hiện một instance khác đang chạy. Kích hoạt cửa sổ và thoát PID {Environment.ProcessId}.");
-                SingleInstanceHelper.BroadcastShowExistingInstance();
+                if (!startInTray)
+                    SingleInstanceHelper.BroadcastShowExistingInstance();
                 return;
             }
 
+            // Đảm bảo tự động đăng ký chạy cùng Windows ở System Tray nếu chưa đăng ký
+            if (!ServiceHelper.IsStartupRegistered())
+                ServiceHelper.SetStartupRegistration(true);
+
             ApplicationConfiguration.Initialize();
-            var form = new MainForm();
+            var form = new MainForm(startInTray);
 
             if (!string.IsNullOrEmpty(snapshotPath))
             {

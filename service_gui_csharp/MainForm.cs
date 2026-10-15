@@ -12,6 +12,8 @@ namespace GDTTaxCrawlerManager
     public partial class MainForm : Form
     {
         private readonly string projectRootDir;
+        private readonly bool startInTrayMode;
+        private bool webViewInitialized = false;
         private Panel pnlHeader = null!;
         private Panel pnlMainContainer = null!;
         private StatusStrip statusStrip = null!;
@@ -34,8 +36,9 @@ namespace GDTTaxCrawlerManager
         private Button btnBrowser = null!;
         private Button btnTheme = null!;
 
-        public MainForm()
+        public MainForm(bool startInTray = false)
         {
+            startInTrayMode = startInTray;
             var dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             while (dir != null && !File.Exists(Path.Combine(dir.FullName, "service.bat")))
                 dir = dir.Parent;
@@ -45,36 +48,57 @@ namespace GDTTaxCrawlerManager
             SetupWebViewControl();
             SetupTrayIntegration();
 
+            if (startInTrayMode)
+            {
+                WindowState = FormWindowState.Minimized;
+                ShowInTaskbar = false;
+                Opacity = 0;
+            }
         }
 
         protected override async void OnShown(EventArgs e)
         {
             base.OnShown(e);
             ApplyCurrentTheme();
-            await InitializeWebViewAsync();
             StartPollingTimer();
+
+            if (startInTrayMode)
+            {
+                Hide();
+                Opacity = 1;
+                AppLogger.Info("Tray", "Khởi động ẩn trong System Tray (--tray).");
+                return;
+            }
+
+            await EnsureWebViewReadyAsync();
+        }
+
+        private async Task EnsureWebViewReadyAsync()
+        {
+            if (webViewInitialized) return;
+            webViewInitialized = true;
+            await InitializeWebViewAsync();
         }
 
         private void InitializeLayout()
         {
-            Text = "GDT Tax Crawler Control - Vue 3 Dashboard (.NET 10)";
+            Text = "GDT Tax Crawler Control - Ant Design Dashboard (.NET 10)";
             Size = new Size(1280, 840);
             MinimumSize = new Size(960, 600);
             StartPosition = FormStartPosition.CenterScreen;
 
             pnlHeader = new Panel { Dock = DockStyle.Top, Height = 56, Padding = new Padding(12, 8, 12, 8) };
             lblTitle = new Label { Text = "GDT TAX CRAWLER", Font = new Font("Segoe UI", 11f, FontStyle.Bold), AutoSize = true, Location = new Point(12, 10) };
-            lblSub = new Label { Text = "Vue 3 SPA • .NET 10 WebView2", Font = new Font("Segoe UI", 8.5f), AutoSize = true, Location = new Point(13, 31) };
+            lblSub = new Label { Text = "Next.js 14 • .NET 10 WebView2", Font = new Font("Segoe UI", 8.5f), AutoSize = true, Location = new Point(13, 31) };
 
             ledIndicator = new Panel { Size = new Size(10, 10), Location = new Point(220, 23), BackColor = Color.Gray };
             lblServiceStatus = new Label { Text = "Đang kiểm tra...", Font = new Font("Segoe UI", 9f, FontStyle.Bold), AutoSize = true, Location = new Point(236, 19) };
 
-            // Control Buttons
             btnServices = CreateToolbarButton("🛠️ Dịch Vụ", 825, 110, Color.FromArgb(14, 165, 233), OpenServicesTab);
             btnStart = CreateToolbarButton("▶ Bật", 705, 63, Color.FromArgb(16, 185, 129), async () => await OnStartServiceClicked());
             btnStop = CreateToolbarButton("⏹ Tắt", 635, 63, Color.FromArgb(239, 68, 68), async () => await OnStopServiceClicked());
             btnRestart = CreateToolbarButton("🔄 Restart", 565, 83, Color.FromArgb(99, 102, 241), async () => await OnRestartServiceClicked());
-            btnMode = CreateToolbarButton("📁 Local Vue", 475, 115, Color.FromArgb(16, 185, 129), ToggleViewMode);
+            btnMode = CreateToolbarButton("🌐 Trực Tiếp", 475, 115, Color.FromArgb(16, 185, 129), ToggleViewMode);
             btnReloadWeb = CreateToolbarButton("↻ Nạp Lại", 352, 83, Color.FromArgb(59, 130, 246), ReloadWebView);
             btnDevTools = CreateToolbarButton("🛠️ DevTools", 262, 90, Color.FromArgb(139, 92, 246), OpenDevTools);
             btnBrowser = CreateToolbarButton("🌐 Browser", 165, 88, Color.FromArgb(14, 165, 233), OpenExternalBrowser);
@@ -127,15 +151,15 @@ namespace GDTTaxCrawlerManager
 
         private void OpenExternalBrowser()
         {
-            try 
-            { 
+            try
+            {
                 AppLogger.Info("Browser", "Mở trình duyệt ngoài tới: http://127.0.0.1:8123/");
-                Process.Start(new ProcessStartInfo("http://127.0.0.1:8123/") { UseShellExecute = true }); 
+                Process.Start(new ProcessStartInfo("http://127.0.0.1:8123/") { UseShellExecute = true });
             }
-            catch (Exception ex) 
-            { 
+            catch (Exception ex)
+            {
                 AppLogger.Error("Browser", "Lỗi mở trình duyệt ngoài", ex);
-                MessageBox.Show("Lỗi mở trình duyệt: " + ex.Message); 
+                MessageBox.Show("Lỗi mở trình duyệt: " + ex.Message);
             }
         }
 
